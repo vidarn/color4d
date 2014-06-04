@@ -1,0 +1,5 @@
+STRINGTABLE ToolSculptsnap
+{
+  ToolSculptSnap	"C++ SDK - Simple Sculpt Snap Tool";  
+  SCULPTSNAP_POLYGONSIZE "Polygon Size";
+}

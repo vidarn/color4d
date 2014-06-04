@@ -1,0 +1,9 @@
+#ifndef _TOOLSCULPTSNAP_H_
+#define _TOOLSCULPTSNAP_H_
+
+enum
+{
+	SCULPTSNAP_POLYGONSIZE = 1000,
+};
+
+#endif

@@ -1,0 +1,10 @@
+STRINGTABLE Xmandelbrot
+{
+	Xmandelbrot "Mandelbrot Shader";
+
+	MANDELBROTSHADER_COLOROFFSET	"Color Offset";
+	MANDELBROTSHADER_OBJECTACCESS	"Object Access Example";
+	MANDELBROTSHADER_THREADRATIO	"Thread Ratio";
+	WEAVESHADER_WARPPATTERN	"Warp Pattern";
+	WEAVESHADER_WARPOFFSET "Warp Offset";
+}

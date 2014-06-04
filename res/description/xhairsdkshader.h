@@ -1,0 +1,11 @@
+#ifndef _Xhairsdkshader_H_
+#define _Xhairsdkshader_H_
+
+enum
+{
+	//////////////////////////////////////////////////////////////////////////
+	
+	_HAIR_SHADER_END_
+};
+
+#endif

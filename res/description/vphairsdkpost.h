@@ -1,0 +1,11 @@
+#ifndef _Vphairsdkpost_H_
+#define _Vphairsdkpost_H_
+
+enum
+{
+	//////////////////////////////////////////////////////////////////////////
+	
+	_HAIR_POST_END_
+};
+
+#endif

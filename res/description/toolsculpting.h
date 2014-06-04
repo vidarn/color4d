@@ -1,0 +1,11 @@
+#ifndef _TOOLSCULPTING_H_
+#define _TOOLSCULPTING_H_
+
+enum
+{
+	SCULPTING_RADIUS						= 2000,
+	SCULPTING_VECTOR						= 2001,
+	SCULPTING_DO_VBO_UPDATE			= 2002
+};
+
+#endif
