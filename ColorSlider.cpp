@@ -8,6 +8,7 @@ ColorSlider::ColorSlider(ColorPickerDialog *parent, LONG index)
 	m_parent = parent;
 	m_value = 0.0;
 	m_index = index;
+	m_bitmap = BaseBitmap::Alloc();
 }
 
 ColorSlider::~ColorSlider(void)
@@ -18,7 +19,6 @@ ColorSlider::~ColorSlider(void)
 Bool ColorSlider::Init(void)
 {
 	m_color = (0.32,1.0,0.5);
-	m_bitmap = BaseBitmap::Alloc();
 	UpdateCircle();
 	return TRUE;
 }
@@ -33,7 +33,7 @@ void ColorSlider::UpdateCircle()
 		for(LONG x=0;x<m_w;x++){
 			Vector col = m_color;
 			UpdateColorWithValue(x/Real(m_w),col);
-			col = m_parent->SlidersTosRGB(col);
+			col = m_parent->RGBSlidersTosRGB(col);
 			LONG currX =  m_value*m_w;
 			LONG currY = m_h/2;
 			Real dx = x - currX;
@@ -102,7 +102,7 @@ void ColorSlider::UpdateColorWithValue(Real value, Vector &color){
 void ColorSlider::MouseUpdate(){
 	m_value = Clamp(0.0,1.0,m_mouseX/Real(m_w));
 	UpdateColorWithValue(m_value,m_color);
-	m_parent->UpdateColor(m_parent->SlidersToLab(m_color));
+	m_parent->UpdateColor(m_parent->RGBSlidersToLab(m_color));
 }
 
 Bool ColorSlider::InputEvent(const BaseContainer &msg)

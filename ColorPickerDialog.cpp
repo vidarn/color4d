@@ -20,22 +20,22 @@ Bool ColorPickerDialog::CreateLayout(void)
 			if (wheelArea) AttachUserArea(m_colorWheel,wheelArea);
 			boxArea = AddUserArea(IDC_COLORBOX,BFH_LEFT);	
 			if (boxArea) AttachUserArea(m_colorBox,boxArea);
-			GroupBegin(2,BFH_SCALEFIT|BFV_SCALEFIT,1,2,String(),0);
+			GroupBegin(2,BFH_SCALEFIT|BFV_SCALEFIT,1,2,String("RGB"),BFV_BORDERGROUP_FOLD_OPEN);
 				GroupBegin(3,BFH_SCALEFIT|BFV_SCALEFIT,1,2,String(),0);
 					AddStaticText(IDC_ICCLABEL,BFH_SCALEFIT,0,0,String("ICC Profile"),BORDER_NONE);
 					iccCombo = AddComboBox(IDC_ICC,BFH_SCALEFIT,10,10);
 				GroupEnd();
 				GroupBegin(4,BFH_SCALEFIT|BFV_SCALEFIT,2,3,String(),0);
 					editNumber[0] = AddEditNumberArrows(IDC_R,BFH_LEFT);
-					sliderArea[0] = AddUserArea(IDC_RSLIDER,BFH_LEFT);	
+					sliderArea[0] = AddUserArea(IDC_RSLIDER,BFH_SCALEFIT);	
 					if (sliderArea[0]) AttachUserArea(m_redSlider,sliderArea[0]);
 
 					editNumber[1] = AddEditNumberArrows(IDC_G,BFH_LEFT);
-					sliderArea[1] = AddUserArea(IDC_GSLIDER,BFH_LEFT);	
+					sliderArea[1] = AddUserArea(IDC_GSLIDER,BFH_SCALEFIT);	
 					if (sliderArea[1]) AttachUserArea(m_greenSlider,sliderArea[1]);
 
 					editNumber[2] = AddEditNumberArrows(IDC_B,BFH_LEFT);
-					sliderArea[2] = AddUserArea(IDC_BSLIDER,BFH_LEFT);	
+					sliderArea[2] = AddUserArea(IDC_BSLIDER,BFH_SCALEFIT);	
 					if (sliderArea[2]) AttachUserArea(m_blueSlider,sliderArea[2]);
 				GroupEnd();
 			GroupEnd();
@@ -91,7 +91,7 @@ void ColorPickerDialog::FindICCProfiles(){
 
 	cmsHPROFILE sRGBProfile;
 	sRGBProfile = cmsCreate_sRGBProfile();
-	m_profiles.Insert(sRGBProfile,0);;
+	m_RGBProfiles.Insert(sRGBProfile,0);;
 	bc.SetString(0,String("sRGB"));
 
 	BrowseFiles* bf = BrowseFiles::Alloc();
@@ -100,7 +100,7 @@ void ColorPickerDialog::FindICCProfiles(){
 
 	Filename dir(m_iccSearchPaths[0]);
 	bf->Init(dir,FALSE);
-	int i = m_profiles.GetCount();
+	int i = m_RGBProfiles.GetCount();
 	if (bf)
 	{
 		GePrint("hsdgsdg!");
@@ -114,16 +114,42 @@ void ColorPickerDialog::FindICCProfiles(){
 			cmsHPROFILE profile = cmsOpenProfileFromFile(buffer, "r");
 			GePrint(str);
 			if(profile != NULL){
-				LONG length = cmsGetProfileInfoASCII(profile,cmsInfoDescription,"en","US",NULL,0);
-				GePrint(LongToString(length));
-				CHAR *buffer2 = new CHAR[length];
-				cmsGetProfileInfoASCII(profile,cmsInfoDescription,"en","US",buffer2,length);
-				String info(buffer2);
-				GePrint(info);
-				bc.SetString(i,info);
-				m_profiles.Insert(profile,i);
-				i++;
-				delete buffer2;
+				cmsColorSpaceSignature sig = cmsGetColorSpace(profile);
+				int pt = _cmsLCMScolorSpace(sig);
+				if(PT_RGB == pt){
+					LONG length = cmsGetProfileInfoASCII(profile,cmsInfoDescription,"en","US",NULL,0);
+					GePrint(LongToString(length));
+					CHAR *buffer2 = new CHAR[length];
+					cmsGetProfileInfoASCII(profile,cmsInfoDescription,"en","US",buffer2,length);
+					String info(buffer2);
+					GePrint(info);
+					bc.SetString(i,info);
+					m_RGBProfiles.Insert(profile,i);
+					i++;
+					delete buffer2;
+				}
+				if(PT_CMYK == pt){
+					cmsHPROFILE bla = cmsCreate_sRGBProfile();
+					GePrint(String("CMYK!"));
+					cmsHTRANSFORM xform = cmsCreateTransform(profile,TYPE_NAMED_COLOR_INDEX,bla,TYPE_RGB_DBL,INTENT_PERCEPTUAL,0);
+					if(xform != NULL){
+						GePrint("bra bra");
+						cmsNAMEDCOLORLIST* colorList = cmsGetNamedColorList(xform);
+						if(colorList != NULL){
+							GePrint("hejsan!");
+							CHAR name[256], prefix[33], suffix[33];
+							LONG numColors = cmsNamedColorCount(colorList);
+							for(int ii=0;ii<numColors;ii++){
+								if(cmsNamedColorInfo(colorList,ii,name,prefix,suffix,NULL,NULL)){
+									//GePrint(String(prefix) + " " + String(name) + " " + String(suffix));
+								}
+							}
+						}
+					}
+					else{
+						GePrint("NULL!");
+					}
+				}
 			}
 			else{
 				GePrint("Could not open!");
@@ -143,22 +169,13 @@ void ColorPickerDialog::ChangeSliderProfile(LONG index)
 {
 	m_sRGBProfile = cmsCreate_sRGBProfile();
 	m_LabProfile = cmsCreateLab4Profile(cmsD50_xyY());
-	cmsHPROFILE profile = m_profiles[index];
-	cmsColorSpaceSignature sig = cmsGetColorSpace(profile);
-	cmsUInt32Number numChannels = cmsChannelsOf(sig);
-	int pt = _cmsLCMScolorSpace(sig);
-	if(PT_RGB == pt){
-		GePrint(String("RGB!"));
-	}
-	if(PT_CMYK == pt){
-		GePrint(String("CMYK!"));
-	}
+	cmsHPROFILE profile = m_RGBProfiles[index];
 
-	m_slidersToLab = cmsCreateTransform(profile,TYPE_RGB_DBL,m_LabProfile,TYPE_Lab_DBL,INTENT_PERCEPTUAL,0);
-	m_LabToSliders = cmsCreateTransform(m_LabProfile,TYPE_Lab_DBL,profile,TYPE_RGB_DBL,INTENT_PERCEPTUAL,0);
+	m_RGBSlidersToLab = cmsCreateTransform(profile,TYPE_RGB_DBL,m_LabProfile,TYPE_Lab_DBL,INTENT_PERCEPTUAL,0);
+	m_LabToRGBSliders = cmsCreateTransform(m_LabProfile,TYPE_Lab_DBL,profile,TYPE_RGB_DBL,INTENT_PERCEPTUAL,0);
 
-	m_slidersTosRGB = cmsCreateTransform(profile,TYPE_RGB_DBL,m_sRGBProfile,TYPE_RGB_DBL,INTENT_PERCEPTUAL,0);
-	m_sRGBToSliders = cmsCreateTransform(m_sRGBProfile,TYPE_RGB_DBL,profile,TYPE_RGB_DBL,INTENT_PERCEPTUAL,0);
+	m_RGBSlidersTosRGB = cmsCreateTransform(profile,TYPE_RGB_DBL,m_sRGBProfile,TYPE_RGB_DBL,INTENT_PERCEPTUAL,0);
+	m_sRGBToRGBSliders = cmsCreateTransform(m_sRGBProfile,TYPE_RGB_DBL,profile,TYPE_RGB_DBL,INTENT_PERCEPTUAL,0);
 }
 
 Bool ColorPickerDialog::InitValues(void)
@@ -259,7 +276,7 @@ void ColorPickerDialog::UpdateColor(cmsCIELab color){
 	m_colorWheel.UpdateColor(col);
 	m_colorBox.UpdateColor(col);
 
-	cmsDoTransform(m_LabToSliders,&m_color,RGB,1);
+	cmsDoTransform(m_LabToRGBSliders,&m_color,RGB,1);
 	col = Vector(RGB[0],RGB[1],RGB[2]);
 
 	m_redSlider.UpdateColor(col);
@@ -283,18 +300,18 @@ Vector ColorPickerDialog::WheelTosRGB(const Vector &color){
 	return HSLtoRGB(color);
 }
 
-cmsCIELab ColorPickerDialog::SlidersToLab(Vector color){
+cmsCIELab ColorPickerDialog::RGBSlidersToLab(Vector color){
 	cmsCIELab lab;
 	double RGB[3];
 	RGB[0] = color.x; RGB[1] = color.y; RGB[2] = color.z;
-	cmsDoTransform(m_slidersToLab,RGB,&lab,1);
+	cmsDoTransform(m_RGBSlidersToLab,RGB,&lab,1);
 	return lab;
 }
 
-Vector ColorPickerDialog::SlidersTosRGB(const Vector &color){
+Vector ColorPickerDialog::RGBSlidersTosRGB(const Vector &color){
 	double in[3], out[3];
 	in[0] = color.x; in[1] = color.y; in[2] = color.z;
-	cmsDoTransform(m_slidersTosRGB,in,out,1);
+	cmsDoTransform(m_RGBSlidersTosRGB,in,out,1);
 	Vector ret = Vector(out[0], out[1],out[2]); 
 	return ret;
 }

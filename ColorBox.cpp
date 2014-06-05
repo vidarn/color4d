@@ -6,6 +6,7 @@ ColorBox::ColorBox(ColorPickerDialog *parent)
 	m_w = 200;
 	m_h = 200;
 	m_parent = parent;
+	m_bitmap = BaseBitmap::Alloc();
 }
 
 ColorBox::~ColorBox(void)
@@ -16,7 +17,6 @@ ColorBox::~ColorBox(void)
 Bool ColorBox::Init(void)
 {
 	m_color = (0.32,1.0,0.5);
-	m_bitmap = BaseBitmap::Alloc();
 	UpdateCircle();
 	return TRUE;
 }

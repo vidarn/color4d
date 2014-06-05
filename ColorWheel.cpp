@@ -10,6 +10,7 @@ ColorWheel::ColorWheel(ColorPickerDialog *parent)
 	m_h = 200;
 	m_parent = parent;
 	m_pixels = new UCHAR[m_w*3];
+	m_bitmap = BaseBitmap::Alloc();
 }
 
 ColorWheel::~ColorWheel(void)
@@ -23,7 +24,6 @@ Bool ColorWheel::Init(void)
 	m_centerX = m_w*0.5;
 	m_centerY = m_h*0.5;
 	m_color = (0.32,1.0,0.5);
-	m_bitmap = BaseBitmap::Alloc();
 	UpdateCircle();
 	return TRUE;
 }

@@ -27,8 +27,8 @@ public:
 
 	cmsCIELab WheelToLab(Vector color);
 	Vector WheelTosRGB(const Vector &color);
-	cmsCIELab SlidersToLab(Vector color);
-	Vector SlidersTosRGB(const Vector &color);
+	cmsCIELab RGBSlidersToLab(Vector color);
+	Vector RGBSlidersTosRGB(const Vector &color);
 
 	String *m_iccSearchPaths;
 	
@@ -38,10 +38,10 @@ public:
 	cmsHTRANSFORM m_wheelToLab;
 	cmsHTRANSFORM m_sRGBToWheel;
 	cmsHTRANSFORM m_wheelTosRGB;
-	cmsHTRANSFORM m_LabToSliders;
-	cmsHTRANSFORM m_slidersToLab;
-	cmsHTRANSFORM m_sRGBToSliders;
-	cmsHTRANSFORM m_slidersTosRGB;
+	cmsHTRANSFORM m_LabToRGBSliders;
+	cmsHTRANSFORM m_RGBSlidersToLab;
+	cmsHTRANSFORM m_sRGBToRGBSliders;
+	cmsHTRANSFORM m_RGBSlidersTosRGB;
 
 	cmsHPROFILE m_sRGBProfile, m_LabProfile;
 
@@ -49,7 +49,7 @@ public:
     BasePlugin *m_pPlugin;
     Vector *m_pColor;
 
-	GeDynamicArray<cmsHPROFILE> m_profiles;
+	GeDynamicArray<cmsHPROFILE> m_RGBProfiles;
 
 	cmsCIELab m_color;
 	ColorWheel m_colorWheel;
