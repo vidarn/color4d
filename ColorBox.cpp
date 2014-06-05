@@ -30,7 +30,7 @@ void ColorBox::UpdateCircle()
 	for(LONG y=0;y<m_h;y++){
 		for(LONG x=0;x<m_w;x++){
 			Vector col = Vector(m_color.x,x/Real(m_w),y/Real(m_h));
-			col = HSLtoRGB(col);
+			col = m_parent->WheelTosRGB(col);
 			LONG currX =  m_color.y*m_w;
 			LONG currY = m_color.z*m_h;
 			Real dx = x - currX;
@@ -88,7 +88,7 @@ void ColorBox::MouseUpdate(){
 	Real lightness = Clamp(0.0,1.0,m_mouseY/Real(m_h));
 	m_color.z = lightness;
 	//GePrint("Saturation: " + RealToString(saturation) + " Lightness: " + RealToString(lightness));
-	m_parent->UpdateColor(m_color);
+	m_parent->UpdateColor(m_parent->WheelToLab(m_color));
 }
 
 Bool ColorBox::InputEvent(const BaseContainer &msg)

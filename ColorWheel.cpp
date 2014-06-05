@@ -63,12 +63,12 @@ void ColorWheel::UpdateCircle()
 					}
 					Real val = 1.0 - Smoothstep(outerRadius-aaBuffer,outerRadius,dist);
 					val *= Smoothstep(innerRadius+innerSeparator,innerRadius+innerSeparator+aaBuffer,dist);
-					col = HSLtoRGB(Vector(hue,1.0,0.5))*val + col*(1.0-val);
+					col = m_parent->WheelTosRGB(Vector(hue,1.0,0.5))*val + col*(1.0-val);
 				}
 			}
 			else{
 				Real val = Smoothstep(innerRadius-aaBuffer,innerRadius,dist);
-				col = HSLtoRGB(m_color)*(1.0-val) + col*val;
+				col = m_parent->WheelTosRGB(m_color)*(1.0-val) + col*val;
 			}
 			LONG currX =  cos(m_color.x*PI2)*valuePosition+m_centerX;
 			LONG currY = -sin(m_color.x*PI2)*valuePosition+m_centerY;
@@ -145,7 +145,7 @@ void ColorWheel::MouseUpdate(){
 		hue -= 1.0;
 	}
 	m_color.x = hue;
-	m_parent->UpdateColor(m_color);
+	m_parent->UpdateColor(m_parent->WheelToLab(m_color));
 }
 
 Bool ColorWheel::InputEvent(const BaseContainer &msg)

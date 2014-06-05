@@ -8,6 +8,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cinema4dsdk", "cinema4dsdk.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_api", "..\..\resource\_api_lib\_api.vcxproj", "{B3E105E9-09BB-4DCA-B58D-3432EB8E88E5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lcms2_static", "libs\lcms2-2.6\Projects\VC2010\lcms2_static\lcms2_static.vcxproj", "{71DEDE59-3F1E-486B-A899-4283000F76B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -42,6 +44,15 @@ Global
 		{B3E105E9-09BB-4DCA-B58D-3432EB8E88E5}.Release|Win32.Build.0 = Release|Win32
 		{B3E105E9-09BB-4DCA-B58D-3432EB8E88E5}.Release|x64.ActiveCfg = Release|x64
 		{B3E105E9-09BB-4DCA-B58D-3432EB8E88E5}.Release|x64.Build.0 = Release|x64
+		{71DEDE59-3F1E-486B-A899-4283000F76B5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{71DEDE59-3F1E-486B-A899-4283000F76B5}.Debug|Win32.Build.0 = Debug|Win32
+		{71DEDE59-3F1E-486B-A899-4283000F76B5}.Debug|x64.ActiveCfg = Debug|Win32
+		{71DEDE59-3F1E-486B-A899-4283000F76B5}.Intel|Win32.ActiveCfg = Release|Win32
+		{71DEDE59-3F1E-486B-A899-4283000F76B5}.Intel|Win32.Build.0 = Release|Win32
+		{71DEDE59-3F1E-486B-A899-4283000F76B5}.Intel|x64.ActiveCfg = Release|Win32
+		{71DEDE59-3F1E-486B-A899-4283000F76B5}.Release|Win32.ActiveCfg = Release|Win32
+		{71DEDE59-3F1E-486B-A899-4283000F76B5}.Release|Win32.Build.0 = Release|Win32
+		{71DEDE59-3F1E-486B-A899-4283000F76B5}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

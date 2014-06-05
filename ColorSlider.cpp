@@ -33,7 +33,7 @@ void ColorSlider::UpdateCircle()
 		for(LONG x=0;x<m_w;x++){
 			Vector col = m_color;
 			UpdateColorWithValue(x/Real(m_w),col);
-			col = HSLtoRGB(col);
+			col = m_parent->SlidersTosRGB(col);
 			LONG currX =  m_value*m_w;
 			LONG currY = m_h/2;
 			Real dx = x - currX;
@@ -102,7 +102,7 @@ void ColorSlider::UpdateColorWithValue(Real value, Vector &color){
 void ColorSlider::MouseUpdate(){
 	m_value = Clamp(0.0,1.0,m_mouseX/Real(m_w));
 	UpdateColorWithValue(m_value,m_color);
-	m_parent->UpdateColor(m_color);
+	m_parent->UpdateColor(m_parent->SlidersToLab(m_color));
 }
 
 Bool ColorSlider::InputEvent(const BaseContainer &msg)
