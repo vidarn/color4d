@@ -3,11 +3,18 @@
 
 ColorSlider::ColorSlider(ColorPickerDialog *parent, LONG index)
 {
+	ColorSlider();
+	m_parent = parent;
+	m_index = index;
+}
+
+ColorSlider::ColorSlider()
+{
 	m_w = 100;
 	m_h = 15;
-	m_parent = parent;
+	m_parent = NULL;
 	m_value = 0.0;
-	m_index = index;
+	m_index = 0;
 	m_bitmap = BaseBitmap::Alloc();
 }
 
@@ -25,29 +32,31 @@ Bool ColorSlider::Init(void)
 
 void ColorSlider::UpdateCircle()
 {
-	const Real valueRadius = 7;
-	const Real aaBuffer = 2;
-	const Real valueSeparator = 2;
-	IMAGERESULT result = m_bitmap->Init(m_w,m_h,32,INITBITMAPFLAGS_0);
-	for(LONG y=0;y<m_h;y++){
-		for(LONG x=0;x<m_w;x++){
-			Vector col = m_color;
-			UpdateColorWithValue(x/Real(m_w),col);
-			col = m_parent->RGBSlidersTosRGB(col);
-			LONG currX =  m_value*m_w;
-			LONG currY = m_h/2;
-			Real dx = x - currX;
-			Real dy = y - currY;
-			Real dist = Sqrt(Real(dx*dx + dy*dy));
-			if(dist < valueRadius){
-				Real val = Smoothstep(valueRadius-aaBuffer,valueRadius,dist);
-				col = Vector(0.0, 0.0, 0.0)*(1.0-val) + col*val;
-				if(dist < valueRadius-valueSeparator){
-					Real val = Smoothstep(valueRadius-valueSeparator-aaBuffer,valueRadius-valueSeparator,dist);
-					col = Vector(0.7,0.7,0.7)*(1.0-val) + col*val;
+	if(m_parent != NULL){
+		const Real valueRadius = 7;
+		const Real aaBuffer = 2;
+		const Real valueSeparator = 2;
+		IMAGERESULT result = m_bitmap->Init(m_w,m_h,32,INITBITMAPFLAGS_0);
+		for(LONG y=0;y<m_h;y++){
+			for(LONG x=0;x<m_w;x++){
+				Vector col = m_color;
+				UpdateColorWithValue(x/Real(m_w),col);
+				col = m_parent->RGBSlidersTosRGB(col);
+				LONG currX =  m_value*m_w;
+				LONG currY = m_h/2;
+				Real dx = x - currX;
+				Real dy = y - currY;
+				Real dist = Sqrt(Real(dx*dx + dy*dy));
+				if(dist < valueRadius){
+					Real val = Smoothstep(valueRadius-aaBuffer,valueRadius,dist);
+					col = Vector(0.0, 0.0, 0.0)*(1.0-val) + col*val;
+					if(dist < valueRadius-valueSeparator){
+						Real val = Smoothstep(valueRadius-valueSeparator-aaBuffer,valueRadius-valueSeparator,dist);
+						col = Vector(0.7,0.7,0.7)*(1.0-val) + col*val;
+					}
 				}
+				m_bitmap->SetPixel(x,y,255*col.x,255*col.y,255*col.z);
 			}
-			m_bitmap->SetPixel(x,y,255*col.x,255*col.y,255*col.z);
 		}
 	}
 }
@@ -102,7 +111,9 @@ void ColorSlider::UpdateColorWithValue(Real value, Vector &color){
 void ColorSlider::MouseUpdate(){
 	m_value = Clamp(0.0,1.0,m_mouseX/Real(m_w));
 	UpdateColorWithValue(m_value,m_color);
-	m_parent->UpdateColor(m_parent->RGBSlidersToLab(m_color));
+	if(m_parent != NULL){
+		m_parent->UpdateColor(m_parent->RGBSlidersToLab(m_color));
+	}
 }
 
 Bool ColorSlider::InputEvent(const BaseContainer &msg)
@@ -151,6 +162,16 @@ void ColorSlider::SetColor(Vector color){
 			m_value = color.z;
 			break;
 	}
+}
+
+void ColorSlider::SetParent(ColorPickerDialog *parent)
+{
+	m_parent = parent;
+}
+
+void ColorSlider::SetIndex(LONG index)
+{
+	m_index = index;
 }
 
 Vector ColorSlider::GetColor(){

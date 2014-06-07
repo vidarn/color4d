@@ -3,6 +3,7 @@
 #include "colorbox.h"
 #include "colorwheel.h"
 #include "colorslider.h"
+#include "spotcolor.h"
 #include "lcms2.h"
 #include "ge_dynamicarray.h"
 
@@ -12,7 +13,7 @@ private:
     DescriptionCustomGui    *gad;
 public:
 
-    ColorPickerDialog(Vector *color):m_colorWheel(this), m_colorBox(this), m_redSlider(this,0), m_greenSlider(this,1), m_blueSlider(this,2), m_pColor(color) {}
+    ColorPickerDialog(Vector *color):m_colorWheel(this), m_colorBox(this), m_pColor(color), m_spotColors(NULL) {}
 	~ColorPickerDialog();
 
     virtual Bool CreateLayout(void);
@@ -24,6 +25,7 @@ public:
 	void UpdateColor(cmsCIELab color);
 	void FindICCProfiles();
 	void ChangeSliderProfile(LONG index);
+	void LoadSpotColors(LONG index);
 
 	cmsCIELab WheelToLab(Vector color);
 	Vector WheelTosRGB(const Vector &color);
@@ -50,17 +52,24 @@ public:
     Vector *m_pColor;
 
 	GeDynamicArray<cmsHPROFILE> m_RGBProfiles;
+	GeDynamicArray<cmsHPROFILE> m_CMYKProfiles;
+	GeDynamicArray<cmsHPROFILE> m_spotProfiles;
 
 	cmsCIELab m_color;
 	ColorWheel m_colorWheel;
 	ColorBox m_colorBox;
-	ColorSlider m_redSlider;
-	ColorSlider m_greenSlider;
-	ColorSlider m_blueSlider;
-	C4DGadget *editNumber[3];
+	ColorSlider m_RGBSlider[3];
+	ColorSlider m_CMYKSlider[4];
+	SpotColor *m_spotColors;
+	C4DGadget *RGBeditNumber[3];
+	C4DGadget *CMYKeditNumber[4];
 	C4DGadget *wheelArea;
 	C4DGadget *boxArea;
-	C4DGadget *sliderArea[3];
-	C4DGadget *iccCombo;
+	C4DGadget *RGBsliderArea[3];
+	C4DGadget *CMYKsliderArea[4];
+	C4DGadget *iccRGBCombo;
+	C4DGadget *iccCMYKCombo;
+	C4DGadget *iccSpotCombo;
+	C4DGadget *spotArea;
 
 };
