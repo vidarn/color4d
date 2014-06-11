@@ -3,8 +3,8 @@
 #include "colorbox.h"
 #include "colorwheel.h"
 #include "colorslider.h"
+#include "color.h"
 #include "spotcolor.h"
-#include "lcms2.h"
 #include "ge_dynamicarray.h"
 
 class ColorPickerDialog : public GeDialog
@@ -22,30 +22,15 @@ public:
     virtual Bool CoreMessage(LONG id,const BaseContainer &msg);
     virtual LONG Message(const BaseContainer& msg, BaseContainer& result);
 
-	void UpdateColor(cmsCIELab color);
+	void UpdateColor(Color color);
 	void FindICCProfiles();
-	void ChangeSliderProfile(LONG index);
+	void ChangeRGBSliderProfile(LONG index);
+	void ChangeCMYKSliderProfile(LONG index);
 	void LoadSpotColors(LONG index);
 
-	cmsCIELab WheelToLab(Vector color);
-	Vector WheelTosRGB(const Vector &color);
-	cmsCIELab RGBSlidersToLab(Vector color);
-	Vector RGBSlidersTosRGB(const Vector &color);
-
 	String *m_iccSearchPaths;
-	
-	cmsHTRANSFORM m_LabTosRGB;
-	cmsHTRANSFORM m_sRGBToLab;
-	cmsHTRANSFORM m_LabToWheel;
-	cmsHTRANSFORM m_wheelToLab;
-	cmsHTRANSFORM m_sRGBToWheel;
-	cmsHTRANSFORM m_wheelTosRGB;
-	cmsHTRANSFORM m_LabToRGBSliders;
-	cmsHTRANSFORM m_RGBSlidersToLab;
-	cmsHTRANSFORM m_sRGBToRGBSliders;
-	cmsHTRANSFORM m_RGBSlidersTosRGB;
 
-	cmsHPROFILE m_sRGBProfile, m_LabProfile;
+	cmsHPROFILE m_displayProfile;
 
 	BaseContainer m_Settings;
     BasePlugin *m_pPlugin;
@@ -55,12 +40,14 @@ public:
 	GeDynamicArray<cmsHPROFILE> m_CMYKProfiles;
 	GeDynamicArray<cmsHPROFILE> m_spotProfiles;
 
-	cmsCIELab m_color;
+	Color m_DisplayColor;
+
 	ColorWheel m_colorWheel;
 	ColorBox m_colorBox;
 	ColorSlider m_RGBSlider[3];
 	ColorSlider m_CMYKSlider[4];
 	SpotColor *m_spotColors;
+	SpotColor m_previewColors[4];
 	C4DGadget *RGBeditNumber[3];
 	C4DGadget *CMYKeditNumber[4];
 	C4DGadget *wheelArea;

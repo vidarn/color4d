@@ -1,30 +1,38 @@
 #include "colorwheel.h"
 #include "colorpickerdialog.h"
+#include "utils.h"
 
 const Real PI2			= 6.283185307179586476925286766559;
 const Real PI2_INV	    = 0.15915494309189533576888376337251;
 
-ColorWheel::ColorWheel(ColorPickerDialog *parent)
+
+
+ColorWheel::ColorWheel(ColorPickerDialog *parent):
+m_valueRadius(7.0), m_valuePosition(70)
 {
 	m_w = 200;
 	m_h = 200;
 	m_parent = parent;
-	m_pixels = new UCHAR[m_w*3];
-	m_bitmap = BaseBitmap::Alloc();
+	m_wheelClipMap = GeClipMap::Alloc();
+	m_markerClipMap = GeClipMap::Alloc();
+	m_canvas = GeClipMap::Alloc();
+	m_color.SetSource(COLOR_SOURCE_WHEEL);
 }
 
 ColorWheel::~ColorWheel(void)
 {
-	BaseBitmap::Free(m_bitmap);
-	delete m_pixels;
+	GeClipMap::Free(m_wheelClipMap);
+	GeClipMap::Free(m_markerClipMap);
+	GeClipMap::Free(m_canvas);
 }
 
 Bool ColorWheel::Init(void)
 {
 	m_centerX = m_w*0.5;
 	m_centerY = m_h*0.5;
-	m_color = (0.32,1.0,0.5);
 	UpdateCircle();
+	UpdateMarker();
+	m_canvas->Init(m_w,m_h,32);
 	return TRUE;
 }
 
@@ -32,12 +40,10 @@ void ColorWheel::UpdateCircle()
 {
 	const Real innerRadius = 40;
 	const Real outerRadius = 100;
-	const Real valuePosition = 70;
-	const Real valueRadius = 7;
 	const Real aaBuffer = 2;
 	const Real innerSeparator = 2;
-	const Real valueSeparator = 2;
-	IMAGERESULT result = m_bitmap->Init(m_w,m_h,32,INITBITMAPFLAGS_0);
+	m_wheelClipMap->Init(m_w,m_h,32);
+	m_wheelClipMap->BeginDraw();
 	for(LONG y=0;y<m_h;y++){
 		for(LONG x=0;x<m_w;x++){
 			Vector col;
@@ -63,32 +69,65 @@ void ColorWheel::UpdateCircle()
 					}
 					Real val = 1.0 - Smoothstep(outerRadius-aaBuffer,outerRadius,dist);
 					val *= Smoothstep(innerRadius+innerSeparator,innerRadius+innerSeparator+aaBuffer,dist);
-					col = m_parent->WheelTosRGB(Vector(hue,1.0,0.5))*val + col*(1.0-val);
+					col = Color(hue,1.0,0.5).SetSource(COLOR_SOURCE_WHEEL).Convert(COLOR_SOURCE_DISPLAY).AsVector()*val + col*(1.0-val);
 				}
 			}
 			else{
 				Real val = Smoothstep(innerRadius-aaBuffer,innerRadius,dist);
-				col = m_parent->WheelTosRGB(m_color)*(1.0-val) + col*val;
+				col = m_color.Convert(COLOR_SOURCE_DISPLAY).AsVector()*(1.0-val) + col*val;
 			}
-			LONG currX =  cos(m_color.x*PI2)*valuePosition+m_centerX;
-			LONG currY = -sin(m_color.x*PI2)*valuePosition+m_centerY;
-			dx = x - currX;
-			dy = y - currY;
-			dist = Sqrt(Real(dx*dx + dy*dy));
-			if(dist < valueRadius){
-				Real val = Smoothstep(valueRadius-aaBuffer,valueRadius,dist);
+			m_wheelClipMap->SetPixelRGBA(x,y,col[0]*255,col[1]*255,col[2]*255);
+		}
+	}
+	m_wheelClipMap->EndDraw();
+}
+
+void ColorWheel::UpdateMarker()
+{
+	const Real aaBuffer = 2;
+	const Real valueSeparator = 2;
+	const LONG w = m_valueRadius*2;
+	const LONG h = m_valueRadius*2;
+	m_markerClipMap->Init(w,h,32);
+	m_markerClipMap->BeginDraw();
+	for(LONG y=0;y<h;y++){
+		for(LONG x=0;x<w;x++){
+			Real alpha = 0.0;
+			Vector col = Vector(0.0, 0.0, 0.0);
+			Real dx = x - m_valueRadius;
+			Real dy = y - m_valueRadius;
+			Real dist = Sqrt(dx*dx + dy*dy);
+			if(dist < m_valueRadius){
+				Real val = Smoothstep(m_valueRadius-aaBuffer,m_valueRadius,dist);
 				col = Vector(0.0, 0.0, 0.0)*(1.0-val) + col*val;
-				if(dist < valueRadius-valueSeparator){
-					Real val = 1.0 - Smoothstep(valueRadius-valueSeparator-aaBuffer,valueRadius-valueSeparator,dist);
+				alpha = 1.0-val;
+				if(dist < m_valueRadius-valueSeparator){
+					Real val = 1.0 - Smoothstep(m_valueRadius-valueSeparator-aaBuffer,m_valueRadius-valueSeparator,dist);
 					col = Vector(0.7,0.7,0.7)*val + col*(1.0-val);
 				}
 			}
-			m_pixels[x*3]   = 255*col.x;
-			m_pixels[x*3+1] = 255*col.y;
-			m_pixels[x*3+2] = 255*col.z;
+			m_markerClipMap->SetPixelRGBA(x,y,col[0]*255,col[1]*255,col[2]*255,alpha*255);
 		}
-		m_bitmap->SetPixelCnt(0,y,m_w,m_pixels,3,COLORMODE_RGB,PIXELCNT_0);
 	}
+	m_markerClipMap->EndDraw();
+}
+
+void ColorWheel::UpdateCanvas()
+{
+	m_canvas->BeginDraw();
+	m_canvas->Blit(0,0,*m_wheelClipMap,0,0,m_wheelClipMap->GetBw(),m_wheelClipMap->GetBh(),GE_CM_BLIT_COPY);
+	for(int i = 0; i < m_offsets.GetCount(); i++){
+		LONG alpha = 255;
+		if(i>0){
+			alpha = 120;
+		}
+		m_canvas->SetDrawMode(GE_CM_DRAWMODE_BLEND,alpha);
+		Real val = m_color[0] + m_offsets[i];
+		LONG currX =  cos(val*PI2)*m_valuePosition+m_centerX;
+		LONG currY = -sin(val*PI2)*m_valuePosition+m_centerY;
+		m_canvas->Blit(currX,currY,*m_markerClipMap,0,0,m_markerClipMap->GetBw(),m_markerClipMap->GetBh(),GE_CM_BLIT_COPY);
+	}
+	m_canvas->EndDraw();
 }
 
 Bool ColorWheel::GetMinSize(LONG &w,LONG &h)
@@ -104,8 +143,7 @@ void ColorWheel::Sized(LONG w,LONG h)
 	m_h = h;
 	m_centerX = m_w*0.5;
 	m_centerY = m_h*0.5;
-	delete m_pixels;
-	m_pixels = new UCHAR[m_w*3];
+	m_canvas->Init(m_w,m_h,32);
 	UpdateCircle();
 	Redraw();
 }
@@ -117,14 +155,13 @@ void ColorWheel::DrawMsg(LONG x1,LONG y1,LONG x2,LONG y2, const BaseContainer &m
 	if (reason==BFM_GOTFOCUS || reason==BFM_LOSTFOCUS) 
 		return;
 	OffScreenOn();
-	DrawSetPen(COLOR_TEXT);
-	DrawRectangle(30,30,30,30);
-	DrawBitmap(m_bitmap,x1,y1,m_bitmap->GetBw(),m_bitmap->GetBh(),0,0,m_bitmap->GetBw(),m_bitmap->GetBh(),BMP_NORMAL);
+	UpdateCanvas();
+	BaseBitmap *bitmap = m_canvas->GetBitmap();
+	DrawBitmap(bitmap,x1,y1,bitmap->GetBw(),bitmap->GetBh(),0,0,bitmap->GetBw(),bitmap->GetBh(),BMP_NORMAL);
 }
 
-void ColorWheel::UpdateColor(Vector color){
+void ColorWheel::UpdateColor(Color color){
 	m_color = color;
-	UpdateCircle();
 	Redraw();
 }
 
@@ -138,14 +175,14 @@ void ColorWheel::MouseUpdate(){
 	if(x < 0){
 		hue += 0.5;
 	}
-	while(hue < 0.0){
-		hue += 1.0;
+	hue = Wrap(hue,0.0,1.0);
+	if(m_selectedMarker == 0){
+		m_color[0] = hue;
 	}
-	while(hue > 1.0){
-		hue -= 1.0;
+	else{
+		m_offsets[m_selectedMarker] = hue - m_color[0];
 	}
-	m_color.x = hue;
-	m_parent->UpdateColor(m_parent->WheelToLab(m_color));
+	m_parent->UpdateColor(m_color);
 }
 
 Bool ColorWheel::InputEvent(const BaseContainer &msg)
@@ -157,6 +194,19 @@ Bool ColorWheel::InputEvent(const BaseContainer &msg)
 			m_mouseDown = TRUE;
 			Global2Local(&m_mouseX, &m_mouseY);
 			MouseDragStart(BFM_INPUT_MOUSELEFT,m_mouseX, m_mouseY,MOUSEDRAGFLAGS_0);
+			m_selectedMarker = 0;
+			for(int i=0;i<m_offsets.GetCount();i++){
+				Real val = m_color[0];
+				val += m_offsets[i];
+				LONG currX =  cos(val*PI2)*m_valuePosition+m_centerX+m_valueRadius;
+				LONG currY = -sin(val*PI2)*m_valuePosition+m_centerY+m_valueRadius;
+				LONG dx = m_mouseX-currX;
+				LONG dy = m_mouseY-currY;
+				Real dist = Sqrt(Real(dx*dx + dy*dy));
+				if(dist <= m_valueRadius){
+					m_selectedMarker = i;
+				}
+			}
 			MouseUpdate();
 		}
 	}
@@ -180,11 +230,27 @@ Bool ColorWheel::InputEvent(const BaseContainer &msg)
 	return FALSE;
 }
 
+void ColorWheel::SetOffsets(const GeDynamicArray<Real> &offsets)
+{
+	m_offsets = offsets;
+}
 
-void ColorWheel::SetColor(Vector color){
+void ColorWheel::GetOffsetColors(GeDynamicArray<Color> &colors)
+{
+	colors.FreeArray();
+	LONG num = m_offsets.GetCount();
+	for(LONG i=0;i<num;i++){
+		Color col = m_color;
+		col[0] = Wrap(col[0] + m_offsets[i],0.0,1.0);
+		colors.Insert(col,i);
+	}
+}
+
+
+void ColorWheel::SetColor(Color color){
 	m_color = color;
 }
 
-Vector ColorWheel::GetColor(){
+Color ColorWheel::GetColor(){
 	return m_color;
 }

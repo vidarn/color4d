@@ -97,13 +97,25 @@
       <AdditionalDependencies>lcms2_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\;C:\Program Files\Maxon\CINEMA 4D R14\plugins\colorPicker\libs\lcms2-2.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>lcms2_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <PerUserRedirection>false</PerUserRedirection>
+      <AdditionalLibraryDirectories>C:\Program Files\Maxon\CINEMA 4D R14\plugins\colorPicker\libs\lcms2-2.6\Lib\MS</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Color.cpp" />
     <ClCompile Include="ColorBox.cpp" />
     <ClCompile Include="ColorPickerDialog.cpp" />
     <ClCompile Include="ColorSlider.cpp" />
     <ClCompile Include="ColorWheel.cpp" />
     <ClCompile Include="source\Main.cpp" />
     <ClCompile Include="SpotColor.cpp" />
+    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\resource\_api_lib\_api.vcxproj">
@@ -112,12 +124,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="color.h" />
     <ClInclude Include="colorbox.h" />
     <ClInclude Include="colorpickerdialog.h" />
     <ClInclude Include="colorslider.h" />
     <ClInclude Include="colorwheel.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="spotcolor.h" />
+    <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

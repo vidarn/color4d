@@ -7,6 +7,7 @@ ColorBox::ColorBox(ColorPickerDialog *parent)
 	m_h = 200;
 	m_parent = parent;
 	m_bitmap = BaseBitmap::Alloc();
+	m_color.SetSource(COLOR_SOURCE_WHEEL);
 }
 
 ColorBox::~ColorBox(void)
@@ -16,7 +17,6 @@ ColorBox::~ColorBox(void)
 
 Bool ColorBox::Init(void)
 {
-	m_color = (0.32,1.0,0.5);
 	UpdateCircle();
 	return TRUE;
 }
@@ -29,10 +29,9 @@ void ColorBox::UpdateCircle()
 	IMAGERESULT result = m_bitmap->Init(m_w,m_h,32,INITBITMAPFLAGS_0);
 	for(LONG y=0;y<m_h;y++){
 		for(LONG x=0;x<m_w;x++){
-			Vector col = Vector(m_color.x,x/Real(m_w),y/Real(m_h));
-			col = m_parent->WheelTosRGB(col);
-			LONG currX =  m_color.y*m_w;
-			LONG currY = m_color.z*m_h;
+			Vector col = Color(m_color[0],x/Real(m_w),y/Real(m_h)).SetSource(COLOR_SOURCE_WHEEL).Convert(COLOR_SOURCE_DISPLAY).AsVector();
+			LONG currX =  m_color[1]*m_w;
+			LONG currY = m_color[2]*m_h;
 			Real dx = x - currX;
 			Real dy = y - currY;
 			Real dist = Sqrt(Real(dx*dx + dy*dy));
@@ -76,7 +75,7 @@ void ColorBox::DrawMsg(LONG x1,LONG y1,LONG x2,LONG y2, const BaseContainer &msg
 	DrawBitmap(m_bitmap,x1,y1,m_bitmap->GetBw(),m_bitmap->GetBh(),0,0,m_bitmap->GetBw(),m_bitmap->GetBh(),BMP_NORMAL);
 }
 
-void ColorBox::UpdateColor(Vector color){
+void ColorBox::UpdateColor(Color color){
 	m_color = color;
 	UpdateCircle();
 	Redraw();
@@ -84,11 +83,10 @@ void ColorBox::UpdateColor(Vector color){
 
 void ColorBox::MouseUpdate(){
 	Real saturation = Clamp(0.0,1.0,m_mouseX/Real(m_w));
-	m_color.y = saturation;
+	m_color[1] = saturation;
 	Real lightness = Clamp(0.0,1.0,m_mouseY/Real(m_h));
-	m_color.z = lightness;
-	//GePrint("Saturation: " + RealToString(saturation) + " Lightness: " + RealToString(lightness));
-	m_parent->UpdateColor(m_parent->WheelToLab(m_color));
+	m_color[2] = lightness;
+	m_parent->UpdateColor(m_color);
 }
 
 Bool ColorBox::InputEvent(const BaseContainer &msg)
@@ -124,10 +122,10 @@ Bool ColorBox::InputEvent(const BaseContainer &msg)
 }
 
 
-void ColorBox::SetColor(Vector color){
+void ColorBox::SetColor(Color color){
 	m_color = color;
 }
 
-Vector ColorBox::GetColor(){
+Color ColorBox::GetColor(){
 	return m_color;
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "c4d.h"
+#include "color.h"
 
 class ColorPickerDialog;
 
@@ -18,13 +19,13 @@ class SpotColor : public GeUserArea
 		virtual Bool InputEvent(const BaseContainer &msg);
 
 		void SetParent(ColorPickerDialog *parent);
-		void UpdateColor(Vector color);
+		void UpdateColor(Color color);
 		void MouseUpdate();
-		void SetColor(Vector color);
-		Vector GetColor();
+		void SetColor(Color color);
+		Color GetColor();
 
 		ColorPickerDialog *m_parent;
-		Vector m_color;
+		Color m_color;
 		LONG m_w;
 		LONG m_h;
 };

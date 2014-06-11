@@ -1,11 +1,14 @@
 #include "colorslider.h"
 #include "colorpickerdialog.h"
+#include "utils.h"
 
-ColorSlider::ColorSlider(ColorPickerDialog *parent, LONG index)
+ColorSlider::ColorSlider(ColorPickerDialog *parent, LONG index, COLOR_SOURCE colorSource)
 {
 	ColorSlider();
 	m_parent = parent;
 	m_index = index;
+	m_colorSource = colorSource;
+	m_color.SetSource(m_colorSource);
 }
 
 ColorSlider::ColorSlider()
@@ -16,6 +19,7 @@ ColorSlider::ColorSlider()
 	m_value = 0.0;
 	m_index = 0;
 	m_bitmap = BaseBitmap::Alloc();
+	m_valueMax = 1.0;
 }
 
 ColorSlider::~ColorSlider(void)
@@ -25,7 +29,6 @@ ColorSlider::~ColorSlider(void)
 
 Bool ColorSlider::Init(void)
 {
-	m_color = (0.32,1.0,0.5);
 	UpdateCircle();
 	return TRUE;
 }
@@ -39,10 +42,11 @@ void ColorSlider::UpdateCircle()
 		IMAGERESULT result = m_bitmap->Init(m_w,m_h,32,INITBITMAPFLAGS_0);
 		for(LONG y=0;y<m_h;y++){
 			for(LONG x=0;x<m_w;x++){
-				Vector col = m_color;
-				UpdateColorWithValue(x/Real(m_w),col);
-				col = m_parent->RGBSlidersTosRGB(col);
-				LONG currX =  m_value*m_w;
+				Color tmp = m_color;
+				UpdateColorWithValue(x/Real(m_w)*m_valueMax,tmp);
+				Vector col = tmp.Convert(COLOR_SOURCE_DISPLAY).AsVector();
+				ClampColor(col);
+				LONG currX =  m_value*m_w/m_valueMax;
 				LONG currY = m_h/2;
 				Real dx = x - currX;
 				Real dy = y - currY;
@@ -51,9 +55,12 @@ void ColorSlider::UpdateCircle()
 					Real val = Smoothstep(valueRadius-aaBuffer,valueRadius,dist);
 					col = Vector(0.0, 0.0, 0.0)*(1.0-val) + col*val;
 					if(dist < valueRadius-valueSeparator){
-						Real val = Smoothstep(valueRadius-valueSeparator-aaBuffer,valueRadius-valueSeparator,dist);
+						val = Smoothstep(valueRadius-valueSeparator-aaBuffer,valueRadius-valueSeparator,dist);
 						col = Vector(0.7,0.7,0.7)*(1.0-val) + col*val;
 					}
+				}
+				else{
+					
 				}
 				m_bitmap->SetPixel(x,y,255*col.x,255*col.y,255*col.z);
 			}
@@ -88,31 +95,21 @@ void ColorSlider::DrawMsg(LONG x1,LONG y1,LONG x2,LONG y2, const BaseContainer &
 	DrawBitmap(m_bitmap,x1,y1,m_bitmap->GetBw(),m_bitmap->GetBh(),0,0,m_bitmap->GetBw(),m_bitmap->GetBh(),BMP_NORMAL);
 }
 
-void ColorSlider::UpdateColor(Vector color){
+void ColorSlider::UpdateColor(Color color){
 	SetColor(color);
 	UpdateCircle();
 	Redraw();
 }
 
-void ColorSlider::UpdateColorWithValue(Real value, Vector &color){
-	switch(m_index){
-		case 0:
-			color.x = value;
-			break;
-		case 1:
-			color.y = value;
-			break;
-		case 2:
-			color.z = value;
-			break;
-	}
+void ColorSlider::UpdateColorWithValue(Real value, Color &color){
+	color[m_index] = value;
 }
 
 void ColorSlider::MouseUpdate(){
-	m_value = Clamp(0.0,1.0,m_mouseX/Real(m_w));
+	m_value = Clamp(0.0,1.0,m_mouseX/Real(m_w))*m_valueMax;
 	UpdateColorWithValue(m_value,m_color);
 	if(m_parent != NULL){
-		m_parent->UpdateColor(m_parent->RGBSlidersToLab(m_color));
+		m_parent->UpdateColor(m_color);
 	}
 }
 
@@ -134,7 +131,6 @@ Bool ColorSlider::InputEvent(const BaseContainer &msg)
 	{
 		m_mouseX -= x;
 		m_mouseY -= y;
-		//Global2Local(&m_mouseX, &m_mouseY);
 		MouseUpdate();
 	}
 	BaseContainer res;
@@ -149,19 +145,9 @@ Bool ColorSlider::InputEvent(const BaseContainer &msg)
 }
 
 
-void ColorSlider::SetColor(Vector color){
+void ColorSlider::SetColor(Color color){
 	m_color = color;
-	switch(m_index){
-		case 0:
-			m_value = color.x;
-			break;
-		case 1:
-			m_value = color.y;
-			break;
-		case 2:
-			m_value = color.z;
-			break;
-	}
+	m_value = color[m_index];
 }
 
 void ColorSlider::SetParent(ColorPickerDialog *parent)
@@ -169,11 +155,22 @@ void ColorSlider::SetParent(ColorPickerDialog *parent)
 	m_parent = parent;
 }
 
+void ColorSlider::SetColorSource(COLOR_SOURCE colorSource)
+{
+	m_colorSource = colorSource;
+	m_color.SetSource(m_colorSource);
+}
+
 void ColorSlider::SetIndex(LONG index)
 {
 	m_index = index;
 }
 
-Vector ColorSlider::GetColor(){
+void ColorSlider::SetValueMax(Real max)
+{
+	m_valueMax = max;
+}
+
+Color ColorSlider::GetColor(){
 	return m_color;
 }

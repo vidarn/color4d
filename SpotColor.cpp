@@ -46,11 +46,11 @@ void SpotColor::Sized(LONG w,LONG h)
 void SpotColor::DrawMsg(LONG x1,LONG y1,LONG x2,LONG y2, const BaseContainer &msg)
 {
 	OffScreenOn();
-	DrawSetPen(m_color);
+	DrawSetPen(m_color.Convert(COLOR_SOURCE_DISPLAY).AsVector());
 	DrawRectangle(x1,y1,x2,y2);
 }
 
-void SpotColor::UpdateColor(Vector color){
+void SpotColor::UpdateColor(Color color){
 	SetColor(color);
 	Redraw();
 }
@@ -59,17 +59,17 @@ Bool SpotColor::InputEvent(const BaseContainer &msg)
 {
 	if(msg.GetLong(BFM_INPUT_DEVICE) == BFM_INPUT_MOUSE){
 		if(msg.GetLong(BFM_INPUT_CHANNEL) == BFM_INPUT_MOUSELEFT){
-			m_parent->UpdateColor(m_parent->RGBSlidersToLab(m_color));
+			m_parent->UpdateColor(m_color);
 		}
 	}
 	return FALSE;
 }
 
 
-void SpotColor::SetColor(Vector color){
+void SpotColor::SetColor(Color color){
 	m_color = color;
 }
 
-Vector SpotColor::GetColor(){
+Color SpotColor::GetColor(){
 	return m_color;
 }
