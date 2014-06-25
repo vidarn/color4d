@@ -3,13 +3,13 @@
 #include "c4d_basebitmap.h"
 #include "color.h"
 
-class ColorPickerDialog;
+class ColorDialog;
 
 class ColorBox : public GeUserArea
 {
 	public:
 
-		ColorBox(ColorPickerDialog *parent);
+		ColorBox(ColorDialog *parent);
 		~ColorBox(void);
 
 		virtual Bool Init(void);
@@ -24,7 +24,7 @@ class ColorBox : public GeUserArea
 		void SetColor(Color color);
 		Color GetColor();
 
-		ColorPickerDialog *m_parent;
+		ColorDialog *m_parent;
 		BaseBitmap *m_bitmap;
 		LONG m_mouseX;
 		LONG m_mouseY;

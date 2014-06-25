@@ -12,7 +12,6 @@
 
 Bool ColorPickerDialog::CreateLayout(void)
 {
-
 	m_displayProfile = cmsCreate_sRGBProfile();
 
 	GePrint("Create Layout!");
@@ -35,7 +34,7 @@ Bool ColorPickerDialog::CreateLayout(void)
 				GroupBegin(3,BFH_SCALEFIT,1,2,String(),0);
 					AddStaticText(IDC_ICCLABEL,BFH_SCALEFIT,0,0,String("ICC Profile"),BORDER_NONE);
 					iccRGBCombo  = AddComboBox(IDC_RGBICC,BFH_SCALEFIT,10,10);
-					iccSpotCombo = AddComboBox(IDC_SPOTICC,BFH_SCALEFIT,10,10);
+					//iccSpotCombo = AddComboBox(IDC_SPOTICC,BFH_SCALEFIT,10,10);
 				GroupEnd();
 				GroupBegin(4,BFH_SCALEFIT,2,0,String(),0);
 					for(LONG i=0;i<3;i++){
@@ -66,13 +65,13 @@ Bool ColorPickerDialog::CreateLayout(void)
 				
 			GroupEnd();
 		GroupEnd();
-		ScrollGroupBegin(5,BFH_SCALEFIT|BFV_SCALEFIT,SCROLLGROUP_VERT);
+		/*ScrollGroupBegin(5,BFH_SCALEFIT|BFV_SCALEFIT,SCROLLGROUP_VERT);
 			GroupBorderNoTitle(BORDER_THIN_IN);
 			GroupBegin(6,BFH_SCALEFIT|BFV_SCALEFIT,7,0,String(),0);
 			GroupEnd();
-		GroupEnd();
+		GroupEnd();*/
 		GroupBegin(7,BFH_SCALEFIT,1,0,String(),0);
-			BaseContainer splineSettings;
+			/*BaseContainer splineSettings;
 			splineSettings.SetBool(SPLINECONTROL_ALLOW_HORIZ_SCALE_MOVE,true);
 			splineSettings.SetBool(SPLINECONTROL_ALLOW_VERT_SCALE_MOVE,true);
 			splineSettings.SetBool(SPLINECONTROL_GRID_H,true);
@@ -92,13 +91,7 @@ Bool ColorPickerDialog::CreateLayout(void)
 				data->InsertKnot(1.0,1.0,NULL);
 				pGui->SetSpline(data);
 				SplineData::Free(data);
-				GeDynamicArray<Real> offsets;
-				offsets.Insert( 0.0,0);
-				offsets.Insert( 0.1,1);
-				offsets.Insert(-0.1,2);
-				offsets.Insert( 0.5,3);
-				m_colorWheel.SetOffsets(offsets);
-			}
+			}*/
 			GroupBegin(8,BFH_SCALEFIT,0,1,String(),0);
 				for(int i=0;i<4;i++){
 					C4DGadget *area = AddUserArea(IDC_TEST4+i,BFH_SCALEFIT);
@@ -138,107 +131,57 @@ Bool ColorPickerDialog::CreateLayout(void)
 
     col.SetLong(BFM_COLORCHOOSER_SYSTEMMESSAGE,TRUE);
 
+	GeDynamicArray<Real> offsets;
+	offsets.Insert( 0.0,0);
+	offsets.Insert( 0.1,1);
+	offsets.Insert(-0.1,2);
+	offsets.Insert( 0.5,3);
+	m_colorWheel.SetOffsets(offsets);
+
 	FindICCProfiles();
-	Color::SetWheelProfile(cmsCreate_sRGBProfile());
-	Color::SetRGBProfile(cmsCreate_sRGBProfile());
-	Color::SetCMYKProfile(m_CMYKProfiles[0]);
-	Color::SetDisplayProfile(m_displayProfile);
-	Color::UpdateTransforms();
 
     return TRUE;
 }
 
 ColorPickerDialog::~ColorPickerDialog()
 {
-	delete m_iccSearchPaths;
 }
 
 void ColorPickerDialog::FindICCProfiles(){
-	m_iccSearchPaths = new String[1];
-	m_iccSearchPaths[0] = "C:\\Windows\\System32\\Spool\\Drivers\\Color\\";
+	const GeDynamicArray<vnColorProfile> &RGBProfiles = Color::getRGBProfiles();
+	const GeDynamicArray<vnColorProfile> &CMYKProfiles = Color::getCMYKProfiles();
+	const GeDynamicArray<vnColorProfile> &spotProfiles = Color::getSpotProfiles();
 
 	BaseContainer RGBbc, CMYKbc, spotbc;
 
-	cmsHPROFILE sRGBProfile;
-	sRGBProfile = cmsCreate_sRGBProfile();
-	m_RGBProfiles.Insert(sRGBProfile,0);;
-	RGBbc.SetString(0,String("sRGB"));
-
-	BrowseFiles* bf = BrowseFiles::Alloc();
-
-	Filename dir(m_iccSearchPaths[0]);
-	bf->Init(dir,FALSE);
-	int RGBPos  = m_RGBProfiles.GetCount();
-	int CMYKPos = m_CMYKProfiles.GetCount();
-	int spotPos = m_spotProfiles.GetCount();
-
-	if (bf)
-	{
-		while (bf->GetNext())
-		{
-			Filename fileName = bf->GetFilename();
-			fileName.SetDirectory(dir);
-			String str = fileName.GetString();
-			CHAR *buffer = new CHAR[str.GetCStringLen()+1];
-			str.GetCString(buffer,str.GetCStringLen()+1);
-			cmsHPROFILE profile = cmsOpenProfileFromFile(buffer, "r");
-			if(profile != NULL){
-				cmsColorSpaceSignature sig = cmsGetColorSpace(profile);
-				LONG length = cmsGetProfileInfoASCII(profile,cmsInfoDescription,"en","US",NULL,0);
-				CHAR *buffer2 = new CHAR[length];
-				cmsGetProfileInfoASCII(profile,cmsInfoDescription,"en","US",buffer2,length);
-				String info(buffer2);
-				int pt = _cmsLCMScolorSpace(sig);
-				if(PT_RGB == pt){
-					RGBbc.SetString(RGBPos,info);
-					m_RGBProfiles.Insert(profile,RGBPos);
-					RGBPos++;
-				}
-				if(PT_CMYK == pt){
-					cmsHTRANSFORM xform = cmsCreateTransform(profile,TYPE_NAMED_COLOR_INDEX,m_displayProfile,TYPE_RGB_DBL,INTENT_PERCEPTUAL,0);
-					if(xform != NULL){
-						cmsNAMEDCOLORLIST* colorList = cmsGetNamedColorList(xform);
-						if(colorList != NULL){
-							spotbc.SetString(spotPos,info);
-							m_spotProfiles.Insert(profile,spotPos);
-							spotPos++;
-						}
-						else{
-							CMYKbc.SetString(CMYKPos,info);
-							m_CMYKProfiles.Insert(profile,CMYKPos);
-							CMYKPos++;
-						}
-					}
-				}
-				delete buffer2;
-			}
-			delete buffer;
-		}
-		AddChildren(iccRGBCombo,RGBbc);
-		SetLong(iccRGBCombo,0);
-		Enable(iccRGBCombo,TRUE);
-
-		AddChildren(iccCMYKCombo,CMYKbc);
-		SetLong(iccCMYKCombo,0);
-		Enable(iccCMYKCombo,TRUE);
-
-		AddChildren(iccSpotCombo,spotbc);
-		SetLong(iccSpotCombo,0);
-		Enable(iccSpotCombo,TRUE);
+	for(int i=0;i<RGBProfiles.GetCount();i++){
+		RGBbc.SetString(i,RGBProfiles[i].m_name);
 	}
-	
-	BrowseFiles::Free(bf);
+	for(int i=0;i<CMYKProfiles.GetCount();i++){
+		CMYKbc.SetString(i,CMYKProfiles[i].m_name);
+	}
+	for(int i=0;i<spotProfiles.GetCount();i++){
+		spotbc.SetString(i,spotProfiles[i].m_name);
+	}
+	AddChildren(iccRGBCombo,RGBbc);
+	SetLong(iccRGBCombo,0);
+	Enable(iccRGBCombo,TRUE);
+
+	AddChildren(iccCMYKCombo,CMYKbc);
+	SetLong(iccCMYKCombo,0);
+	Enable(iccCMYKCombo,TRUE);
+
 	ChangeRGBSliderProfile(0);
 }
 
 void ColorPickerDialog::ChangeRGBSliderProfile(LONG index)
 {
-	Color::SetRGBProfile(m_RGBProfiles[index],TRUE);
+	Color::SetRGBProfile(index,TRUE);
 }
 
 void ColorPickerDialog::ChangeCMYKSliderProfile(LONG index)
 {
-	Color::SetCMYKProfile(m_CMYKProfiles[index],TRUE);
+	Color::SetCMYKProfile(index,TRUE);
 }
 
 void ColorPickerDialog::LoadSpotColors(LONG index)
@@ -246,7 +189,7 @@ void ColorPickerDialog::LoadSpotColors(LONG index)
 	LayoutFlushGroup(6);
 	double RGB[3];
 	CHAR name[256], prefix[33], suffix[33];
-	cmsHPROFILE profile = m_spotProfiles[index];
+	cmsHPROFILE profile = Color::getSpotProfiles()[index].m_profile;
 	cmsHTRANSFORM xform = cmsCreateTransform(profile,TYPE_NAMED_COLOR_INDEX,m_displayProfile,TYPE_RGB_DBL,INTENT_PERCEPTUAL,0);
 	if(xform != NULL){
 		cmsNAMEDCOLORLIST* colorList = cmsGetNamedColorList(xform);
@@ -288,8 +231,9 @@ void ColorPickerDialog::LoadSpotColors(LONG index)
 
 Bool ColorPickerDialog::InitValues(void)
 {
+	/*
 	UpdateColor(Color(*m_pColor).SetSource(COLOR_SOURCE_DISPLAY));
-    if (!GeDialog::InitValues()) return FALSE;
+    if (!GeDialog::InitValues()) return FALSE;*/
     return TRUE;
 }
 

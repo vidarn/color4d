@@ -5,13 +5,13 @@
 #include "ge_dynamicarray.h"
 #include "lib_clipmap.h"
 
-class ColorPickerDialog;
+class ColorDialog;
 
 class ColorWheel : public GeUserArea
 {
 	public:
 
-		ColorWheel(ColorPickerDialog *parent);
+		ColorWheel(ColorDialog *parent);
 		~ColorWheel(void);
 
 		virtual Bool Init(void);
@@ -30,7 +30,7 @@ class ColorWheel : public GeUserArea
 		void SetColor(Color color);
 		Color GetColor();
 
-		ColorPickerDialog *m_parent;
+		ColorDialog *m_parent;
 		GeDynamicArray<Real> m_offsets;
 		GeClipMap *m_wheelClipMap;
 		GeClipMap *m_markerClipMap;

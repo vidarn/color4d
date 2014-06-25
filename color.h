@@ -2,6 +2,7 @@
 #include "c4d.h"
 #include "main.h"
 #include "lcms2.h"
+#include "ge_dynamicarray.h"
 
 enum COLOR_SOURCE
 {
@@ -9,6 +10,15 @@ enum COLOR_SOURCE
 	COLOR_SOURCE_RGB,
 	COLOR_SOURCE_CMYK,
 	COLOR_SOURCE_DISPLAY,
+};
+
+class vnColorProfile
+{
+	public:
+		vnColorProfile():m_name(""),m_profile(0){};
+		vnColorProfile(const String &name,cmsHPROFILE profile):m_name(name),m_profile(profile){};
+		String m_name;
+		cmsHPROFILE m_profile;
 };
 
 class Color
@@ -31,11 +41,19 @@ class Color
 		COLOR_SOURCE GetSource(){return m_source;}
 		Color Convert(COLOR_SOURCE source);
 		Vector AsVector();
+		static void SetWheelProfile(int profile, Bool updateTransform=FALSE);
+		static void SetRGBProfile(int profile, Bool updateTransform=FALSE);
+		static void SetCMYKProfile(int profile, Bool updateTransform=FALSE);
+		static void SetDisplayProfile(int profile, Bool updateTransform=FALSE);
 		static void SetWheelProfile(cmsHPROFILE profile, Bool updateTransform=FALSE);
 		static void SetRGBProfile(cmsHPROFILE profile, Bool updateTransform=FALSE);
 		static void SetCMYKProfile(cmsHPROFILE profile, Bool updateTransform=FALSE);
 		static void SetDisplayProfile(cmsHPROFILE profile, Bool updateTransform=FALSE);
 		static void UpdateTransforms();
+		static void LoadICCProfiles();
+		static const GeDynamicArray<vnColorProfile> &getRGBProfiles() {return m_RGBProfiles; }
+		static const GeDynamicArray<vnColorProfile> &getCMYKProfiles(){return m_CMYKProfiles;}
+		static const GeDynamicArray<vnColorProfile> &getSpotProfiles(){return m_spotProfiles;}
 	private:
 		Real m_val[4];
 		COLOR_SOURCE m_source;
@@ -52,4 +70,8 @@ class Color
 		static cmsHTRANSFORM m_displayToRGB;
 		static cmsHTRANSFORM m_displayToCMYK;
 		static cmsHPROFILE m_wheelProfile, m_RGBProfile, m_CMYKProfile, m_displayProfile;
+		static String *m_iccSearchPaths;
+		static GeDynamicArray<vnColorProfile> m_RGBProfiles;
+		static GeDynamicArray<vnColorProfile> m_CMYKProfiles;
+		static GeDynamicArray<vnColorProfile> m_spotProfiles;
 };

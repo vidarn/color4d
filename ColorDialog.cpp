@@ -1,0 +1,1 @@
+#include "colordialog.h"

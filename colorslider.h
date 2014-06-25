@@ -3,13 +3,13 @@
 #include "c4d_basebitmap.h"
 #include "color.h"
 
-class ColorPickerDialog;
+class ColorDialog;
 
 class ColorSlider : public GeUserArea
 {
 	public:
 
-		ColorSlider(ColorPickerDialog *parent, LONG index, COLOR_SOURCE colorSource);
+		ColorSlider(ColorDialog *parent, LONG index, COLOR_SOURCE colorSource);
 		ColorSlider();
 		~ColorSlider(void);
 
@@ -24,14 +24,14 @@ class ColorSlider : public GeUserArea
 		void UpdateCircle();
 		void MouseUpdate();
 		void SetColor(Color color);
-		void SetParent(ColorPickerDialog *parent);
+		void SetParent(ColorDialog *parent);
 		void SetIndex(LONG index);
 		void SetColorSource(COLOR_SOURCE colorSource);
 		void SetValueMax(Real max);
 		Color GetColor();
 
 		COLOR_SOURCE m_colorSource;
-		ColorPickerDialog *m_parent;
+		ColorDialog *m_parent;
 		BaseBitmap *m_bitmap;
 		LONG m_mouseX;
 		LONG m_mouseY;

@@ -1,7 +1,9 @@
 #pragma once
 
 #define COLORPICKER_ID    1018404
-
+#define SPOTCOLOR_ID    1018405
+#define COLORSELECTOR_ID 1018407
+#define PALETTE_ID 1018408
 
 //////////////////////////////////////////////////////////////////////////
 

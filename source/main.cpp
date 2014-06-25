@@ -1,7 +1,10 @@
 #include "colorpickerdialog.h"
+#include "colorselectordialog.h"
 #include "colorWheel.h"
 #include "colorbox.h"
 #include "c4d_symbols.h"
+#include "spotcolordialog.h"
+#include "palette.h"
 #include "main.h"
 
 
@@ -60,11 +63,31 @@ Bool ColorPicker(Vector *color, LONG flags)
 
 Bool PluginStart(void)
 {
-    return TRUE;
+	Color::LoadICCProfiles();
+	Color::SetWheelProfile(0);
+	Color::SetRGBProfile(0);
+	Color::SetCMYKProfile(0);
+	Color::SetDisplayProfile(0);
+	Color::UpdateTransforms();
+	PaletteColor::LoadIcons();
+	GePrint(LongToString(Color::getRGBProfiles().GetCount()));
+	GePrint(LongToString(Color::getCMYKProfiles().GetCount()));
+	GePrint(LongToString(Color::getSpotProfiles().GetCount()));
+	Bool result = RegisterCommandPlugin(SPOTCOLOR_ID,String("Spot colors"),0,NULL,String(),gNew SpotColorCommand);
+	result = result && RegisterCommandPlugin(COLORSELECTOR_ID,String("Color wheel"),0,NULL,String(),gNew ColorSelectorCommand);
+	result = result && RegisterCommandPlugin(PALETTE_ID,String("Palette"),0,NULL,String(),gNew PaletteCommand);
+	if(result){
+		GePrint("Result!");
+	}
+	else{
+		GePrint("Not result!");
+	}
+	return result;
 }
 
 void PluginEnd(void)
 {
+	PaletteColor::UnloadIcons();
 }
 
 Bool PluginMessage(LONG id, void *data)

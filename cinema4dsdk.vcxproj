@@ -110,11 +110,16 @@
   <ItemGroup>
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="ColorBox.cpp" />
+    <ClCompile Include="ColorDialog.cpp" />
     <ClCompile Include="ColorPickerDialog.cpp" />
+    <ClCompile Include="ColorSelectorDialog.cpp" />
     <ClCompile Include="ColorSlider.cpp" />
     <ClCompile Include="ColorWheel.cpp" />
+    <ClCompile Include="Palette.cpp" />
+    <ClCompile Include="PaletteColor.cpp" />
     <ClCompile Include="source\Main.cpp" />
     <ClCompile Include="SpotColor.cpp" />
+    <ClCompile Include="SpotColorDialog.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -126,11 +131,16 @@
   <ItemGroup>
     <ClInclude Include="color.h" />
     <ClInclude Include="colorbox.h" />
+    <ClInclude Include="colordialog.h" />
     <ClInclude Include="colorpickerdialog.h" />
+    <ClInclude Include="colorselectordialog.h" />
     <ClInclude Include="colorslider.h" />
     <ClInclude Include="colorwheel.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="palette.h" />
+    <ClInclude Include="palettecolor.h" />
     <ClInclude Include="spotcolor.h" />
+    <ClInclude Include="spotcolordialog.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

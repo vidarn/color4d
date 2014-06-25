@@ -4,15 +4,17 @@
 #include "colorwheel.h"
 #include "colorslider.h"
 #include "color.h"
+#include "colordialog.h"
 #include "spotcolor.h"
 #include "ge_dynamicarray.h"
 
-class ColorPickerDialog : public GeDialog
+class ColorPickerDialog : public ColorDialog
 {
 private:
     DescriptionCustomGui    *gad;
 public:
 
+	ColorPickerDialog():m_colorWheel(this), m_colorBox(this){ColorPickerDialog(new Vector(1.0f));}
     ColorPickerDialog(Vector *color):m_colorWheel(this), m_colorBox(this), m_pColor(color), m_spotColors(NULL) {}
 	~ColorPickerDialog();
 
@@ -22,13 +24,11 @@ public:
     virtual Bool CoreMessage(LONG id,const BaseContainer &msg);
     virtual LONG Message(const BaseContainer& msg, BaseContainer& result);
 
-	void UpdateColor(Color color);
+	virtual void UpdateColor(Color color);
 	void FindICCProfiles();
 	void ChangeRGBSliderProfile(LONG index);
 	void ChangeCMYKSliderProfile(LONG index);
 	void LoadSpotColors(LONG index);
-
-	String *m_iccSearchPaths;
 
 	cmsHPROFILE m_displayProfile;
 
@@ -36,9 +36,9 @@ public:
     BasePlugin *m_pPlugin;
     Vector *m_pColor;
 
-	GeDynamicArray<cmsHPROFILE> m_RGBProfiles;
-	GeDynamicArray<cmsHPROFILE> m_CMYKProfiles;
-	GeDynamicArray<cmsHPROFILE> m_spotProfiles;
+	//GeDynamicArray<cmsHPROFILE> &m_RGBProfiles;
+	//GeDynamicArray<cmsHPROFILE> &m_CMYKProfiles;
+	//GeDynamicArray<cmsHPROFILE> &m_spotProfiles;
 
 	Color m_DisplayColor;
 

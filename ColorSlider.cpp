@@ -1,8 +1,8 @@
 #include "colorslider.h"
-#include "colorpickerdialog.h"
+#include "colordialog.h"
 #include "utils.h"
 
-ColorSlider::ColorSlider(ColorPickerDialog *parent, LONG index, COLOR_SOURCE colorSource)
+ColorSlider::ColorSlider(ColorDialog *parent, LONG index, COLOR_SOURCE colorSource)
 {
 	ColorSlider();
 	m_parent = parent;
@@ -150,7 +150,7 @@ void ColorSlider::SetColor(Color color){
 	m_value = color[m_index];
 }
 
-void ColorSlider::SetParent(ColorPickerDialog *parent)
+void ColorSlider::SetParent(ColorDialog *parent)
 {
 	m_parent = parent;
 }

@@ -1,7 +1,7 @@
 #include "colorbox.h"
-#include "colorpickerdialog.h"
+#include "colordialog.h"
 
-ColorBox::ColorBox(ColorPickerDialog *parent)
+ColorBox::ColorBox(ColorDialog *parent)
 {
 	m_w = 200;
 	m_h = 200;

@@ -1,5 +1,5 @@
 #include "colorwheel.h"
-#include "colorpickerdialog.h"
+#include "colordialog.h"
 #include "utils.h"
 
 const Real PI2			= 6.283185307179586476925286766559;
@@ -7,7 +7,7 @@ const Real PI2_INV	    = 0.15915494309189533576888376337251;
 
 
 
-ColorWheel::ColorWheel(ColorPickerDialog *parent):
+ColorWheel::ColorWheel(ColorDialog *parent):
 m_valueRadius(7.0), m_valuePosition(70)
 {
 	m_w = 200;
