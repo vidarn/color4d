@@ -49,7 +49,6 @@ void PaletteColor::Sized(LONG w,LONG h)
 
 void PaletteColor::DrawMsg(LONG x1,LONG y1,LONG x2,LONG y2, const BaseContainer &msg)
 {
-	GePrint("Draw! nr:" + LongToString(m_colorID));
 	OffScreenOn();
 	BaseBitmap *bitmap = m_normalBitmap;
 	switch(m_hoverState){
@@ -159,8 +158,8 @@ Bool PaletteColor::CoreMessage(LONG id, const BaseContainer& msg)
     switch ( id )
     {
       case  PALETTE_ID:                                      // internal message
-			LONG color =  msg.GetLong( BFM_CORE_PAR1 );
-			LONG palette = msg.GetLong( BFM_CORE_PAR2 );
+			LONG color =  (LONG) msg.GetVoid( BFM_CORE_PAR1 );
+			LONG palette = (LONG) msg.GetVoid( BFM_CORE_PAR2 );
 			if(color == m_colorID && palette == m_palette){
 				GePrint("Update color!");
 				Palette::GetPaletteColor(m_palette,m_colorID,m_color);
