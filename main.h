@@ -1,5 +1,6 @@
 #pragma once
 
+#pragma message("TODO: get unique plugin ids")
 #define COLORPICKER_ID    1018404
 #define SPOTCOLOR_ID    1018405
 #define COLORSELECTOR_ID 1018407

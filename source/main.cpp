@@ -4,7 +4,7 @@
 #include "colorbox.h"
 #include "c4d_symbols.h"
 #include "spotcolordialog.h"
-#include "palette.h"
+#include "palettedialog.h"
 #include "main.h"
 
 
@@ -70,9 +70,7 @@ Bool PluginStart(void)
 	Color::SetDisplayProfile(0);
 	Color::UpdateTransforms();
 	PaletteColor::LoadIcons();
-	GePrint(LongToString(Color::getRGBProfiles().GetCount()));
-	GePrint(LongToString(Color::getCMYKProfiles().GetCount()));
-	GePrint(LongToString(Color::getSpotProfiles().GetCount()));
+	Palette::InitPalettes();
 	Bool result = RegisterCommandPlugin(SPOTCOLOR_ID,String("Spot colors"),0,NULL,String(),gNew SpotColorCommand);
 	result = result && RegisterCommandPlugin(COLORSELECTOR_ID,String("Color wheel"),0,NULL,String(),gNew ColorSelectorCommand);
 	result = result && RegisterCommandPlugin(PALETTE_ID,String("Palette"),0,NULL,String(),gNew PaletteCommand);

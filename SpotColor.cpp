@@ -13,7 +13,7 @@ SpotColor::SpotColor()
 {
 	m_w = 40;
 	m_h = 40;
-	m_color = Vector(0.32,1.0,0.5);
+	m_color = Color(0.32,1.0,0.5);
 	m_parent = NULL;
 }
 

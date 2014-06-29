@@ -37,10 +37,11 @@ class Color
 		Real &g(){return m_val[1];}
 		Real &b(){return m_val[2];}
 		Real &operator[](int i){return m_val[i];}
+		const Color &operator=(const Color &other);
 		Color &SetSource(COLOR_SOURCE source){m_source = source; return *this;}
 		COLOR_SOURCE GetSource(){return m_source;}
 		Color Convert(COLOR_SOURCE source);
-		Vector AsVector();
+		Vector AsVector() const;
 		static void SetWheelProfile(int profile, Bool updateTransform=FALSE);
 		static void SetRGBProfile(int profile, Bool updateTransform=FALSE);
 		static void SetCMYKProfile(int profile, Bool updateTransform=FALSE);

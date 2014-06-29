@@ -36,6 +36,7 @@ Color::Color(Vector rgb)
 	}
 	m_val[3] = 0.0;
 	m_iccSearchPaths = NULL;
+	m_source = COLOR_SOURCE_RGB;
 }
 
 Color::Color(Real r, Real g, Real b)
@@ -45,6 +46,7 @@ Color::Color(Real r, Real g, Real b)
 	m_val[2] = b;
 	m_val[3] = 0.0;
 	m_iccSearchPaths = NULL;
+	m_source = COLOR_SOURCE_RGB;
 }
 
 Color::Color(Real c, Real m, Real y, Real k)
@@ -54,6 +56,7 @@ Color::Color(Real c, Real m, Real y, Real k)
 	m_val[2] = y;
 	m_val[3] = k;
 	m_iccSearchPaths = NULL;
+	m_source = COLOR_SOURCE_CMYK;
 }
 
 Color::~Color()
@@ -102,7 +105,7 @@ Color Color::Convert(COLOR_SOURCE target)
 	return Color(out[0], out[1], out[2], out[3]).SetSource(target);
 }
 
-Vector Color::AsVector(){
+Vector Color::AsVector() const{
 	return Vector(m_val[0], m_val[1], m_val[2]);
 }
 
@@ -254,4 +257,13 @@ void Color::LoadICCProfiles()
 		}
 	}
 	BrowseFiles::Free(bf);
+}
+
+const Color &Color::operator=(const Color &other)
+{
+	for(int i=0;i<4;i++){
+		m_val[i] = other.m_val[i];
+	}
+	m_source = other.m_source;
+	return *this;
 }

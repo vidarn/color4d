@@ -4,12 +4,6 @@ BaseBitmap *PaletteColor::m_refreshIcon = 0;
 BaseBitmap *PaletteColor::m_leftArrowIcon = 0;
 BaseBitmap *PaletteColor::m_rightArrowIcon = 0;
 
-PaletteColor::PaletteColor(ColorDialog *parent)
-{
-	PaletteColor();
-	m_parent = parent;
-}
-
 PaletteColor::PaletteColor()
 {
 	m_hoverState = HOVER_NONE;
@@ -17,7 +11,9 @@ PaletteColor::PaletteColor()
 	m_hoverBitmap      = NULL;
 	m_leftHoverBitmap  = NULL;
 	m_rightHoverBitmap = NULL;
-	m_color = Vector(0.3,0.5,0.7);
+	m_color = Color(0.f,1.f,0.f);
+	m_palette = 0;
+	m_colorID = 0;
 }
 
 static void maybeFree(BaseBitmap *bmp){
@@ -35,7 +31,6 @@ PaletteColor::~PaletteColor()
 
 Bool PaletteColor::Init(void)
 {
-	GePrint("Hejsan!");
 	m_normalBitmap = BaseBitmap::Alloc();
 	m_hoverBitmap = BaseBitmap::Alloc();
 	m_leftHoverBitmap = BaseBitmap::Alloc();
@@ -54,6 +49,7 @@ void PaletteColor::Sized(LONG w,LONG h)
 
 void PaletteColor::DrawMsg(LONG x1,LONG y1,LONG x2,LONG y2, const BaseContainer &msg)
 {
+	GePrint("Draw! nr:" + LongToString(m_colorID));
 	OffScreenOn();
 	BaseBitmap *bitmap = m_normalBitmap;
 	switch(m_hoverState){
@@ -69,6 +65,7 @@ void PaletteColor::DrawMsg(LONG x1,LONG y1,LONG x2,LONG y2, const BaseContainer 
 	}
 	DrawBitmap(bitmap,x1,y1,bitmap->GetBw(),bitmap->GetBh(),0,0,bitmap->GetBw(),bitmap->GetBh(),BMP_NORMAL);
 }
+
 
 static void updateBitmap(BaseBitmap *canvas, const Vector &col, LONG m_w, LONG m_h, Real horiz, BaseBitmap *icon, LONG alpha)
 {
@@ -120,10 +117,8 @@ LONG PaletteColor::Message(const BaseContainer& msg, BaseContainer& result)
 		if(type == DRAGTYPE_RGB){
 			Vector *color = static_cast<Vector*>(object);
 			if(msg.GetLong(BFM_DRAG_FINISHED)){
-				m_color = Color(*color).SetSource(COLOR_SOURCE_DISPLAY);
-				UpdateBitmaps();
 				m_hoverState = HOVER_NONE;
-				Redraw();
+				Palette::SetPaletteColor(m_palette, m_colorID, Color(*color).SetSource(COLOR_SOURCE_DISPLAY));
 			}
 			else{
 				if (msg.GetLong(BFM_DRAG_LOST)){
@@ -157,6 +152,24 @@ LONG PaletteColor::Message(const BaseContainer& msg, BaseContainer& result)
 	}
 
 	return res;
+}
+
+Bool PaletteColor::CoreMessage(LONG id, const BaseContainer& msg)
+{
+    switch ( id )
+    {
+      case  PALETTE_ID:                                      // internal message
+			LONG color =  msg.GetLong( BFM_CORE_PAR1 );
+			LONG palette = msg.GetLong( BFM_CORE_PAR2 );
+			if(color == m_colorID && palette == m_palette){
+				GePrint("Update color!");
+				Palette::GetPaletteColor(m_palette,m_colorID,m_color);
+				UpdateBitmaps();
+				Redraw();
+			}
+        break;
+    }
+    return GeUserArea::CoreMessage( id, msg );
 }
 
 static void loadBitmap(BaseBitmap *&bmp, const char *filename){

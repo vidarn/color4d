@@ -1,41 +1,40 @@
 #pragma once
-#include "c4d.h"
-#include "colorbox.h"
-#include "colorwheel.h"
-#include "colorslider.h"
 #include "color.h"
-#include "palettecolor.h"
 #include "ge_dynamicarray.h"
-#include "c4d_commanddata.h"
 
-class Palette : public GeDialog
-{
-private:
-    DescriptionCustomGui    *gad;
-public:
-
-	Palette():m_spotColors(NULL){}
-	~Palette();
-
-    virtual Bool CreateLayout(void);
-    virtual Bool InitValues(void);
-    virtual Bool Command(LONG id,const BaseContainer &msg);
-    virtual LONG Message(const BaseContainer& msg, BaseContainer& result);
-
-	BaseContainer m_Settings;
-    BasePlugin *m_pPlugin;
-
-	GeDynamicArray<PaletteColor> m_spotColors;
-	C4DGadget *spotArea;
-
+enum {
+	NUM_COLORS = 10371,
+	PALETTE_NAME,
+	FIRST_COLOR
+};
+enum {
+	NUM_PALETTES = 284,
+	FIRST_PALETTE
 };
 
-class PaletteCommand : public CommandData
+class Palette
 {
-	private:
-		Palette dlg;
 	public:
-		virtual Bool Execute(BaseDocument *doc);
-		virtual LONG GetState(BaseDocument *doc);
-		virtual Bool RestoreLayout(void *secret);
+		Palette();
+		Palette(String name, LONG numColors=3);
+		Palette(const Palette& pal);
+		void ToContainer(BaseContainer &bc) const;
+		void FromContainer(const BaseContainer &bc);
+		void SetColor(LONG index, const Vector &color, COLOR_SOURCE source);
+		void SetColor(LONG index, const Color &color);
+		LONG GetCount(){return  m_colors.GetCount();}
+		Color & operator[](int i){return m_colors[i];}
+		const Palette &operator=(const Palette &pal);
+
+		static void InitPalettes();
+		static void GetPalettes(GeDynamicArray<Palette> &palettes);
+		static LONG SetPalette(const Palette &palette);
+		static void SetPaletteColor(LONG paletteID, LONG colorID, const Color &col);
+		static void GetPaletteColor(LONG paletteID, LONG colorID, Color &col);
+		static LONG AddPalette(const Palette &palette);
+		static void UpdatePalette(LONG id);
+		static void UpdateColor(LONG palette, LONG color);
+	private:
+		String m_name;
+		GeDynamicArray<Color> m_colors;
 };

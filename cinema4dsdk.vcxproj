@@ -116,6 +116,7 @@
     <ClCompile Include="ColorSlider.cpp" />
     <ClCompile Include="ColorWheel.cpp" />
     <ClCompile Include="Palette.cpp" />
+    <ClCompile Include="PaletteDialog.cpp" />
     <ClCompile Include="PaletteColor.cpp" />
     <ClCompile Include="source\Main.cpp" />
     <ClCompile Include="SpotColor.cpp" />
@@ -138,6 +139,7 @@
     <ClInclude Include="colorwheel.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="palette.h" />
+    <ClInclude Include="palettedialog.h" />
     <ClInclude Include="palettecolor.h" />
     <ClInclude Include="spotcolor.h" />
     <ClInclude Include="spotcolordialog.h" />

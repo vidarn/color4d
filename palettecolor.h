@@ -1,6 +1,7 @@
 #pragma once
 
 #include "spotcolor.h"
+#include "palette.h"
 
 enum HOVER_STATE
 {
@@ -13,7 +14,6 @@ enum HOVER_STATE
 class PaletteColor :public SpotColor
 {
 	public:
-		PaletteColor(ColorDialog *parent);
 		PaletteColor();
 		~PaletteColor();
 
@@ -21,12 +21,15 @@ class PaletteColor :public SpotColor
 		virtual void Sized(LONG w,LONG h);
 		virtual void DrawMsg(LONG x1,LONG y1,LONG x2,LONG y2, const BaseContainer &msg);
 		virtual LONG Message(const BaseContainer& msg, BaseContainer& result);
+		virtual Bool CoreMessage(LONG id, const BaseContainer& msg);
 		virtual void UpdateColor(Color color);
 		void UpdateBitmaps();
+		void SetColorID(LONG id){m_colorID = id;}
+		void SetPaletteID(LONG id){m_palette = id;}
 		static void LoadIcons();
 		static void UnloadIcons();
-
 	private:
+		LONG m_palette, m_colorID;
 		HOVER_STATE m_hoverState;
 		static BaseBitmap *m_refreshIcon;
 		static BaseBitmap *m_leftArrowIcon;
