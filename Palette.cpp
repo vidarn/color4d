@@ -53,6 +53,23 @@ void Palette::SetColor(LONG index, const Color &color)
 	m_colors[index] = color;
 }
 
+void Palette::InsertColor(LONG index, const Color &color)
+{
+	GePrint("Insert Color!");
+	if(index >= m_colors.GetCount()){
+		GePrint("a");
+		while(index >= m_colors.GetCount()){
+			GePrint("aa");
+			m_colors.Push(Color());
+		}
+		m_colors[index] = color;
+	}
+	else{
+		GePrint("b");
+		m_colors.Insert(color,index);
+	}
+}
+
 const Palette &Palette::operator=(const Palette &pal)
 {
 	m_colors.SetCount(0);
@@ -70,10 +87,12 @@ void Palette::InitPalettes()
 	BaseContainer bc;
 	bc.SetLong(NUM_PALETTES,1);
 	BaseContainer palC;
-	Palette stdPal(String("Default"),3);
+	Palette stdPal(String("Default"),5);
 	stdPal.SetColor(0,Color(1.0f,0.f,0.f));
 	stdPal.SetColor(1,Color(1.0f,1.f,0.f));
 	stdPal.SetColor(2,Color(1.0f,1.f,1.f));
+	stdPal.SetColor(3,Color(0.0f,1.f,1.f));
+	stdPal.SetColor(4,Color(0.0f,0.f,1.f));
 	stdPal.ToContainer(palC);
 	bc.SetContainer(FIRST_PALETTE,palC);
 	SetWorldPluginData(PALETTE_ID,bc,FALSE);
@@ -94,7 +113,16 @@ void Palette::GetPalettes(GeDynamicArray<Palette> &palettes)
 	}
 }
 
-LONG Palette::SetPalette(const Palette &palette)
+BaseContainer *Palette::GetPaletteContainer(LONG paletteID, BaseContainer *bc)
+{
+	LONG count = bc->GetLong(NUM_PALETTES);
+	if(paletteID < count){
+		return bc->GetContainerInstance(FIRST_PALETTE+paletteID);
+	}
+	return nullptr;
+}
+
+/*LONG Palette::SetPalette(const Palette &palette)
 {
 	BaseContainer *bc = GetWorldPluginData(PALETTE_ID);
 	LONG count = bc->GetLong(NUM_PALETTES);
@@ -115,37 +143,46 @@ LONG Palette::SetPalette(const Palette &palette)
 	}
 	// Palette not found, add it
 	return AddPalette(palette);
-}
+}*/
 
 void Palette::SetPaletteColor(LONG paletteID, LONG colorID, const Color &col)
 {
 	BaseContainer *bc = GetWorldPluginData(PALETTE_ID);
-	LONG count = bc->GetLong(NUM_PALETTES);
-	if(paletteID < count){
-		BaseContainer *c = bc->GetContainerInstance(FIRST_PALETTE+paletteID);
-		if(c!= nullptr){
-			Palette pal;
-			pal.FromContainer(*c);
-			pal.SetColor(colorID,col);
-			pal.ToContainer(*c);
-			bc->SetContainer(FIRST_PALETTE+paletteID,*c);
-			SetWorldPluginData(PALETTE_ID,*bc,FALSE);
-			UpdateColor(paletteID, colorID);
-		}
+	BaseContainer *c = GetPaletteContainer(paletteID,bc);
+	if(c!= nullptr){
+		Palette pal;
+		pal.FromContainer(*c);
+		pal.SetColor(colorID,col);
+		pal.ToContainer(*c);
+		bc->SetContainer(FIRST_PALETTE+paletteID,*c);
+		SetWorldPluginData(PALETTE_ID,*bc,FALSE);
+		UpdateColor(paletteID, colorID);
+	}
+}
+
+void Palette::InsertPaletteColor(LONG paletteID, LONG colorID, const Color &col)
+{
+	BaseContainer *bc = GetWorldPluginData(PALETTE_ID);
+	BaseContainer *c = GetPaletteContainer(paletteID,bc);
+	if(c!= nullptr){
+		Palette pal;
+		pal.FromContainer(*c);
+		pal.InsertColor(colorID,col);
+		pal.ToContainer(*c);
+		bc->SetContainer(FIRST_PALETTE+paletteID,*c);
+		SetWorldPluginData(PALETTE_ID,*bc,FALSE);
+		UpdatePalette(paletteID);
 	}
 }
 
 void Palette::GetPaletteColor(LONG paletteID, LONG colorID, Color &col)
 {
 	BaseContainer *bc = GetWorldPluginData(PALETTE_ID);
-	LONG count = bc->GetLong(NUM_PALETTES);
-	if(paletteID < count){
-		BaseContainer *c = bc->GetContainerInstance(FIRST_PALETTE+paletteID);
-		if(c!= nullptr){
-			Palette pal;
-			pal.FromContainer(*c);
-			col = pal[colorID];
-		}
+	BaseContainer *c = GetPaletteContainer(paletteID,bc);
+	if(c!= nullptr){
+		Palette pal;
+		pal.FromContainer(*c);
+		col = pal[colorID];
 	}
 }
 

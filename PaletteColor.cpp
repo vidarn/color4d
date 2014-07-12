@@ -116,8 +116,18 @@ LONG PaletteColor::Message(const BaseContainer& msg, BaseContainer& result)
 		if(type == DRAGTYPE_RGB){
 			Vector *color = static_cast<Vector*>(object);
 			if(msg.GetLong(BFM_DRAG_FINISHED)){
+				switch(m_hoverState){
+					case HOVER_LEFT:
+						Palette::InsertPaletteColor(m_palette, m_colorID, Color(*color).SetSource(COLOR_SOURCE_DISPLAY));
+						break;
+					case HOVER_RIGHT:
+						Palette::InsertPaletteColor(m_palette, m_colorID+1, Color(*color).SetSource(COLOR_SOURCE_DISPLAY));
+						break;
+					case HOVER_CENTER:
+						Palette::SetPaletteColor(m_palette, m_colorID, Color(*color).SetSource(COLOR_SOURCE_DISPLAY));
+						break;
+				}
 				m_hoverState = HOVER_NONE;
-				Palette::SetPaletteColor(m_palette, m_colorID, Color(*color).SetSource(COLOR_SOURCE_DISPLAY));
 			}
 			else{
 				if (msg.GetLong(BFM_DRAG_LOST)){
@@ -161,7 +171,6 @@ Bool PaletteColor::CoreMessage(LONG id, const BaseContainer& msg)
 			LONG color =  (LONG) msg.GetVoid( BFM_CORE_PAR1 );
 			LONG palette = (LONG) msg.GetVoid( BFM_CORE_PAR2 );
 			if(color == m_colorID && palette == m_palette){
-				GePrint("Update color!");
 				Palette::GetPaletteColor(m_palette,m_colorID,m_color);
 				UpdateBitmaps();
 				Redraw();

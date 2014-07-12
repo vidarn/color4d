@@ -28,7 +28,6 @@ void SpotColor::SetParent(ColorDialog *parent)
 
 Bool SpotColor::Init(void)
 {
-	GePrint("Init!");
 	return TRUE;
 }
 

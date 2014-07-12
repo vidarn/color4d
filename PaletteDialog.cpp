@@ -9,23 +9,18 @@ PaletteDialog::PaletteDialog()
 
 Bool PaletteDialog::CreateLayout(void)
 {
-	GePrint("Create Layout!");
     BaseContainer *wprefs=GetWorldContainerInstance();
-	LONG numColors = m_palette.GetCount();
 
     m_Settings=wprefs->GetContainer(PALETTE_ID);
 
     if (!GeDialog::CreateLayout()) return FALSE;
 
     SetTitle(GeLoadString(IDS_COLORPICKER));
-	for(int i=0;i<numColors;i++){
-		m_spotColors.Insert(PaletteColor(),i);
-	}
 
     GroupBegin(0,BFH_SCALEFIT|BFV_SCALEFIT,1,0,String(),0);
-		AddButton(1234,BFH_SCALEFIT,0,0,String("Button"));
+		AddButton(2,BFH_SCALEFIT,0,0,String("Button"));
 		ScrollGroupBegin(1,BFH_SCALEFIT|BFV_SCALEFIT,SCROLLGROUP_HORIZ);
-			GroupBegin(22,BFH_SCALEFIT|BFV_SCALEFIT,0,1,String(),0);
+			GroupBegin(6,BFH_SCALEFIT|BFV_SCALEFIT,0,1,String(),0);
 			GroupEnd();
 		GroupEnd();
     GroupEnd();
@@ -39,11 +34,7 @@ PaletteDialog::~PaletteDialog()
 
 Bool PaletteDialog::InitValues(void)
 {
-	Palette pal = Palette(String("Test"),3);
-	pal.SetColor(0,Color(1.0f,0.f,0.f));
-	pal.SetColor(1,Color(1.0f,1.f,0.f));
-	pal.SetColor(2,Color(1.0f,1.f,1.f));
-	LoadPalette(pal);
+	LoadPalette(0);
     return TRUE;
 }
 
@@ -52,9 +43,9 @@ Bool PaletteDialog::Command(LONG id,const BaseContainer &msg)
 	GeDynamicArray<Palette> pals;
     switch (id)
     {
-		case 1234:
+		case 2:
 				Palette::GetPalettes(pals);
-				LoadPalette(pals[0]);
+				LoadPalette(0);
 				GePrint("Test!");
 				break;
 		default:
@@ -77,25 +68,50 @@ LONG PaletteDialog::Message(const BaseContainer& msg, BaseContainer& result)
     return GeDialog::Message(msg,result);
 }
 
-void PaletteDialog::LoadPalette(const Palette &palette)
+Bool PaletteDialog::CoreMessage(LONG id, const BaseContainer& msg)
 {
-	m_palette = palette;
+	if(GeIsMainThread()){
+		GePrint("Main thread");
+	}else{
+		GePrint("Not main thread");
+	}
+    switch ( id )
+    {
+      case  PALETTE_ID:                                      // internal message
+			LONG color =  (LONG) msg.GetVoid( BFM_CORE_PAR1 );
+			LONG palette = (LONG) msg.GetVoid( BFM_CORE_PAR2 );
+			if(palette == m_paletteID && color == -1){
+				GePrint("Update palette!");
+				LoadPalette(m_paletteID);
+			}
+        break;
+    }
+    return GeDialog::CoreMessage( id, msg );
+}
+
+void PaletteDialog::LoadPalette(LONG id)
+{
+	GeDynamicArray<Palette> pals;
+	Palette::GetPalettes(pals);
+	m_palette = pals[id];
+	m_paletteID = id;
 	
-	LayoutFlushGroup(22);
 	PaletteLayout();
-	LayoutChanged(22);
+
 }
 
 void PaletteDialog::PaletteLayout()
 {
-	m_spotColors.SetCount(0);
+	LayoutFlushGroup(6);
+	m_spotColors = new PaletteColor[m_palette.GetCount()];
+	GePrint("PaletteLayout: " + LongToString(m_palette.GetCount()));
 	for(int i=0;i<m_palette.GetCount();i++){
-		m_spotColors.Push(PaletteColor());
-		C4DGadget *area = AddUserArea(1235 + i,BFV_SCALEFIT);
-		AttachUserArea(m_spotColors[i],area);
 		m_spotColors[i].SetColor(m_palette[i]);
 		m_spotColors[i].SetColorID(i);
+		C4DGadget *area = AddUserArea(12 + i,BFV_SCALEFIT);
+		AttachUserArea(m_spotColors[i],area);
 	}
+	LayoutChanged(6);
 }
 
 LONG PaletteCommand::GetState(BaseDocument *doc)

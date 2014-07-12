@@ -22,15 +22,17 @@ public:
     virtual Bool InitValues(void);
     virtual Bool Command(LONG id,const BaseContainer &msg);
     virtual LONG Message(const BaseContainer& msg, BaseContainer& result);
+	virtual Bool CoreMessage(LONG id, const BaseContainer& msg);
 
-	void LoadPalette(const Palette &palette);
+	void LoadPalette(LONG id);
 	void PaletteLayout();
 
 	BaseContainer m_Settings;
     BasePlugin *m_pPlugin;
 
+	LONG m_paletteID;
 	Palette m_palette;
-	GeDynamicArray<PaletteColor> m_spotColors;
+	PaletteColor *m_spotColors;
 	C4DGadget *spotArea;
 
 };
