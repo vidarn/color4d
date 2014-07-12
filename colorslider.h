@@ -8,7 +8,6 @@ class ColorDialog;
 class ColorSlider : public GeUserArea
 {
 	public:
-
 		ColorSlider(ColorDialog *parent, LONG index, COLOR_SOURCE colorSource);
 		ColorSlider();
 		~ColorSlider(void);

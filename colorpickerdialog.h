@@ -7,6 +7,8 @@
 #include "colordialog.h"
 #include "spotcolor.h"
 #include "ge_dynamicarray.h"
+#include "palettesubdialog.h"
+#include "slidersubdialog.h"
 
 class ColorPickerDialog : public ColorDialog
 {
@@ -25,38 +27,21 @@ public:
     virtual LONG Message(const BaseContainer& msg, BaseContainer& result);
 
 	virtual void UpdateColor(Color color);
-	void FindICCProfiles();
-	void ChangeRGBSliderProfile(LONG index);
-	void ChangeCMYKSliderProfile(LONG index);
 	void LoadSpotColors(LONG index);
-
-	cmsHPROFILE m_displayProfile;
 
 	BaseContainer m_Settings;
     BasePlugin *m_pPlugin;
     Vector *m_pColor;
 
-	//GeDynamicArray<cmsHPROFILE> &m_RGBProfiles;
-	//GeDynamicArray<cmsHPROFILE> &m_CMYKProfiles;
-	//GeDynamicArray<cmsHPROFILE> &m_spotProfiles;
-
 	Color m_DisplayColor;
+	PaletteSubDialog m_paletteSubDiag;
+	SliderSubDialog m_sliderSubDiag;
 
 	ColorWheel m_colorWheel;
 	ColorBox m_colorBox;
-	ColorSlider m_RGBSlider[3];
-	ColorSlider m_CMYKSlider[4];
 	SpotColor *m_spotColors;
 	SpotColor m_previewColors[4];
-	C4DGadget *RGBeditNumber[3];
-	C4DGadget *CMYKeditNumber[4];
 	C4DGadget *wheelArea;
 	C4DGadget *boxArea;
-	C4DGadget *RGBsliderArea[3];
-	C4DGadget *CMYKsliderArea[4];
-	C4DGadget *iccRGBCombo;
-	C4DGadget *iccCMYKCombo;
-	C4DGadget *iccSpotCombo;
 	C4DGadget *spotArea;
-
 };

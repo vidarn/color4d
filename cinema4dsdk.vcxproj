@@ -118,6 +118,8 @@
     <ClCompile Include="Palette.cpp" />
     <ClCompile Include="PaletteDialog.cpp" />
     <ClCompile Include="PaletteColor.cpp" />
+    <ClCompile Include="PaletteSubDialog.cpp" />
+    <ClCompile Include="SliderSubDialog.cpp" />
     <ClCompile Include="source\Main.cpp" />
     <ClCompile Include="SpotColor.cpp" />
     <ClCompile Include="SpotColorDialog.cpp" />
@@ -141,6 +143,8 @@
     <ClInclude Include="palette.h" />
     <ClInclude Include="palettedialog.h" />
     <ClInclude Include="palettecolor.h" />
+    <ClInclude Include="palettesubdialog.h" />
+    <ClInclude Include="slidersubdialog.h" />
     <ClInclude Include="spotcolor.h" />
     <ClInclude Include="spotcolordialog.h" />
     <ClInclude Include="utils.h" />

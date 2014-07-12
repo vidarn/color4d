@@ -42,6 +42,8 @@ class Color
 		COLOR_SOURCE GetSource(){return m_source;}
 		Color Convert(COLOR_SOURCE source);
 		Vector AsVector() const;
+		bool FromString(const String &str);
+		void ToString(String &str);
 		static void SetWheelProfile(int profile, Bool updateTransform=FALSE);
 		static void SetRGBProfile(int profile, Bool updateTransform=FALSE);
 		static void SetCMYKProfile(int profile, Bool updateTransform=FALSE);

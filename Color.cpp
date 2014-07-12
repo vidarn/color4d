@@ -105,8 +105,67 @@ Color Color::Convert(COLOR_SOURCE target)
 	return Color(out[0], out[1], out[2], out[3]).SetSource(target);
 }
 
-Vector Color::AsVector() const{
+Vector Color::AsVector() const
+{
 	return Vector(m_val[0], m_val[1], m_val[2]);
+}
+
+static int findHexChar(const String::PChar &c, bool &valid)
+{
+	const String hex("0123456789ABCDEF");
+	for(int i=0;i<hex.GetLength();i++){
+		if(hex[i] == c){
+			return i;
+		}
+	}
+	valid = false;
+	return -1;
+}
+
+static void cleanString(String &str)
+{
+	String tmp = str.ToUpper();
+	str = "";
+	const String hex("0123456789ABCDEF");
+	for(int i=0;i<tmp.GetLength();i++){
+		for(int ii=0;ii<hex.GetLength();ii++){
+			if(hex[ii] == tmp[i]){
+				str += " ";
+				str[str.GetLength()-1] = hex[ii];
+				break;
+			}
+		}
+	}
+}
+
+bool Color::FromString(const String &str)
+{
+	String s = str;
+	cleanString(s);
+	if(s.GetLength() >= 6){
+		Real val[3];
+		bool valid = true;
+		for(LONG i=0;i<3;i++){
+			val[i] = (findHexChar(s[i*2],valid)*16.0 + findHexChar(s[i*2+1],valid))/255.0;
+		}
+		if(valid){
+			for(LONG i=0;i<3;i++){
+				m_val[i] = val[i];
+			}
+		}
+		return valid;
+	}
+	return false;
+}
+void Color::ToString(String &str)
+{
+	str = "#000000";
+	const String hex("0123456789ABCDEF");
+	for(LONG i=0;i<3;i++){
+		unsigned char val = m_val[i]*255.0;
+		str[i*2+1]   = hex[val/16];
+		str[i*2+2] = hex[val%16];
+	}
 }
 
 void Color::SetWheelProfile(int profile, Bool updateTransform)

@@ -64,9 +64,6 @@ Bool ColorSelectorDialog::Command(LONG id,const BaseContainer &msg)
 {
 	LONG val;
 	Real rVal[4];
-    switch (id)
-    {
-    }
     return GeDialog::Command(id,msg);
 }
 
