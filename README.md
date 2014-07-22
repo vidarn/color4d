@@ -1,7 +1,6 @@
 ## TODO ##
 * Pick colors from screen
 * Palette shader
-* Spot color label settings
 * Better scheme preview
 * Handle multiple documents and save/load
 * Search spot colors
@@ -10,6 +9,7 @@
 * Faster color picker
 
 ## Done ##
+* Spot color label settings
 * Unify slider interface
 * Unify palette interface
 * Color wheel offsets
