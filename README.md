@@ -1,14 +1,15 @@
 ## TODO ##
+* Load common palette files
 * Pick colors from screen
 * Palette shader
 * Better scheme preview
 * Handle multiple documents and save/load
-* Search spot colors
 * Load palette color in color picker
 * Prettier color picker
 * Faster color picker
 
 ## Done ##
+* Search spot colors
 * Spot color label settings
 * Unify slider interface
 * Unify palette interface
