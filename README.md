@@ -7,6 +7,7 @@
 * Load palette color in color picker
 * Prettier color picker
 * Faster color picker
+* Fix out of gammut colors
 
 ## Done ##
 * Search spot colors
