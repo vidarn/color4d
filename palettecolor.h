@@ -20,14 +20,17 @@ class PaletteColor :public SpotColor
 		virtual Bool Init(void);
 		virtual void Sized(LONG w,LONG h);
 		virtual void DrawMsg(LONG x1,LONG y1,LONG x2,LONG y2, const BaseContainer &msg);
+		virtual Bool InputEvent(const BaseContainer &msg);
 		virtual LONG Message(const BaseContainer& msg, BaseContainer& result);
 		virtual Bool CoreMessage(LONG id, const BaseContainer& msg);
 		virtual void UpdateColor(Color color);
 		void UpdateBitmaps();
 		void SetColorID(LONG id){m_colorID = id;}
 		void SetPaletteID(LONG id){m_palette = id;}
+		void SetSelectCallback(void (*selectCallback)(Color, void *), void *data){m_selectCallback = selectCallback;m_selectCallbackData = data;}
 		static void LoadIcons();
 		static void UnloadIcons();
+		
 	private:
 		LONG m_palette, m_colorID;
 		HOVER_STATE m_hoverState;
@@ -38,4 +41,6 @@ class PaletteColor :public SpotColor
 		BaseBitmap *m_hoverBitmap;
 		BaseBitmap *m_leftHoverBitmap;
 		BaseBitmap *m_rightHoverBitmap;
+		void (*m_selectCallback)(Color, void *);
+		void *m_selectCallbackData;
 };

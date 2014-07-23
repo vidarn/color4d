@@ -8,7 +8,7 @@ const Real PI2_INV	    = 0.15915494309189533576888376337251;
 
 
 ColorWheel::ColorWheel(ColorDialog *parent):
-m_valueRadius(7.0), m_valuePosition(70)
+m_valueRadius(7.0), m_valuePosition(70), m_scheme(nullptr)
 {
 	m_w = 200;
 	m_h = 200;
@@ -125,7 +125,7 @@ void ColorWheel::UpdateCanvas()
 		Real val = m_color[0] + m_offsets[i];
 		LONG currX =  cos(val*PI2)*m_valuePosition+m_centerX;
 		LONG currY = -sin(val*PI2)*m_valuePosition+m_centerY;
-		m_canvas->Blit(currX,currY,*m_markerClipMap,0,0,m_markerClipMap->GetBw(),m_markerClipMap->GetBh(),GE_CM_BLIT_COPY);
+		m_canvas->Blit(currX-m_markerClipMap->GetBw()*0.5,currY-m_markerClipMap->GetBh()*0.5,*m_markerClipMap,0,0,m_markerClipMap->GetBw(),m_markerClipMap->GetBh(),GE_CM_BLIT_COPY);
 	}
 	m_canvas->EndDraw();
 }
@@ -180,7 +180,9 @@ void ColorWheel::MouseUpdate(){
 		m_color[0] = hue;
 	}
 	else{
-		m_offsets[m_selectedMarker] = hue - m_color[0];
+		if(m_scheme != nullptr){
+			m_scheme->MarkerChanged(m_selectedMarker,hue-m_color[0], m_offsets);
+		}
 	}
 	m_parent->UpdateColor(m_color);
 }
@@ -198,8 +200,8 @@ Bool ColorWheel::InputEvent(const BaseContainer &msg)
 			for(int i=0;i<m_offsets.GetCount();i++){
 				Real val = m_color[0];
 				val += m_offsets[i];
-				LONG currX =  cos(val*PI2)*m_valuePosition+m_centerX+m_valueRadius;
-				LONG currY = -sin(val*PI2)*m_valuePosition+m_centerY+m_valueRadius;
+				LONG currX =  cos(val*PI2)*m_valuePosition+m_centerX;
+				LONG currY = -sin(val*PI2)*m_valuePosition+m_centerY;
 				LONG dx = m_mouseX-currX;
 				LONG dy = m_mouseY-currY;
 				Real dist = Sqrt(Real(dx*dx + dy*dy));
@@ -246,9 +248,13 @@ void ColorWheel::GetOffsetColors(GeDynamicArray<Color> &colors)
 	}
 }
 
-
 void ColorWheel::SetColor(Color color){
 	m_color = color;
+}
+
+void ColorWheel::SetScheme(ColorScheme *scheme){
+	m_scheme = scheme;
+	m_scheme->SetupOffsets(this);
 }
 
 Color ColorWheel::GetColor(){

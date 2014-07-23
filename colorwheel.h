@@ -4,6 +4,7 @@
 #include "color.h"
 #include "ge_dynamicarray.h"
 #include "lib_clipmap.h"
+#include "colorscheme.h"
 
 class ColorDialog;
 
@@ -28,6 +29,7 @@ class ColorWheel : public GeUserArea
 		void SetOffsets(const GeDynamicArray<Real> &offsets);
 		void GetOffsetColors(GeDynamicArray<Color> &colors);
 		void SetColor(Color color);
+		void SetScheme(ColorScheme *scheme);
 		Color GetColor();
 
 		ColorDialog *m_parent;
@@ -35,6 +37,7 @@ class ColorWheel : public GeUserArea
 		GeClipMap *m_wheelClipMap;
 		GeClipMap *m_markerClipMap;
 		GeClipMap *m_canvas;
+		ColorScheme *m_scheme;
 		LONG m_mouseX;
 		LONG m_mouseY;
 		Color m_color;

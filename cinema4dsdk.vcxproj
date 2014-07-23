@@ -112,6 +112,7 @@
     <ClCompile Include="ColorBox.cpp" />
     <ClCompile Include="ColorDialog.cpp" />
     <ClCompile Include="ColorPickerDialog.cpp" />
+    <ClCompile Include="ColorScheme.cpp" />
     <ClCompile Include="ColorSelectorDialog.cpp" />
     <ClCompile Include="ColorSlider.cpp" />
     <ClCompile Include="ColorWheel.cpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="colorbox.h" />
     <ClInclude Include="colordialog.h" />
     <ClInclude Include="colorpickerdialog.h" />
+    <ClInclude Include="colorscheme.h" />
     <ClInclude Include="colorselectordialog.h" />
     <ClInclude Include="colorslider.h" />
     <ClInclude Include="colorwheel.h" />

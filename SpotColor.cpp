@@ -9,7 +9,8 @@ SpotColor::SpotColor(ColorDialog *parent)
 	m_parent = parent;
 }
 
-SpotColor::SpotColor()
+SpotColor::SpotColor():
+m_dragable(TRUE)
 {
 	m_w = 40;
 	m_h = 40;
@@ -61,8 +62,10 @@ Bool SpotColor::InputEvent(const BaseContainer &msg)
 {
 	if(msg.GetLong(BFM_INPUT_DEVICE) == BFM_INPUT_MOUSE){
 		if(msg.GetLong(BFM_INPUT_CHANNEL) == BFM_INPUT_MOUSELEFT){
-			Vector col = m_color.Convert(COLOR_SOURCE_DISPLAY).AsVector();
-			HandleMouseDrag(msg,DRAGTYPE_RGB,&col,0);
+			if(m_dragable){
+				Vector col = m_color.Convert(COLOR_SOURCE_DISPLAY).AsVector();
+				HandleMouseDrag(msg,DRAGTYPE_RGB,&col,0);
+			}
 		}
 	}
 	return FALSE;

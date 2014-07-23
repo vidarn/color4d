@@ -14,6 +14,8 @@ PaletteColor::PaletteColor()
 	m_color = Color(0.f,1.f,0.f);
 	m_palette = 0;
 	m_colorID = 0;
+	m_selectCallback = NULL;
+	m_selectCallbackData = NULL;
 }
 
 static void maybeFree(BaseBitmap *bmp){
@@ -161,6 +163,18 @@ LONG PaletteColor::Message(const BaseContainer& msg, BaseContainer& result)
 	}
 
 	return res;
+}
+
+Bool PaletteColor::InputEvent(const BaseContainer &msg)
+{
+	if(msg.GetLong(BFM_INPUT_DEVICE) == BFM_INPUT_MOUSE){
+		if(msg.GetLong(BFM_INPUT_CHANNEL) == BFM_INPUT_MOUSELEFT){
+			if(m_selectCallback != NULL){
+				m_selectCallback(m_color,m_selectCallbackData);
+			}
+		}
+	}
+	return SpotColor::InputEvent(msg);
 }
 
 Bool PaletteColor::CoreMessage(LONG id, const BaseContainer& msg)

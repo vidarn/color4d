@@ -10,6 +10,13 @@
 // TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO
 
 
+static void SelectColorCallback(Color color, void *data)
+{
+	if(data != NULL){
+		((ColorPickerDialog*)data)->UpdateColor(color);
+	}
+}
+
 Bool ColorPickerDialog::CreateLayout(void)
 {
     BaseContainer *wprefs=GetWorldContainerInstance();
@@ -43,6 +50,8 @@ Bool ColorPickerDialog::CreateLayout(void)
 		GroupEnd();
 		if(AddSubDialog(IDC_PALETTE,BFH_SCALEFIT)){
 			AttachSubDialog(&m_paletteSubDiag,IDC_PALETTE);
+			m_paletteSubDiag.SetSelectCallback(&SelectColorCallback,(void *)this);
+			m_paletteSubDiag.SetDragable(FALSE);
 		}
 		AddDlgGroup(DLG_OK|DLG_CANCEL);
     GroupEnd();
