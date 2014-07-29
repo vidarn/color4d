@@ -16,24 +16,24 @@ class Palette
 {
 	public:
 		Palette();
-		Palette(String name, LONG numColors=3);
+		Palette(String name, Int32 numColors=3);
 		Palette(const Palette& pal);
 		void ToContainer(BaseContainer &bc) const;
 		void FromContainer(const BaseContainer &bc);
-		void SetColor(LONG index, const Vector &color, COLOR_SOURCE source);
-		void SetColor(LONG index, const Color &color);
-		LONG GetCount(){return  m_colors.GetCount();}
+		void SetColor(Int32 index, const Vector &color, COLOR_SOURCE source);
+		void SetColor(Int32 index, const Color &color);
+		Int32 GetCount(){return  m_colors.GetCount();}
 		Color & operator[](int i){return m_colors[i];}
 		const Palette &operator=(const Palette &pal);
 
 		static void InitPalettes();
 		static void GetPalettes(GeDynamicArray<Palette> &palettes);
-		static LONG SetPalette(const Palette &palette);
-		static void SetPaletteColor(LONG paletteID, LONG colorID, const Color &col);
-		static void GetPaletteColor(LONG paletteID, LONG colorID, Color &col);
-		static LONG AddPalette(const Palette &palette);
-		static void UpdatePalette(LONG id);
-		static void UpdateColor(LONG palette, LONG color);
+		static Int32 SetPalette(const Palette &palette);
+		static void SetPaletteColor(Int32 paletteID, Int32 colorID, const Color &col);
+		static void GetPaletteColor(Int32 paletteID, Int32 colorID, Color &col);
+		static Int32 AddPalette(const Palette &palette);
+		static void UpdatePalette(Int32 id);
+		static void UpdateColor(Int32 palette, Int32 color);
 	private:
 		String m_name;
 		GeDynamicArray<Color> m_colors;

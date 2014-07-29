@@ -39,7 +39,7 @@ Bool PaletteColor::Init(void)
 	return TRUE;
 }
 
-void PaletteColor::Sized(LONG w,LONG h)
+void PaletteColor::Sized(Int32 w,Int32 h)
 {
 	m_w = w;
 	m_h = h;
@@ -47,7 +47,7 @@ void PaletteColor::Sized(LONG w,LONG h)
 	Redraw();
 }
 
-void PaletteColor::DrawMsg(LONG x1,LONG y1,LONG x2,LONG y2, const BaseContainer &msg)
+void PaletteColor::DrawMsg(Int32 x1,Int32 y1,Int32 x2,Int32 y2, const BaseContainer &msg)
 {
 	OffScreenOn();
 	BaseBitmap *bitmap = m_normalBitmap;
@@ -66,19 +66,19 @@ void PaletteColor::DrawMsg(LONG x1,LONG y1,LONG x2,LONG y2, const BaseContainer 
 }
 
 
-static void updateBitmap(BaseBitmap *canvas, const Vector &col, LONG m_w, LONG m_h, Real horiz, BaseBitmap *icon, LONG alpha)
+static void updateBitmap(BaseBitmap *canvas, const Vector &col, Int32 m_w, Int32 m_h, Float horiz, BaseBitmap *icon, Int32 alpha)
 {
 	canvas->Init(m_w,m_h,32);
-	UWORD cr = col.x*255;
-	UWORD cg = col.y*255;
-	UWORD cb = col.z*255;
+	UInt16 cr = col.x*255;
+	UInt16 cg = col.y*255;
+	UInt16 cb = col.z*255;
 	canvas->Clear(cr,cg,cb);
 	if(icon != NULL){
-		LONG w = icon->GetBw();
-		LONG h = icon->GetBh();
+		Int32 w = icon->GetBw();
+		Int32 h = icon->GetBh();
 		for(int y = 0, yy = m_h/2-h/2; y < h; y++, yy++){
 			for(int x=0, xx = m_w*horiz-w*horiz; x < w; x++, xx++){
-				UWORD r, g, b, a;
+				UInt16 r, g, b, a;
 				icon->GetPixel(x,y,&r,&g,&b);
 				icon->GetAlphaPixel(icon->GetInternalChannel(),x,y,&a);
 				float aa = a/255.f;
@@ -93,7 +93,7 @@ static void updateBitmap(BaseBitmap *canvas, const Vector &col, LONG m_w, LONG m
 
 void PaletteColor::UpdateBitmaps(){
 	Vector col = m_color.Convert(COLOR_SOURCE_DISPLAY).AsVector();
-	Real dim = 0.7;
+	Float dim = 0.7;
 	updateBitmap(m_normalBitmap,        col,m_w,m_h,0.f, NULL,              0);
 	updateBitmap(m_hoverBitmap,     col*dim,m_w,m_h,0.5f,m_refreshIcon,   255);
 	updateBitmap(m_leftHoverBitmap, col*dim,m_w,m_h,0.f, m_leftArrowIcon, 255);
@@ -106,30 +106,30 @@ void PaletteColor::UpdateColor(Color color){
 	Redraw();
 }
 
-LONG PaletteColor::Message(const BaseContainer& msg, BaseContainer& result)
+Int32 PaletteColor::Message(const BaseContainer& msg, BaseContainer& result)
 {
-	LONG res = GeUserArea::Message(msg, result);
+	Int32 res = GeUserArea::Message(msg, result);
 	if(msg.GetId() == BFM_DRAGRECEIVE){
-		LONG type = 0;
+		Int32 type = 0;
 		void *object = NULL;
 		GetDragObject(msg, &type, &object);
 		if(type == DRAGTYPE_RGB){
 			Vector *color = static_cast<Vector*>(object);
-			if(msg.GetLong(BFM_DRAG_FINISHED)){
+			if(msg.GetInt32(BFM_DRAG_FINISHED)){
 				m_hoverState = HOVER_NONE;
 				Palette::SetPaletteColor(m_palette, m_colorID, Color(*color).SetSource(COLOR_SOURCE_DISPLAY));
 			}
 			else{
-				if (msg.GetLong(BFM_DRAG_LOST)){
+				if (msg.GetInt32(BFM_DRAG_LOST)){
 					m_hoverState = HOVER_NONE;
 					Redraw();
 				}
 				else{
 					BaseContainer state;
 					if(GetInputState(BFM_INPUT_MOUSE, BFM_INPUT_MOUSELEFT, state)){
-						Real sideWidth = 0.2;
-						LONG x = state.GetLong(BFM_INPUT_X);
-						LONG y = state.GetLong(BFM_INPUT_Y);
+						Float sideWidth = 0.2;
+						Int32 x = state.GetInt32(BFM_INPUT_X);
+						Int32 y = state.GetInt32(BFM_INPUT_Y);
 						Global2Local(&x,&y);
 						if(x < m_w*sideWidth){
 							m_hoverState = HOVER_LEFT;
@@ -153,19 +153,19 @@ LONG PaletteColor::Message(const BaseContainer& msg, BaseContainer& result)
 	return res;
 }
 
-Bool PaletteColor::CoreMessage(LONG id, const BaseContainer& msg)
+Bool PaletteColor::CoreMessage(Int32 id, const BaseContainer& msg)
 {
     switch ( id )
     {
       case  PALETTE_ID:                                      // internal message
-			LONG color =  (LONG) msg.GetVoid( BFM_CORE_PAR1 );
-			LONG palette = (LONG) msg.GetVoid( BFM_CORE_PAR2 );
+			/*Int32 color =  (Int32) msg.GetVoid( BFM_CORE_PAR1 );
+			Int32 palette = (Int32) msg.GetVoid( BFM_CORE_PAR2 );
 			if(color == m_colorID && palette == m_palette){
 				GePrint("Update color!");
 				Palette::GetPaletteColor(m_palette,m_colorID,m_color);
 				UpdateBitmaps();
 				Redraw();
-			}
+			}*/
         break;
     }
     return GeUserArea::CoreMessage( id, msg );
@@ -180,7 +180,7 @@ void PaletteColor::LoadIcons(){
 	loadBitmap(m_refreshIcon,"refresh.tif");
 	loadBitmap(m_leftArrowIcon,"leftArrow.tif");
 	loadBitmap(m_rightArrowIcon,"rightArrow.tif");
-	GePrint("Loaded icons!" + LongToString((LONG)m_refreshIcon) + " " + LongToString((LONG)m_leftArrowIcon) + " " + LongToString((LONG)m_rightArrowIcon));
+	//GePrint("Loaded icons!" + Int32ToString((Int32)m_refreshIcon) + " " + Int32ToString((Int32)m_leftArrowIcon) + " " + Int32ToString((Int32)m_rightArrowIcon));
 	
 }
 

@@ -2,7 +2,7 @@
 #include "colordialog.h"
 #include "utils.h"
 
-ColorSlider::ColorSlider(ColorDialog *parent, LONG index, COLOR_SOURCE colorSource)
+ColorSlider::ColorSlider(ColorDialog *parent, Int32 index, COLOR_SOURCE colorSource)
 {
 	ColorSlider();
 	m_parent = parent;
@@ -36,23 +36,23 @@ Bool ColorSlider::Init(void)
 void ColorSlider::UpdateCircle()
 {
 	if(m_parent != NULL){
-		const Real valueRadius = 7;
-		const Real aaBuffer = 2;
-		const Real valueSeparator = 2;
+		const Float valueRadius = 7;
+		const Float aaBuffer = 2;
+		const Float valueSeparator = 2;
 		IMAGERESULT result = m_bitmap->Init(m_w,m_h,32,INITBITMAPFLAGS_0);
-		for(LONG y=0;y<m_h;y++){
-			for(LONG x=0;x<m_w;x++){
+		for(Int32 y=0;y<m_h;y++){
+			for(Int32 x=0;x<m_w;x++){
 				Color tmp = m_color;
-				UpdateColorWithValue(x/Real(m_w)*m_valueMax,tmp);
+				UpdateColorWithValue(x/Float(m_w)*m_valueMax,tmp);
 				Vector col = tmp.Convert(COLOR_SOURCE_DISPLAY).AsVector();
 				ClampColor(col);
-				LONG currX =  m_value*m_w/m_valueMax;
-				LONG currY = m_h/2;
-				Real dx = x - currX;
-				Real dy = y - currY;
-				Real dist = Sqrt(Real(dx*dx + dy*dy));
+				Int32 currX =  m_value*m_w/m_valueMax;
+				Int32 currY = m_h/2;
+				Float dx = x - currX;
+				Float dy = y - currY;
+				Float dist = Sqrt(Float(dx*dx + dy*dy));
 				if(dist < valueRadius){
-					Real val = Smoothstep(valueRadius-aaBuffer,valueRadius,dist);
+					Float val = Smoothstep(valueRadius-aaBuffer,valueRadius,dist);
 					col = Vector(0.0, 0.0, 0.0)*(1.0-val) + col*val;
 					if(dist < valueRadius-valueSeparator){
 						val = Smoothstep(valueRadius-valueSeparator-aaBuffer,valueRadius-valueSeparator,dist);
@@ -68,14 +68,14 @@ void ColorSlider::UpdateCircle()
 	}
 }
 
-Bool ColorSlider::GetMinSize(LONG &w,LONG &h)
+Bool ColorSlider::GetMinSize(Int32 &w,Int32 &h)
 {
 	w = m_w;
 	h = m_h;
 	return TRUE;
 }
 
-void ColorSlider::Sized(LONG w,LONG h)
+void ColorSlider::Sized(Int32 w,Int32 h)
 {
 	m_w = w;
 	m_h = h;
@@ -85,10 +85,10 @@ void ColorSlider::Sized(LONG w,LONG h)
 	Redraw();
 }
 
-void ColorSlider::DrawMsg(LONG x1,LONG y1,LONG x2,LONG y2, const BaseContainer &msg)
+void ColorSlider::DrawMsg(Int32 x1,Int32 y1,Int32 x2,Int32 y2, const BaseContainer &msg)
 {
 	// skip the redraw in case if focus change
-	LONG reason = msg.GetLong(BFM_DRAW_REASON);
+	Int32 reason = msg.GetInt32(BFM_DRAW_REASON);
 	if (reason==BFM_GOTFOCUS || reason==BFM_LOSTFOCUS) 
 		return;
 	OffScreenOn();
@@ -101,12 +101,12 @@ void ColorSlider::UpdateColor(Color color){
 	Redraw();
 }
 
-void ColorSlider::UpdateColorWithValue(Real value, Color &color){
+void ColorSlider::UpdateColorWithValue(Float value, Color &color){
 	color[m_index] = value;
 }
 
 void ColorSlider::MouseUpdate(){
-	m_value = Clamp(0.0,1.0,m_mouseX/Real(m_w))*m_valueMax;
+	m_value = ClampValue(m_mouseX/Float(m_w),0.0,1.0)*m_valueMax;
 	UpdateColorWithValue(m_value,m_color);
 	if(m_parent != NULL){
 		m_parent->UpdateColor(m_color);
@@ -115,17 +115,17 @@ void ColorSlider::MouseUpdate(){
 
 Bool ColorSlider::InputEvent(const BaseContainer &msg)
 {
-	if(msg.GetLong(BFM_INPUT_DEVICE) == BFM_INPUT_MOUSE){
-		if(msg.GetLong(BFM_INPUT_CHANNEL) == BFM_INPUT_MOUSELEFT){
-			m_mouseX = msg.GetLong(BFM_INPUT_X);
-			m_mouseY = msg.GetLong(BFM_INPUT_Y);
+	if(msg.GetInt32(BFM_INPUT_DEVICE) == BFM_INPUT_MOUSE){
+		if(msg.GetInt32(BFM_INPUT_CHANNEL) == BFM_INPUT_MOUSELEFT){
+			m_mouseX = msg.GetInt32(BFM_INPUT_X);
+			m_mouseY = msg.GetInt32(BFM_INPUT_Y);
 			m_mouseDown = TRUE;
 			Global2Local(&m_mouseX, &m_mouseY);
 			MouseDragStart(BFM_INPUT_MOUSELEFT,m_mouseX, m_mouseY,MOUSEDRAGFLAGS_0);
 			MouseUpdate();
 		}
 	}
-	Real x, y;
+	Float x, y;
 	BaseContainer channels;
 	while (MouseDrag(&x, &y, &channels) == MOUSEDRAGRESULT_CONTINUE)
 	{
@@ -134,7 +134,7 @@ Bool ColorSlider::InputEvent(const BaseContainer &msg)
 		MouseUpdate();
 	}
 	BaseContainer res;
-	if(GetInputState(BFM_INPUT_MOUSE,BFM_INPUT_MOUSELEFT,res) && res.GetLong(BFM_INPUT_VALUE) == 0){
+	if(GetInputState(BFM_INPUT_MOUSE,BFM_INPUT_MOUSELEFT,res) && res.GetInt32(BFM_INPUT_VALUE) == 0){
 		if(m_mouseDown){
 			MouseDragEnd();
 			m_mouseDown = FALSE;
@@ -161,12 +161,12 @@ void ColorSlider::SetColorSource(COLOR_SOURCE colorSource)
 	m_color.SetSource(m_colorSource);
 }
 
-void ColorSlider::SetIndex(LONG index)
+void ColorSlider::SetIndex(Int32 index)
 {
 	m_index = index;
 }
 
-void ColorSlider::SetValueMax(Real max)
+void ColorSlider::SetValueMax(Float max)
 {
 	m_valueMax = max;
 }

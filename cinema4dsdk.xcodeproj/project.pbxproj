@@ -1,0 +1,508 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		131B918C1986B15A00E28986 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 131B917D1986B15900E28986 /* Color.cpp */; };
+		131B918D1986B15A00E28986 /* color.h in Headers */ = {isa = PBXBuildFile; fileRef = 131B917E1986B15900E28986 /* color.h */; };
+		131B918E1986B15A00E28986 /* ColorBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 131B917F1986B15900E28986 /* ColorBox.cpp */; };
+		131B918F1986B15A00E28986 /* colorbox.h in Headers */ = {isa = PBXBuildFile; fileRef = 131B91801986B15900E28986 /* colorbox.h */; };
+		131B91901986B15A00E28986 /* ColorDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 131B91811986B15A00E28986 /* ColorDialog.cpp */; };
+		131B91911986B15A00E28986 /* colordialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 131B91821986B15A00E28986 /* colordialog.h */; };
+		131B91921986B15A00E28986 /* ColorPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 131B91831986B15A00E28986 /* ColorPicker.cpp */; };
+		131B91931986B15A00E28986 /* ColorPickerDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 131B91841986B15A00E28986 /* ColorPickerDialog.cpp */; };
+		131B91941986B15A00E28986 /* colorpickerdialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 131B91851986B15A00E28986 /* colorpickerdialog.h */; };
+		131B91951986B15A00E28986 /* ColorSelectorDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 131B91861986B15A00E28986 /* ColorSelectorDialog.cpp */; };
+		131B91961986B15A00E28986 /* colorselectordialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 131B91871986B15A00E28986 /* colorselectordialog.h */; };
+		131B91971986B15A00E28986 /* ColorSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 131B91881986B15A00E28986 /* ColorSlider.cpp */; };
+		131B91981986B15A00E28986 /* colorslider.h in Headers */ = {isa = PBXBuildFile; fileRef = 131B91891986B15A00E28986 /* colorslider.h */; };
+		131B91991986B15A00E28986 /* ColorWheel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 131B918A1986B15A00E28986 /* ColorWheel.cpp */; };
+		131B919A1986B15A00E28986 /* colorwheel.h in Headers */ = {isa = PBXBuildFile; fileRef = 131B918B1986B15A00E28986 /* colorwheel.h */; };
+		131B91A21986B16200E28986 /* main.h in Headers */ = {isa = PBXBuildFile; fileRef = 131B919B1986B16200E28986 /* main.h */; };
+		131B91A31986B16200E28986 /* Palette.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 131B919C1986B16200E28986 /* Palette.cpp */; };
+		131B91A41986B16200E28986 /* palette.h in Headers */ = {isa = PBXBuildFile; fileRef = 131B919D1986B16200E28986 /* palette.h */; };
+		131B91A51986B16200E28986 /* PaletteColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 131B919E1986B16200E28986 /* PaletteColor.cpp */; };
+		131B91A61986B16200E28986 /* palettecolor.h in Headers */ = {isa = PBXBuildFile; fileRef = 131B919F1986B16200E28986 /* palettecolor.h */; };
+		131B91A71986B16200E28986 /* PaletteDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 131B91A01986B16200E28986 /* PaletteDialog.cpp */; };
+		131B91A81986B16200E28986 /* palettedialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 131B91A11986B16200E28986 /* palettedialog.h */; };
+		131B91AF1986B16A00E28986 /* SpotColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 131B91A91986B16A00E28986 /* SpotColor.cpp */; };
+		131B91B01986B16A00E28986 /* spotcolor.h in Headers */ = {isa = PBXBuildFile; fileRef = 131B91AA1986B16A00E28986 /* spotcolor.h */; };
+		131B91B11986B16A00E28986 /* SpotColorDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 131B91AB1986B16A00E28986 /* SpotColorDialog.cpp */; };
+		131B91B21986B16A00E28986 /* spotcolordialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 131B91AC1986B16A00E28986 /* spotcolordialog.h */; };
+		131B91B31986B16A00E28986 /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 131B91AD1986B16A00E28986 /* Utils.cpp */; };
+		131B91B41986B16A00E28986 /* utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 131B91AE1986B16A00E28986 /* utils.h */; };
+		139E94D41986DD0100A23B47 /* LittleCMS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 139E94D11986DCF600A23B47 /* LittleCMS.framework */; };
+		65636C1E08E5922100FBAB34 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65636BEF08E5922100FBAB34 /* main.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		65805F2D0851B32A0065CE1B /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXContainerItemProxy section */
+		139E94D01986DCF600A23B47 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 139E94CB1986DCF600A23B47 /* LittleCMS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8D07F2C80486CC7A007CD1D0;
+			remoteInfo = LittleCMS;
+		};
+		139E94D21986DCF600A23B47 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 139E94CB1986DCF600A23B47 /* LittleCMS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 546B29A310AC677E0054D33A;
+			remoteInfo = testbed;
+		};
+		26EDA6230FA303CF00050D59 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 653A926E0858FEB50017BCBC /* _api.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 26B036990E672B8000A14379;
+			remoteInfo = _api_stdmem;
+		};
+		657FF108085913EC00750201 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 653A926E0858FEB50017BCBC /* _api.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65B7742C083D084C00F90C2D;
+			remoteInfo = _api;
+		};
+		657FF1C80859150C00750201 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 653A926E0858FEB50017BCBC /* _api.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 65B7742B083D084C00F90C2D;
+			remoteInfo = _api;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		131B917D1986B15900E28986 /* Color.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Color.cpp; path = ../Color.cpp; sourceTree = "<group>"; };
+		131B917E1986B15900E28986 /* color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = color.h; path = ../color.h; sourceTree = "<group>"; };
+		131B917F1986B15900E28986 /* ColorBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColorBox.cpp; path = ../ColorBox.cpp; sourceTree = "<group>"; };
+		131B91801986B15900E28986 /* colorbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = colorbox.h; path = ../colorbox.h; sourceTree = "<group>"; };
+		131B91811986B15A00E28986 /* ColorDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColorDialog.cpp; path = ../ColorDialog.cpp; sourceTree = "<group>"; };
+		131B91821986B15A00E28986 /* colordialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = colordialog.h; path = ../colordialog.h; sourceTree = "<group>"; };
+		131B91831986B15A00E28986 /* ColorPicker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColorPicker.cpp; path = ../ColorPicker.cpp; sourceTree = "<group>"; };
+		131B91841986B15A00E28986 /* ColorPickerDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColorPickerDialog.cpp; path = ../ColorPickerDialog.cpp; sourceTree = "<group>"; };
+		131B91851986B15A00E28986 /* colorpickerdialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = colorpickerdialog.h; path = ../colorpickerdialog.h; sourceTree = "<group>"; };
+		131B91861986B15A00E28986 /* ColorSelectorDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColorSelectorDialog.cpp; path = ../ColorSelectorDialog.cpp; sourceTree = "<group>"; };
+		131B91871986B15A00E28986 /* colorselectordialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = colorselectordialog.h; path = ../colorselectordialog.h; sourceTree = "<group>"; };
+		131B91881986B15A00E28986 /* ColorSlider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColorSlider.cpp; path = ../ColorSlider.cpp; sourceTree = "<group>"; };
+		131B91891986B15A00E28986 /* colorslider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = colorslider.h; path = ../colorslider.h; sourceTree = "<group>"; };
+		131B918A1986B15A00E28986 /* ColorWheel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColorWheel.cpp; path = ../ColorWheel.cpp; sourceTree = "<group>"; };
+		131B918B1986B15A00E28986 /* colorwheel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = colorwheel.h; path = ../colorwheel.h; sourceTree = "<group>"; };
+		131B919B1986B16200E28986 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = main.h; path = ../main.h; sourceTree = "<group>"; };
+		131B919C1986B16200E28986 /* Palette.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Palette.cpp; path = ../Palette.cpp; sourceTree = "<group>"; };
+		131B919D1986B16200E28986 /* palette.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = palette.h; path = ../palette.h; sourceTree = "<group>"; };
+		131B919E1986B16200E28986 /* PaletteColor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; name = PaletteColor.cpp; path = ../PaletteColor.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		131B919F1986B16200E28986 /* palettecolor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = palettecolor.h; path = ../palettecolor.h; sourceTree = "<group>"; };
+		131B91A01986B16200E28986 /* PaletteDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PaletteDialog.cpp; path = ../PaletteDialog.cpp; sourceTree = "<group>"; };
+		131B91A11986B16200E28986 /* palettedialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = palettedialog.h; path = ../palettedialog.h; sourceTree = "<group>"; };
+		131B91A91986B16A00E28986 /* SpotColor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpotColor.cpp; path = ../SpotColor.cpp; sourceTree = "<group>"; };
+		131B91AA1986B16A00E28986 /* spotcolor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = spotcolor.h; path = ../spotcolor.h; sourceTree = "<group>"; };
+		131B91AB1986B16A00E28986 /* SpotColorDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpotColorDialog.cpp; path = ../SpotColorDialog.cpp; sourceTree = "<group>"; };
+		131B91AC1986B16A00E28986 /* spotcolordialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = spotcolordialog.h; path = ../spotcolordialog.h; sourceTree = "<group>"; };
+		131B91AD1986B16A00E28986 /* Utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Utils.cpp; path = ../Utils.cpp; sourceTree = "<group>"; };
+		131B91AE1986B16A00E28986 /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = utils.h; path = ../utils.h; sourceTree = "<group>"; };
+		139E94CB1986DCF600A23B47 /* LittleCMS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LittleCMS.xcodeproj; path = "lib/lcms2-2.6/Projects/mac/LittleCMS/LittleCMS.xcodeproj"; sourceTree = "<group>"; };
+		653A926E0858FEB50017BCBC /* _api.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = _api.xcodeproj; path = ../../resource/_api_lib/_api.xcodeproj; sourceTree = SOURCE_ROOT; };
+		6553A1DA0926F00F0034739A /* _api_debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = _api_debug.xcconfig; path = ../../resource/_api_lib/_api_debug.xcconfig; sourceTree = SOURCE_ROOT; };
+		6553A1DB0926F00F0034739A /* _api_release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = _api_release.xcconfig; path = ../../resource/_api_lib/_api_release.xcconfig; sourceTree = SOURCE_ROOT; };
+		65636BEF08E5922100FBAB34 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		65E51693083D10D0005BFD9A /* cinema4dsdk.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = cinema4dsdk.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		65E51690083D10D0005BFD9A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				139E94D41986DD0100A23B47 /* LittleCMS.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		139E94CC1986DCF600A23B47 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				139E94D11986DCF600A23B47 /* LittleCMS.framework */,
+				139E94D31986DCF600A23B47 /* testbed */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		65636BD708E5922100FBAB34 /* source */ = {
+			isa = PBXGroup;
+			children = (
+				131B91A91986B16A00E28986 /* SpotColor.cpp */,
+				131B91AA1986B16A00E28986 /* spotcolor.h */,
+				131B91AB1986B16A00E28986 /* SpotColorDialog.cpp */,
+				131B91AC1986B16A00E28986 /* spotcolordialog.h */,
+				131B91AD1986B16A00E28986 /* Utils.cpp */,
+				131B91AE1986B16A00E28986 /* utils.h */,
+				131B919B1986B16200E28986 /* main.h */,
+				131B919C1986B16200E28986 /* Palette.cpp */,
+				131B919D1986B16200E28986 /* palette.h */,
+				131B919E1986B16200E28986 /* PaletteColor.cpp */,
+				131B919F1986B16200E28986 /* palettecolor.h */,
+				131B91A01986B16200E28986 /* PaletteDialog.cpp */,
+				131B91A11986B16200E28986 /* palettedialog.h */,
+				131B917D1986B15900E28986 /* Color.cpp */,
+				131B917E1986B15900E28986 /* color.h */,
+				131B917F1986B15900E28986 /* ColorBox.cpp */,
+				131B91801986B15900E28986 /* colorbox.h */,
+				131B91811986B15A00E28986 /* ColorDialog.cpp */,
+				131B91821986B15A00E28986 /* colordialog.h */,
+				131B91831986B15A00E28986 /* ColorPicker.cpp */,
+				131B91841986B15A00E28986 /* ColorPickerDialog.cpp */,
+				131B91851986B15A00E28986 /* colorpickerdialog.h */,
+				131B91861986B15A00E28986 /* ColorSelectorDialog.cpp */,
+				131B91871986B15A00E28986 /* colorselectordialog.h */,
+				131B91881986B15A00E28986 /* ColorSlider.cpp */,
+				131B91891986B15A00E28986 /* colorslider.h */,
+				131B918A1986B15A00E28986 /* ColorWheel.cpp */,
+				131B918B1986B15A00E28986 /* colorwheel.h */,
+				65636BEF08E5922100FBAB34 /* main.cpp */,
+			);
+			path = source;
+			sourceTree = "<group>";
+		};
+		657FF105085913EC00750201 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				657FF109085913EC00750201 /* lib_api_debug.a */,
+				26EDA6240FA303CF00050D59 /* lib_api_stdmem_debug.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		65E51686083D10D0005BFD9A = {
+			isa = PBXGroup;
+			children = (
+				65636BD708E5922100FBAB34 /* source */,
+				65E516A4083D10D1005BFD9A /* _libs */,
+				65E51694083D10D0005BFD9A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		65E51694083D10D0005BFD9A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				65E51693083D10D0005BFD9A /* cinema4dsdk.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		65E516A4083D10D1005BFD9A /* _libs */ = {
+			isa = PBXGroup;
+			children = (
+				139E94CB1986DCF600A23B47 /* LittleCMS.xcodeproj */,
+				6553A1DA0926F00F0034739A /* _api_debug.xcconfig */,
+				6553A1DB0926F00F0034739A /* _api_release.xcconfig */,
+				653A926E0858FEB50017BCBC /* _api.xcodeproj */,
+			);
+			name = _libs;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		65E5168D083D10D0005BFD9A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				131B91961986B15A00E28986 /* colorselectordialog.h in Headers */,
+				131B91A21986B16200E28986 /* main.h in Headers */,
+				131B91B41986B16A00E28986 /* utils.h in Headers */,
+				131B91B01986B16A00E28986 /* spotcolor.h in Headers */,
+				131B91981986B15A00E28986 /* colorslider.h in Headers */,
+				131B91911986B15A00E28986 /* colordialog.h in Headers */,
+				131B91B21986B16A00E28986 /* spotcolordialog.h in Headers */,
+				131B91A61986B16200E28986 /* palettecolor.h in Headers */,
+				131B918F1986B15A00E28986 /* colorbox.h in Headers */,
+				131B91A41986B16200E28986 /* palette.h in Headers */,
+				131B919A1986B15A00E28986 /* colorwheel.h in Headers */,
+				131B91941986B15A00E28986 /* colorpickerdialog.h in Headers */,
+				131B918D1986B15A00E28986 /* color.h in Headers */,
+				131B91A81986B16200E28986 /* palettedialog.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		65E51692083D10D0005BFD9A /* cinema4dsdk */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 65450B66085517D80099394F /* Build configuration list for PBXNativeTarget "cinema4dsdk" */;
+			buildPhases = (
+				65E5168D083D10D0005BFD9A /* Headers */,
+				65E5168E083D10D0005BFD9A /* Sources */,
+				65E5168F083D10D0005BFD9A /* Resources */,
+				65E51690083D10D0005BFD9A /* Frameworks */,
+				65E51691083D10D0005BFD9A /* Rez */,
+			);
+			buildRules = (
+				65805F2D0851B32A0065CE1B /* PBXBuildRule */,
+			);
+			dependencies = (
+				657FF1C90859150C00750201 /* PBXTargetDependency */,
+			);
+			name = cinema4dsdk;
+			productName = "xtensions (Debug)";
+			productReference = 65E51693083D10D0005BFD9A /* cinema4dsdk.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		65E5168A083D10D0005BFD9A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+			};
+			buildConfigurationList = 65450B6A085517D90099394F /* Build configuration list for PBXProject "cinema4dsdk" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 65E51686083D10D0005BFD9A;
+			productRefGroup = 65E51694083D10D0005BFD9A /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 657FF105085913EC00750201 /* Products */;
+					ProjectRef = 653A926E0858FEB50017BCBC /* _api.xcodeproj */;
+				},
+				{
+					ProductGroup = 139E94CC1986DCF600A23B47 /* Products */;
+					ProjectRef = 139E94CB1986DCF600A23B47 /* LittleCMS.xcodeproj */;
+				},
+			);
+			projectRoot = ../../..;
+			targets = (
+				65E51692083D10D0005BFD9A /* cinema4dsdk */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		139E94D11986DCF600A23B47 /* LittleCMS.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = LittleCMS.framework;
+			remoteRef = 139E94D01986DCF600A23B47 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		139E94D31986DCF600A23B47 /* testbed */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = testbed;
+			remoteRef = 139E94D21986DCF600A23B47 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		26EDA6240FA303CF00050D59 /* lib_api_stdmem_debug.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = lib_api_stdmem_debug.a;
+			remoteRef = 26EDA6230FA303CF00050D59 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		657FF109085913EC00750201 /* lib_api_debug.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = lib_api_debug.a;
+			remoteRef = 657FF108085913EC00750201 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		65E5168F083D10D0005BFD9A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXRezBuildPhase section */
+		65E51691083D10D0005BFD9A /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXRezBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		65E5168E083D10D0005BFD9A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				131B91951986B15A00E28986 /* ColorSelectorDialog.cpp in Sources */,
+				131B91991986B15A00E28986 /* ColorWheel.cpp in Sources */,
+				65636C1E08E5922100FBAB34 /* main.cpp in Sources */,
+				131B91AF1986B16A00E28986 /* SpotColor.cpp in Sources */,
+				131B91971986B15A00E28986 /* ColorSlider.cpp in Sources */,
+				131B91B11986B16A00E28986 /* SpotColorDialog.cpp in Sources */,
+				131B918C1986B15A00E28986 /* Color.cpp in Sources */,
+				131B91A31986B16200E28986 /* Palette.cpp in Sources */,
+				131B918E1986B15A00E28986 /* ColorBox.cpp in Sources */,
+				131B91931986B15A00E28986 /* ColorPickerDialog.cpp in Sources */,
+				131B91901986B15A00E28986 /* ColorDialog.cpp in Sources */,
+				131B91A71986B16200E28986 /* PaletteDialog.cpp in Sources */,
+				131B91921986B15A00E28986 /* ColorPicker.cpp in Sources */,
+				131B91B31986B16A00E28986 /* Utils.cpp in Sources */,
+				131B91A51986B16200E28986 /* PaletteColor.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		657FF1C90859150C00750201 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = _api;
+			targetProxy = 657FF1C80859150C00750201 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		65450B67085517D80099394F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SYSTEM_APPS_DIR)/MAXON/CINEMA\\ 4D\\ R15\\ Student/plugins/colorpicker/lib/lcms2-2.6/Projects/mac/LittleCMS/build/Debug",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(C4D_ROOTDIR)/resource/_api/**",
+					"$(C4D_ROOTDIR)/resource/_api_maxon/**",
+					"$(C4D_ROOTDIR)/resource/res/**",
+					"res/**",
+					"$(C4D_ROOTDIR)/resource/modules/objects/res/description",
+					"$(C4D_ROOTDIR)/modules/advanced\\ render/advanced\\ render/res/description",
+					"$(C4D_ROOTDIR)/modules/thinking\\ particles/thinking\\ particles/res/description",
+					"$(C4D_ROOTDIR)/modules/dynamics/res/description",
+					"$(C4D_ROOTDIR)/resource/modules/modeling/res/description",
+					"$(C4D_ROOTDIR)/resource/modules/sculpt/res/description",
+					"$(C4D_ROOTDIR)/plugins/colorpicker/lib/lcms2-2.6/include",
+				);
+				SKIP_INSTALL = NO;
+			};
+			name = Debug;
+		};
+		65450B68085517D80099394F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SYSTEM_APPS_DIR)/MAXON/CINEMA\\ 4D\\ R15\\ Student/plugins/colorpicker/lib/lcms2-2.6/Projects/mac/LittleCMS/build/Debug",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(C4D_ROOTDIR)/resource/_api/**",
+					"$(C4D_ROOTDIR)/resource/_api_maxon/**",
+					"$(C4D_ROOTDIR)/resource/res/**",
+					"res/**",
+					"$(C4D_ROOTDIR)/resource/modules/objects/res/description",
+					"$(C4D_ROOTDIR)/modules/advanced\\ render/advanced\\ render/res/description",
+					"$(C4D_ROOTDIR)/modules/thinking\\ particles/thinking\\ particles/res/description",
+					"$(C4D_ROOTDIR)/modules/dynamics/res/description",
+					"$(C4D_ROOTDIR)/resource/modules/modeling/res/description",
+					"$(C4D_ROOTDIR)/resource/modules/sculpt/res/description",
+					"$(C4D_ROOTDIR)/plugins/colorpicker/lib/lcms2-2.6/include",
+				);
+				SKIP_INSTALL = NO;
+			};
+			name = Release;
+		};
+		65450B6B085517D90099394F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6553A1DA0926F00F0034739A /* _api_debug.xcconfig */;
+			buildSettings = {
+				C4D_ROOTDIR = ../..;
+				HEADER_SEARCH_PATHS = (
+					"$(C4D_ROOTDIR)/resource/_api/**",
+					"$(C4D_ROOTDIR)/resource/_api_maxon/**",
+					"$(C4D_ROOTDIR)/resource/res/**",
+					"res/**",
+					"$(C4D_ROOTDIR)/resource/modules/objects/res/description",
+					"$(C4D_ROOTDIR)/modules/advanced\\ render/advanced\\ render/res/description",
+					"$(C4D_ROOTDIR)/modules/thinking\\ particles/thinking\\ particles/res/description",
+					"$(C4D_ROOTDIR)/modules/dynamics/res/description",
+					"$(C4D_ROOTDIR)/resource/modules/modeling/res/description",
+					"$(C4D_ROOTDIR)/resource/modules/sculpt/res/description",
+				);
+				PRODUCT_NAME = cinema4dsdk;
+				STRIP_INSTALLED_PRODUCT = YES;
+			};
+			name = Debug;
+		};
+		65450B6C085517D90099394F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6553A1DB0926F00F0034739A /* _api_release.xcconfig */;
+			buildSettings = {
+				C4D_ROOTDIR = ../..;
+				HEADER_SEARCH_PATHS = (
+					"$(C4D_ROOTDIR)/resource/_api/**",
+					"$(C4D_ROOTDIR)/resource/_api_maxon/**",
+					"$(C4D_ROOTDIR)/resource/res/**",
+					"res/**",
+					"$(C4D_ROOTDIR)/resource/modules/objects/res/description",
+					"$(C4D_ROOTDIR)/modules/advanced\\ render/advanced\\ render/res/description",
+					"$(C4D_ROOTDIR)/modules/thinking\\ particles/thinking\\ particles/res/description",
+					"$(C4D_ROOTDIR)/modules/dynamics/res/description",
+					"$(C4D_ROOTDIR)/resource/modules/modeling/res/description",
+					"$(C4D_ROOTDIR)/resource/modules/sculpt/res/description",
+				);
+				PRODUCT_NAME = cinema4dsdk;
+				STRIP_INSTALLED_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		65450B66085517D80099394F /* Build configuration list for PBXNativeTarget "cinema4dsdk" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				65450B67085517D80099394F /* Debug */,
+				65450B68085517D80099394F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		65450B6A085517D90099394F /* Build configuration list for PBXProject "cinema4dsdk" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				65450B6B085517D90099394F /* Debug */,
+				65450B6C085517D90099394F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 65E5168A083D10D0005BFD9A /* Project object */;
+}

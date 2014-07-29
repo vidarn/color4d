@@ -5,7 +5,7 @@ Palette::Palette():
 {
 }
 
-Palette::Palette(String name, LONG numColors):
+Palette::Palette(String name, Int32 numColors):
 	m_name(name), m_colors(numColors)
 {
 }
@@ -13,7 +13,7 @@ Palette::Palette(String name, LONG numColors):
 Palette::Palette(const Palette& pal):
 	m_name(pal.m_name)
 {
-	LONG count = pal.m_colors.GetCount();
+	Int32 count = pal.m_colors.GetCount();
 	m_colors.SetCount(0);
 	for(int i=0;i<count;i++){
 		m_colors.Push(pal.m_colors[i]);
@@ -22,8 +22,8 @@ Palette::Palette(const Palette& pal):
 
 void Palette::ToContainer(BaseContainer &bc) const
 {
-	LONG count = m_colors.GetCount();
-	bc.SetLong(NUM_COLORS,m_colors.GetCount());
+	Int32 count = m_colors.GetCount();
+	bc.SetInt32(NUM_COLORS,m_colors.GetCount());
 	for(int i=0;i<count;i++){
 		bc.SetVector(FIRST_COLOR+i,m_colors[i].Convert(COLOR_SOURCE_DISPLAY).AsVector());
 	}
@@ -32,7 +32,7 @@ void Palette::ToContainer(BaseContainer &bc) const
 
 void Palette::FromContainer(const BaseContainer &bc)
 {
-	LONG count = bc.GetLong(NUM_COLORS);
+	Int32 count = bc.GetInt32(NUM_COLORS);
 	m_colors.SetCount(0);
 	for(int i=0;i<count;i++){
 		m_colors.Push(Color(bc.GetVector(FIRST_COLOR+i)).SetSource(COLOR_SOURCE_DISPLAY));
@@ -40,12 +40,12 @@ void Palette::FromContainer(const BaseContainer &bc)
 	bc.GetString(PALETTE_NAME,m_name);
 }
 
-void Palette::SetColor(LONG index, const Vector &color, COLOR_SOURCE source)
+void Palette::SetColor(Int32 index, const Vector &color, COLOR_SOURCE source)
 {
 	SetColor(index,Color(color).SetSource(source));
 }
 
-void Palette::SetColor(LONG index, const Color &color)
+void Palette::SetColor(Int32 index, const Color &color)
 {
 	while(index >= m_colors.GetCount()){
 		m_colors.Push(Color());
@@ -56,7 +56,7 @@ void Palette::SetColor(LONG index, const Color &color)
 const Palette &Palette::operator=(const Palette &pal)
 {
 	m_colors.SetCount(0);
-	LONG count = pal.m_colors.GetCount();
+	Int32 count = pal.m_colors.GetCount();
 	for(int i=0;i<count;i++){
 		m_colors.Push(pal.m_colors[i]);
 	}
@@ -68,7 +68,7 @@ const Palette &Palette::operator=(const Palette &pal)
 void Palette::InitPalettes()
 {
 	BaseContainer bc;
-	bc.SetLong(NUM_PALETTES,1);
+	bc.SetInt32(NUM_PALETTES,1);
 	BaseContainer palC;
 	Palette stdPal(String("Default"),3);
 	stdPal.SetColor(0,Color(1.0f,0.f,0.f));
@@ -82,7 +82,7 @@ void Palette::InitPalettes()
 void Palette::GetPalettes(GeDynamicArray<Palette> &palettes)
 {
 	BaseContainer *bc = GetWorldPluginData(PALETTE_ID);
-	LONG count = bc->GetLong(NUM_PALETTES);
+	Int32 count = bc->GetInt32(NUM_PALETTES);
 	palettes.SetCount(0);
 	Palette pal;
 	for(int i=0;i<count;i++){
@@ -94,10 +94,10 @@ void Palette::GetPalettes(GeDynamicArray<Palette> &palettes)
 	}
 }
 
-LONG Palette::SetPalette(const Palette &palette)
+Int32 Palette::SetPalette(const Palette &palette)
 {
 	BaseContainer *bc = GetWorldPluginData(PALETTE_ID);
-	LONG count = bc->GetLong(NUM_PALETTES);
+	Int32 count = bc->GetInt32(NUM_PALETTES);
 	Palette pal;
 	for(int i=0;i<count;i++){
 		BaseContainer *c = bc->GetContainerInstance(FIRST_PALETTE+i);
@@ -117,10 +117,10 @@ LONG Palette::SetPalette(const Palette &palette)
 	return AddPalette(palette);
 }
 
-void Palette::SetPaletteColor(LONG paletteID, LONG colorID, const Color &col)
+void Palette::SetPaletteColor(Int32 paletteID, Int32 colorID, const Color &col)
 {
 	BaseContainer *bc = GetWorldPluginData(PALETTE_ID);
-	LONG count = bc->GetLong(NUM_PALETTES);
+	Int32 count = bc->GetInt32(NUM_PALETTES);
 	if(paletteID < count){
 		BaseContainer *c = bc->GetContainerInstance(FIRST_PALETTE+paletteID);
 		if(c!= nullptr){
@@ -135,10 +135,10 @@ void Palette::SetPaletteColor(LONG paletteID, LONG colorID, const Color &col)
 	}
 }
 
-void Palette::GetPaletteColor(LONG paletteID, LONG colorID, Color &col)
+void Palette::GetPaletteColor(Int32 paletteID, Int32 colorID, Color &col)
 {
 	BaseContainer *bc = GetWorldPluginData(PALETTE_ID);
-	LONG count = bc->GetLong(NUM_PALETTES);
+	Int32 count = bc->GetInt32(NUM_PALETTES);
 	if(paletteID < count){
 		BaseContainer *c = bc->GetContainerInstance(FIRST_PALETTE+paletteID);
 		if(c!= nullptr){
@@ -150,24 +150,24 @@ void Palette::GetPaletteColor(LONG paletteID, LONG colorID, Color &col)
 }
 
 
-LONG Palette::AddPalette(const Palette &palette)
+Int32 Palette::AddPalette(const Palette &palette)
 {
 	BaseContainer *bc = GetWorldPluginData(PALETTE_ID);
-	LONG count = bc->GetLong(NUM_PALETTES);
+	Int32 count = bc->GetInt32(NUM_PALETTES);
 	BaseContainer pal;
 	palette.ToContainer(pal);
 	bc->SetContainer(FIRST_PALETTE+count,pal);
-	bc->SetLong(NUM_PALETTES,count+1);
+	bc->SetInt32(NUM_PALETTES,count+1);
 	SetWorldPluginData(PALETTE_ID,*bc,FALSE);
 	return count;
 }
 
-void Palette::UpdatePalette(LONG id)
+void Palette::UpdatePalette(Int32 id)
 {
 	SpecialEventAdd(PALETTE_ID,-1,id);
 }
 
-void Palette::UpdateColor(LONG palette, LONG color)
+void Palette::UpdateColor(Int32 palette, Int32 color)
 {
 	SpecialEventAdd(PALETTE_ID,color,palette);
 }

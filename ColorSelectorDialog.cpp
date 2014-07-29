@@ -41,7 +41,7 @@ Bool ColorSelectorDialog::CreateLayout(void)
 		GroupEnd();
     GroupEnd();
 
-	GeDynamicArray<Real> offsets;
+	GeDynamicArray<Float> offsets;
 	offsets.Insert( 0.0,0);
 	offsets.Insert( 0.1,1);
 	offsets.Insert(-0.1,2);
@@ -60,22 +60,22 @@ Bool ColorSelectorDialog::InitValues(void)
     return TRUE;
 }
 
-Bool ColorSelectorDialog::Command(LONG id,const BaseContainer &msg)
+Bool ColorSelectorDialog::Command(Int32 id,const BaseContainer &msg)
 {
-	LONG val;
-	Real rVal[4];
+	Int32 val;
+	Float rVal[4];
     switch (id)
     {
     }
     return GeDialog::Command(id,msg);
 }
 
-Bool ColorSelectorDialog::CoreMessage(LONG id,const BaseContainer &msg)
+Bool ColorSelectorDialog::CoreMessage(Int32 id,const BaseContainer &msg)
 {
     return GeDialog::CoreMessage(id,msg);
 }
 
-LONG ColorSelectorDialog::Message(const BaseContainer& msg, BaseContainer& result)
+Int32 ColorSelectorDialog::Message(const BaseContainer& msg, BaseContainer& result)
 {
     switch (msg.GetId())
     {
@@ -96,12 +96,12 @@ void ColorSelectorDialog::UpdateColor(Color color){
 	m_colorBox.UpdateColor(wheel);
 	GeDynamicArray<Color> offsetColors;
 	m_colorWheel.GetOffsetColors(offsetColors);
-	for(LONG i=0;i<offsetColors.GetCount();i++){
+	for(Int32 i=0;i<offsetColors.GetCount();i++){
 		m_previewColors[i].UpdateColor(offsetColors[i].Convert(COLOR_SOURCE_DISPLAY));
 	}
 }
 
-LONG ColorSelectorCommand::GetState(BaseDocument *doc)
+Int32 ColorSelectorCommand::GetState(BaseDocument *doc)
 {
 	return CMD_ENABLED;
 }

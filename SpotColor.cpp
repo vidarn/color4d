@@ -32,21 +32,21 @@ Bool SpotColor::Init(void)
 	return TRUE;
 }
 
-Bool SpotColor::GetMinSize(LONG &w,LONG &h)
+Bool SpotColor::GetMinSize(Int32 &w,Int32 &h)
 {
 	w = 40;
 	h = 40;
 	return TRUE;
 }
 
-void SpotColor::Sized(LONG w,LONG h)
+void SpotColor::Sized(Int32 w,Int32 h)
 {
 	m_w = w;
 	m_h = h;
 	Redraw();
 }
 
-void SpotColor::DrawMsg(LONG x1,LONG y1,LONG x2,LONG y2, const BaseContainer &msg)
+void SpotColor::DrawMsg(Int32 x1,Int32 y1,Int32 x2,Int32 y2, const BaseContainer &msg)
 {
 	OffScreenOn();
 	DrawSetPen(m_color.Convert(COLOR_SOURCE_DISPLAY).AsVector());
@@ -60,8 +60,8 @@ void SpotColor::UpdateColor(Color color){
 
 Bool SpotColor::InputEvent(const BaseContainer &msg)
 {
-	if(msg.GetLong(BFM_INPUT_DEVICE) == BFM_INPUT_MOUSE){
-		if(msg.GetLong(BFM_INPUT_CHANNEL) == BFM_INPUT_MOUSELEFT){
+	if(msg.GetInt32(BFM_INPUT_DEVICE) == BFM_INPUT_MOUSE){
+		if(msg.GetInt32(BFM_INPUT_CHANNEL) == BFM_INPUT_MOUSELEFT){
 			Vector col = m_color.Convert(COLOR_SOURCE_DISPLAY).AsVector();
 			HandleMouseDrag(msg,DRAGTYPE_RGB,&col,0);
 		}

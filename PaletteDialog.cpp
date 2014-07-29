@@ -11,7 +11,7 @@ Bool PaletteDialog::CreateLayout(void)
 {
 	GePrint("Create Layout!");
     BaseContainer *wprefs=GetWorldContainerInstance();
-	LONG numColors = m_palette.GetCount();
+	Int32 numColors = m_palette.GetCount();
 
     m_Settings=wprefs->GetContainer(PALETTE_ID);
 
@@ -47,7 +47,7 @@ Bool PaletteDialog::InitValues(void)
     return TRUE;
 }
 
-Bool PaletteDialog::Command(LONG id,const BaseContainer &msg)
+Bool PaletteDialog::Command(Int32 id,const BaseContainer &msg)
 {
 	GeDynamicArray<Palette> pals;
     switch (id)
@@ -63,7 +63,7 @@ Bool PaletteDialog::Command(LONG id,const BaseContainer &msg)
     return GeDialog::Command(id,msg);
 }
 
-LONG PaletteDialog::Message(const BaseContainer& msg, BaseContainer& result)
+Int32 PaletteDialog::Message(const BaseContainer& msg, BaseContainer& result)
 {
     switch (msg.GetId())
     {
@@ -98,7 +98,7 @@ void PaletteDialog::PaletteLayout()
 	}
 }
 
-LONG PaletteCommand::GetState(BaseDocument *doc)
+Int32 PaletteCommand::GetState(BaseDocument *doc)
 {
 	return CMD_ENABLED;
 }

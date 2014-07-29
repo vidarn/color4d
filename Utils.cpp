@@ -1,8 +1,8 @@
 #include "utils.h"
 
-Real Wrap(Real val, Real min, Real max)
+Float Wrap(Float val, Float min, Float max)
 {
-	Real step = max-min;
+	Float step = max-min;
 	while(val < min){
 		val += step;
 	}
@@ -27,6 +27,6 @@ Bool VerifyColor(Vector col)
 void ClampColor(Vector &col)
 {
 	for(int i=0;i<3;i++){
-		col[i] = Clamp(0.0,1.0,col[i]);
+		col[i] = ClampValue(col[i],0.0,1.0);
 	}
 }

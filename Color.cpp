@@ -39,7 +39,7 @@ Color::Color(Vector rgb)
 	m_source = COLOR_SOURCE_RGB;
 }
 
-Color::Color(Real r, Real g, Real b)
+Color::Color(Float r, Float g, Float b)
 {
 	m_val[0] = r;
 	m_val[1] = g;
@@ -49,7 +49,7 @@ Color::Color(Real r, Real g, Real b)
 	m_source = COLOR_SOURCE_RGB;
 }
 
-Color::Color(Real c, Real m, Real y, Real k)
+Color::Color(Float c, Float m, Float y, Float k)
 {
 	m_val[0] = c;
 	m_val[1] = m;
@@ -199,18 +199,23 @@ void Color::UpdateTransforms()
 
 void Color::LoadICCProfiles()
 {
+#pragma message("TODO: allow more icc search paths")
+    
 	if(m_iccSearchPaths!= NULL){
 		delete m_iccSearchPaths;
 	}
-	m_iccSearchPaths = new String[1];
+	m_iccSearchPaths = new String[2];
 	m_iccSearchPaths[0] = "C:\\Windows\\System32\\Spool\\Drivers\\Color\\";
+    m_iccSearchPaths[1] = "/Library/ColorSync/Profiles/";
+    //m_iccSearchPaths[1] = "/Users/vidarn/Library/ColorSync";
+
 
 	m_displayProfile = cmsCreate_sRGBProfile();
 	m_RGBProfiles.Insert(vnColorProfile("sRGB",m_displayProfile),0);
 
 	BrowseFiles* bf = BrowseFiles::Alloc();
 
-	Filename dir(m_iccSearchPaths[0]);
+	Filename dir(m_iccSearchPaths[1]);
 	bf->Init(dir,FALSE);
 	int RGBPos  = m_RGBProfiles.GetCount();
 	int CMYKPos = m_CMYKProfiles.GetCount();
@@ -223,13 +228,14 @@ void Color::LoadICCProfiles()
 			Filename fileName = bf->GetFilename();
 			fileName.SetDirectory(dir);
 			String str = fileName.GetString();
-			CHAR *buffer = new CHAR[str.GetCStringLen()+1];
+			Char *buffer = new Char[str.GetCStringLen()+1];
 			str.GetCString(buffer,str.GetCStringLen()+1);
+            GePrint(buffer);
 			cmsHPROFILE profile = cmsOpenProfileFromFile(buffer, "r");
 			if(profile != NULL){
 				cmsColorSpaceSignature sig = cmsGetColorSpace(profile);
-				LONG length = cmsGetProfileInfoASCII(profile,cmsInfoDescription,"en","US",NULL,0);
-				CHAR *buffer2 = new CHAR[length];
+				Int32 length = cmsGetProfileInfoASCII(profile,cmsInfoDescription,"en","US",NULL,0);
+				Char *buffer2 = new Char[length];
 				cmsGetProfileInfoASCII(profile,cmsInfoDescription,"en","US",buffer2,length);
 				String info(buffer2);
 				int pt = _cmsLCMScolorSpace(sig);
@@ -253,6 +259,9 @@ void Color::LoadICCProfiles()
 				}
 				delete buffer2;
 			}
+            else{
+                GePrint("Could not load ^");
+            }
 			delete buffer;
 		}
 	}

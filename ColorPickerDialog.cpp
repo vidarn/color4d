@@ -37,7 +37,7 @@ Bool ColorPickerDialog::CreateLayout(void)
 					//iccSpotCombo = AddComboBox(IDC_SPOTICC,BFH_SCALEFIT,10,10);
 				GroupEnd();
 				GroupBegin(4,BFH_SCALEFIT,2,0,String(),0);
-					for(LONG i=0;i<3;i++){
+					for(Int32 i=0;i<3;i++){
 						RGBeditNumber[i] = AddEditNumberArrows(IDC_R+i,BFH_LEFT);
 						RGBsliderArea[i] = AddUserArea(IDC_RSLIDER+i,BFH_SCALEFIT);	
 						m_RGBSlider[i].SetParent(this);
@@ -50,7 +50,7 @@ Bool ColorPickerDialog::CreateLayout(void)
 				GroupEnd();
 				iccCMYKCombo = AddComboBox(IDC_CMYKICC,BFH_SCALEFIT,10,10);
 				GroupBegin(4,BFH_SCALEFIT,2,0,String(),0);
-					for(LONG i=0;i<4;i++){
+					for(Int32 i=0;i<4;i++){
 						CMYKeditNumber[i] = AddEditNumberArrows(IDC_C+i,BFH_LEFT);
 						CMYKsliderArea[i] = AddUserArea(IDC_CSLIDER+i,BFH_SCALEFIT);	
 						m_CMYKSlider[i].SetParent(this);
@@ -76,11 +76,11 @@ Bool ColorPickerDialog::CreateLayout(void)
 			splineSettings.SetBool(SPLINECONTROL_ALLOW_VERT_SCALE_MOVE,true);
 			splineSettings.SetBool(SPLINECONTROL_GRID_H,true);
 			splineSettings.SetBool(SPLINECONTROL_GRID_V,true);
-			splineSettings.SetReal(SPLINECONTROL_X_MIN,0.0);
-			splineSettings.SetReal(SPLINECONTROL_X_MAX,1.0);
-			splineSettings.SetReal(SPLINECONTROL_X_STEPS,0.01);
-			splineSettings.SetReal(SPLINECONTROL_Y_MIN,0.0);
-			splineSettings.SetReal(SPLINECONTROL_Y_MAX,1.0);
+			splineSettings.SetFloat(SPLINECONTROL_X_MIN,0.0);
+			splineSettings.SetFloat(SPLINECONTROL_X_MAX,1.0);
+			splineSettings.SetFloat(SPLINECONTROL_X_STEPS,0.01);
+			splineSettings.SetFloat(SPLINECONTROL_Y_MIN,0.0);
+			splineSettings.SetFloat(SPLINECONTROL_Y_MAX,1.0);
 			splineSettings.SetBool(SPLINECONTROL_NO_FLOATING_WINDOW,true);
 			splineSettings.SetBool(SPLINECONTROL_VALUE_EDIT_H,true);
 			splineSettings.SetBool(SPLINECONTROL_VALUE_EDIT_V,true);
@@ -108,12 +108,12 @@ Bool ColorPickerDialog::CreateLayout(void)
     {
         BaseContainer m;
 
-        m.SetLong(BFM_COLORCHOOSER_SYSTEM   ,wprefs->GetLong(WPREF_COLOR_SYSTEM_BP));
-        m.SetLong(BFM_COLORCHOOSER_RGB_RANGE,wprefs->GetLong(WPREF_COLOR_RGBRANGE));
-        m.SetLong(BFM_COLORCHOOSER_H_RANGE  ,wprefs->GetLong(WPREF_COLOR_HRANGE));
-        m.SetLong(BFM_COLORCHOOSER_SV_RANGE ,wprefs->GetLong(WPREF_COLOR_SVRANGE));
-        m.SetLong(BFM_COLORCHOOSER_QUICKSTORE,wprefs->GetLong(WPREF_COLOR_QUICK_BP));
-        m.SetLong(BFM_COLORCHOOSER_MIXINGPANEL,wprefs->GetLong(WPREF_COLOR_MIX_BP));
+        m.SetInt32(BFM_COLORCHOOSER_SYSTEM   ,wprefs->GetInt32(WPREF_COLOR_SYSTEM_BP));
+        m.SetInt32(BFM_COLORCHOOSER_RGB_RANGE,wprefs->GetInt32(WPREF_COLOR_RGBRANGE));
+        m.SetInt32(BFM_COLORCHOOSER_H_RANGE  ,wprefs->GetInt32(WPREF_COLOR_HRANGE));
+        m.SetInt32(BFM_COLORCHOOSER_SV_RANGE ,wprefs->GetInt32(WPREF_COLOR_SVRANGE));
+        m.SetInt32(BFM_COLORCHOOSER_QUICKSTORE,wprefs->GetInt32(WPREF_COLOR_QUICK_BP));
+        m.SetInt32(BFM_COLORCHOOSER_MIXINGPANEL,wprefs->GetInt32(WPREF_COLOR_MIX_BP));
 
         m_Settings.SetContainer(BFM_COLORCHOOSER_PARENTMESSAGE,m);
         bc = m_Settings.GetContainerInstance(BFM_COLORCHOOSER_PARENTMESSAGE);
@@ -122,16 +122,16 @@ Bool ColorPickerDialog::CreateLayout(void)
     
     BaseContainer col(BFM_COLORCHOOSER);
 
-    col.SetLong(BFM_COLORCHOOSER_SYSTEM   ,bc->GetLong(BFM_COLORCHOOSER_SYSTEM   ));
-    col.SetLong(BFM_COLORCHOOSER_RGB_RANGE,bc->GetLong(BFM_COLORCHOOSER_RGB_RANGE));
-    col.SetLong(BFM_COLORCHOOSER_H_RANGE  ,bc->GetLong(BFM_COLORCHOOSER_H_RANGE  ));
-    col.SetLong(BFM_COLORCHOOSER_SV_RANGE ,bc->GetLong(BFM_COLORCHOOSER_SV_RANGE ));
-    col.SetLong(BFM_COLORCHOOSER_QUICKSTORE,bc->GetLong(BFM_COLORCHOOSER_QUICKSTORE));
-    col.SetLong(BFM_COLORCHOOSER_MIXINGPANEL,bc->GetLong(BFM_COLORCHOOSER_MIXINGPANEL));
+    col.SetInt32(BFM_COLORCHOOSER_SYSTEM   ,bc->GetInt32(BFM_COLORCHOOSER_SYSTEM   ));
+    col.SetInt32(BFM_COLORCHOOSER_RGB_RANGE,bc->GetInt32(BFM_COLORCHOOSER_RGB_RANGE));
+    col.SetInt32(BFM_COLORCHOOSER_H_RANGE  ,bc->GetInt32(BFM_COLORCHOOSER_H_RANGE  ));
+    col.SetInt32(BFM_COLORCHOOSER_SV_RANGE ,bc->GetInt32(BFM_COLORCHOOSER_SV_RANGE ));
+    col.SetInt32(BFM_COLORCHOOSER_QUICKSTORE,bc->GetInt32(BFM_COLORCHOOSER_QUICKSTORE));
+    col.SetInt32(BFM_COLORCHOOSER_MIXINGPANEL,bc->GetInt32(BFM_COLORCHOOSER_MIXINGPANEL));
 
-    col.SetLong(BFM_COLORCHOOSER_SYSTEMMESSAGE,TRUE);
+    col.SetInt32(BFM_COLORCHOOSER_SYSTEMMESSAGE,TRUE);
 
-	GeDynamicArray<Real> offsets;
+	GeDynamicArray<Float> offsets;
 	offsets.Insert( 0.0,0);
 	offsets.Insert( 0.1,1);
 	offsets.Insert(-0.1,2);
@@ -164,44 +164,44 @@ void ColorPickerDialog::FindICCProfiles(){
 		spotbc.SetString(i,spotProfiles[i].m_name);
 	}
 	AddChildren(iccRGBCombo,RGBbc);
-	SetLong(iccRGBCombo,0);
+	SetInt32(iccRGBCombo,0);
 	Enable(iccRGBCombo,TRUE);
 
 	AddChildren(iccCMYKCombo,CMYKbc);
-	SetLong(iccCMYKCombo,0);
+	SetInt32(iccCMYKCombo,0);
 	Enable(iccCMYKCombo,TRUE);
 
 	ChangeRGBSliderProfile(0);
 }
 
-void ColorPickerDialog::ChangeRGBSliderProfile(LONG index)
+void ColorPickerDialog::ChangeRGBSliderProfile(Int32 index)
 {
 	Color::SetRGBProfile(index,TRUE);
 }
 
-void ColorPickerDialog::ChangeCMYKSliderProfile(LONG index)
+void ColorPickerDialog::ChangeCMYKSliderProfile(Int32 index)
 {
 	Color::SetCMYKProfile(index,TRUE);
 }
 
-void ColorPickerDialog::LoadSpotColors(LONG index)
+void ColorPickerDialog::LoadSpotColors(Int32 index)
 {
 	LayoutFlushGroup(6);
 	double RGB[3];
-	CHAR name[256], prefix[33], suffix[33];
+	Char name[256], prefix[33], suffix[33];
 	cmsHPROFILE profile = Color::getSpotProfiles()[index].m_profile;
 	cmsHTRANSFORM xform = cmsCreateTransform(profile,TYPE_NAMED_COLOR_INDEX,m_displayProfile,TYPE_RGB_DBL,INTENT_PERCEPTUAL,0);
 	if(xform != NULL){
 		cmsNAMEDCOLORLIST* colorList = cmsGetNamedColorList(xform);
 		if(colorList != NULL){
-			CHAR name[256], prefix[33], suffix[33];
-			LONG numColors = cmsNamedColorCount(colorList);
+			Char name[256], prefix[33], suffix[33];
+			Int32 numColors = cmsNamedColorCount(colorList);
 			if(m_spotColors != NULL){
 				delete m_spotColors;
 			}
 			m_spotColors = new SpotColor[numColors];
 			for(int i=0;i<numColors;i+=7){
-				LONG limit = i+7 < numColors ? i+7 : numColors;
+				Int32 limit = i+7 < numColors ? i+7 : numColors;
 				for(int ii=i;ii<limit;ii++){
 					cmsNamedColorInfo(colorList,ii,name,prefix,suffix,NULL,NULL);
 					Color col;
@@ -237,33 +237,33 @@ Bool ColorPickerDialog::InitValues(void)
     return TRUE;
 }
 
-Bool ColorPickerDialog::Command(LONG id,const BaseContainer &msg)
+Bool ColorPickerDialog::Command(Int32 id,const BaseContainer &msg)
 {
-	LONG val;
-	Real rVal[4];
+	Int32 val;
+	Float rVal[4];
     switch (id)
     {
 	case IDC_R:
 	case IDC_G:
 	case IDC_B:
 		for(int i=0;i<3;i++){
-			GetReal(RGBeditNumber[i],rVal[i]);
+			GetFloat(RGBeditNumber[i],rVal[i]);
 		}
 		UpdateColor(Color(rVal[0],rVal[1],rVal[2]));
 		break;
 	case IDC_RGBICC:
 		val;
-		GetLong(iccRGBCombo,val);
+		GetInt32(iccRGBCombo,val);
 		ChangeRGBSliderProfile(val);
 		break;
 	case IDC_CMYKICC:
 		val;
-		GetLong(iccCMYKCombo,val);
+		GetInt32(iccCMYKCombo,val);
 		ChangeCMYKSliderProfile(val);
 		break;
 	case IDC_SPOTICC:
 		val;
-		GetLong(iccSpotCombo,val);
+		GetInt32(iccSpotCombo,val);
 		LoadSpotColors(val);
 		break;
     case DLG_OK:
@@ -283,12 +283,12 @@ Bool ColorPickerDialog::Command(LONG id,const BaseContainer &msg)
     return GeDialog::Command(id,msg);
 }
 
-Bool ColorPickerDialog::CoreMessage(LONG id,const BaseContainer &msg)
+Bool ColorPickerDialog::CoreMessage(Int32 id,const BaseContainer &msg)
 {
     return GeDialog::CoreMessage(id,msg);
 }
 
-LONG ColorPickerDialog::Message(const BaseContainer& msg, BaseContainer& result)
+Int32 ColorPickerDialog::Message(const BaseContainer& msg, BaseContainer& result)
 {
     switch (msg.GetId())
     {
@@ -308,18 +308,18 @@ void ColorPickerDialog::UpdateColor(Color color){
 	m_colorWheel.UpdateColor(wheel);
 	m_colorBox.UpdateColor(wheel);
 	Color RGB = color.Convert(COLOR_SOURCE_RGB);
-	for(LONG i=0;i<3;i++){
+	for(Int32 i=0;i<3;i++){
 		m_RGBSlider[i].UpdateColor(RGB);
-		SetReal(RGBeditNumber[i],RGB[i],0.0,1.0,0.01,FORMAT_REAL);
+		SetFloat(RGBeditNumber[i],RGB[i],0.0,1.0,0.01,FORMAT_FLOAT);
 	}
 	Color CMYK = color.Convert(COLOR_SOURCE_CMYK);
-	for(LONG i=0;i<4;i++){
+	for(Int32 i=0;i<4;i++){
 		m_CMYKSlider[i].UpdateColor(CMYK);
-		SetReal(CMYKeditNumber[i],CMYK[i]);
+		SetFloat(CMYKeditNumber[i],CMYK[i]);
 	}
 	GeDynamicArray<Color> offsetColors;
 	m_colorWheel.GetOffsetColors(offsetColors);
-	for(LONG i=0;i<offsetColors.GetCount();i++){
+	for(Int32 i=0;i<offsetColors.GetCount();i++){
 		m_previewColors[i].UpdateColor(offsetColors[i].Convert(COLOR_SOURCE_DISPLAY));
 	}
 }

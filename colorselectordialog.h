@@ -19,9 +19,9 @@ public:
 
     virtual Bool CreateLayout(void);
     virtual Bool InitValues(void);
-    virtual Bool Command(LONG id,const BaseContainer &msg);
-    virtual Bool CoreMessage(LONG id,const BaseContainer &msg);
-    virtual LONG Message(const BaseContainer& msg, BaseContainer& result);
+    virtual Bool Command(Int32 id,const BaseContainer &msg);
+    virtual Bool CoreMessage(Int32 id,const BaseContainer &msg);
+    virtual Int32 Message(const BaseContainer& msg, BaseContainer& result);
 
 	virtual void UpdateColor(Color color);
 
@@ -50,6 +50,6 @@ class ColorSelectorCommand : public CommandData
 		ColorSelectorDialog dlg;
 	public:
 		virtual Bool Execute(BaseDocument *doc);
-		virtual LONG GetState(BaseDocument *doc);
+		virtual Int32 GetState(BaseDocument *doc);
 		virtual Bool RestoreLayout(void *secret);
 };

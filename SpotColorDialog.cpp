@@ -74,13 +74,13 @@ void SpotColorDialog::FindICCProfiles(){
 			Filename fileName = bf->GetFilename();
 			fileName.SetDirectory(dir);
 			String str = fileName.GetString();
-			CHAR *buffer = new CHAR[str.GetCStringLen()+1];
+			Char *buffer = new Char[str.GetCStringLen()+1];
 			str.GetCString(buffer,str.GetCStringLen()+1);
 			cmsHPROFILE profile = cmsOpenProfileFromFile(buffer, "r");
 			if(profile != NULL){
 				cmsColorSpaceSignature sig = cmsGetColorSpace(profile);
-				LONG length = cmsGetProfileInfoASCII(profile,cmsInfoDescription,"en","US",NULL,0);
-				CHAR *buffer2 = new CHAR[length];
+				Int32 length = cmsGetProfileInfoASCII(profile,cmsInfoDescription,"en","US",NULL,0);
+				Char *buffer2 = new Char[length];
 				cmsGetProfileInfoASCII(profile,cmsInfoDescription,"en","US",buffer2,length);
 				String info(buffer2);
 				int pt = _cmsLCMScolorSpace(sig);
@@ -98,31 +98,31 @@ void SpotColorDialog::FindICCProfiles(){
 			delete buffer;
 		}
 		AddChildren(iccSpotCombo,spotbc);
-		SetLong(iccSpotCombo,0);
+		SetInt32(iccSpotCombo,0);
 		Enable(iccSpotCombo,TRUE);
 	}
 	
 	BrowseFiles::Free(bf);
 }
 
-void SpotColorDialog::LoadSpotColors(LONG index)
+void SpotColorDialog::LoadSpotColors(Int32 index)
 {
 	LayoutFlushGroup(6);
 	double RGB[3];
-	CHAR name[256], prefix[33], suffix[33];
+	Char name[256], prefix[33], suffix[33];
 	cmsHPROFILE profile = m_spotProfiles[index];
 	cmsHTRANSFORM xform = cmsCreateTransform(profile,TYPE_NAMED_COLOR_INDEX,m_displayProfile,TYPE_RGB_DBL,INTENT_PERCEPTUAL,0);
 	if(xform != NULL){
 		cmsNAMEDCOLORLIST* colorList = cmsGetNamedColorList(xform);
 		if(colorList != NULL){
-			CHAR name[256], prefix[33], suffix[33];
-			LONG numColors = cmsNamedColorCount(colorList);
+			Char name[256], prefix[33], suffix[33];
+			Int32 numColors = cmsNamedColorCount(colorList);
 			if(m_spotColors != NULL){
 				delete m_spotColors;
 			}
 			m_spotColors = new SpotColor[numColors];
 			for(int i=0;i<numColors;i+=7){
-				LONG limit = i+7 < numColors ? i+7 : numColors;
+				Int32 limit = i+7 < numColors ? i+7 : numColors;
 				for(int ii=i;ii<limit;ii++){
 					cmsNamedColorInfo(colorList,ii,name,prefix,suffix,NULL,NULL);
 					Color col;
@@ -155,27 +155,27 @@ Bool SpotColorDialog::InitValues(void)
     return TRUE;
 }
 
-Bool SpotColorDialog::Command(LONG id,const BaseContainer &msg)
+Bool SpotColorDialog::Command(Int32 id,const BaseContainer &msg)
 {
-	LONG val;
-	Real rVal[4];
+	Int32 val;
+	Float rVal[4];
     switch (id)
     {
 	case IDC_SPOTICC:
 		val;
-		GetLong(iccSpotCombo,val);
+		GetInt32(iccSpotCombo,val);
 		LoadSpotColors(val);
 		break;
     }
     return GeDialog::Command(id,msg);
 }
 
-Bool SpotColorDialog::CoreMessage(LONG id,const BaseContainer &msg)
+Bool SpotColorDialog::CoreMessage(Int32 id,const BaseContainer &msg)
 {
     return GeDialog::CoreMessage(id,msg);
 }
 
-LONG SpotColorDialog::Message(const BaseContainer& msg, BaseContainer& result)
+Int32 SpotColorDialog::Message(const BaseContainer& msg, BaseContainer& result)
 {
     switch (msg.GetId())
     {
@@ -190,7 +190,7 @@ LONG SpotColorDialog::Message(const BaseContainer& msg, BaseContainer& result)
 }
 
 
-LONG SpotColorCommand::GetState(BaseDocument *doc)
+Int32 SpotColorCommand::GetState(BaseDocument *doc)
 {
 	return CMD_ENABLED;
 }

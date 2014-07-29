@@ -20,8 +20,8 @@ public:
 
     virtual Bool CreateLayout(void);
     virtual Bool InitValues(void);
-    virtual Bool Command(LONG id,const BaseContainer &msg);
-    virtual LONG Message(const BaseContainer& msg, BaseContainer& result);
+    virtual Bool Command(Int32 id,const BaseContainer &msg);
+    virtual Int32 Message(const BaseContainer& msg, BaseContainer& result);
 
 	void LoadPalette(const Palette &palette);
 	void PaletteLayout();
@@ -41,6 +41,6 @@ class PaletteCommand : public CommandData
 		PaletteDialog dlg;
 	public:
 		virtual Bool Execute(BaseDocument *doc);
-		virtual LONG GetState(BaseDocument *doc);
+		virtual Int32 GetState(BaseDocument *doc);
 		virtual Bool RestoreLayout(void *secret);
 };

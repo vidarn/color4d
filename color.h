@@ -4,6 +4,7 @@
 #include "lcms2.h"
 #include "ge_dynamicarray.h"
 
+
 enum COLOR_SOURCE
 {
 	COLOR_SOURCE_WHEEL,
@@ -26,17 +27,17 @@ class Color
 	public:
 		Color();
 		Color(Vector rgb);
-		Color(Real r, Real g, Real b);
-		Color(Real c, Real m, Real y, Real k);
+		Color(Float r, Float g, Float b);
+		Color(Float c, Float m, Float y, Float k);
 		~Color();
-		Real &c(){return m_val[0];}
-		Real &m(){return m_val[1];}
-		Real &y(){return m_val[2];}
-		Real &k(){return m_val[3];}
-		Real &r(){return m_val[0];}
-		Real &g(){return m_val[1];}
-		Real &b(){return m_val[2];}
-		Real &operator[](int i){return m_val[i];}
+		Float &c(){return m_val[0];}
+		Float &m(){return m_val[1];}
+		Float &y(){return m_val[2];}
+		Float &k(){return m_val[3];}
+		Float &r(){return m_val[0];}
+		Float &g(){return m_val[1];}
+		Float &b(){return m_val[2];}
+		Float &operator[](int i){return m_val[i];}
 		const Color &operator=(const Color &other);
 		Color &SetSource(COLOR_SOURCE source){m_source = source; return *this;}
 		COLOR_SOURCE GetSource(){return m_source;}
@@ -56,7 +57,7 @@ class Color
 		static const GeDynamicArray<vnColorProfile> &getCMYKProfiles(){return m_CMYKProfiles;}
 		static const GeDynamicArray<vnColorProfile> &getSpotProfiles(){return m_spotProfiles;}
 	private:
-		Real m_val[4];
+		Float m_val[4];
 		COLOR_SOURCE m_source;
 		static cmsHTRANSFORM m_wheelToRGB;
 		static cmsHTRANSFORM m_wheelToCMYK;
