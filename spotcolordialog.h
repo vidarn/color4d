@@ -40,6 +40,8 @@ public:
 	SpotColor *m_spotColors;
 	C4DGadget *iccSpotCombo;
 	C4DGadget *spotArea;
+	C4DGadget *m_labelCheckbox;
+	C4DGadget *m_searchText;
 
 };
 

@@ -112,12 +112,15 @@
     <ClCompile Include="ColorBox.cpp" />
     <ClCompile Include="ColorDialog.cpp" />
     <ClCompile Include="ColorPickerDialog.cpp" />
+    <ClCompile Include="ColorScheme.cpp" />
     <ClCompile Include="ColorSelectorDialog.cpp" />
     <ClCompile Include="ColorSlider.cpp" />
     <ClCompile Include="ColorWheel.cpp" />
     <ClCompile Include="Palette.cpp" />
     <ClCompile Include="PaletteDialog.cpp" />
     <ClCompile Include="PaletteColor.cpp" />
+    <ClCompile Include="PaletteSubDialog.cpp" />
+    <ClCompile Include="SliderSubDialog.cpp" />
     <ClCompile Include="source\Main.cpp" />
     <ClCompile Include="SpotColor.cpp" />
     <ClCompile Include="SpotColorDialog.cpp" />
@@ -134,6 +137,7 @@
     <ClInclude Include="colorbox.h" />
     <ClInclude Include="colordialog.h" />
     <ClInclude Include="colorpickerdialog.h" />
+    <ClInclude Include="colorscheme.h" />
     <ClInclude Include="colorselectordialog.h" />
     <ClInclude Include="colorslider.h" />
     <ClInclude Include="colorwheel.h" />
@@ -141,6 +145,8 @@
     <ClInclude Include="palette.h" />
     <ClInclude Include="palettedialog.h" />
     <ClInclude Include="palettecolor.h" />
+    <ClInclude Include="palettesubdialog.h" />
+    <ClInclude Include="slidersubdialog.h" />
     <ClInclude Include="spotcolor.h" />
     <ClInclude Include="spotcolordialog.h" />
     <ClInclude Include="utils.h" />

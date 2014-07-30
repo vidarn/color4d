@@ -24,10 +24,18 @@ class SpotColor : public GeUserArea
 		void MouseUpdate();
 		void SetColor(Color color);
 		Color GetColor();
+		void SetDragable(Bool state){m_dragable = state;}
 
 		ColorDialog *m_parent;
 		Color m_color;
 		
+<<<<<<< HEAD
 		Int32 m_w;
 		Int32 m_h;
+=======
+		LONG m_w;
+		LONG m_h;
+
+		Bool m_dragable;
+>>>>>>> 653517188f352a024a1dec4993f6159c9681dd65
 };

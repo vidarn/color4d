@@ -69,6 +69,7 @@ Bool PluginStart(void)
 	Color::SetCMYKProfile(0);
 	Color::SetDisplayProfile(0);
 	Color::UpdateTransforms();
+	ColorScheme::Init();
 	PaletteColor::LoadIcons();
 	Palette::InitPalettes();
 	Bool result = RegisterCommandPlugin(SPOTCOLOR_ID,String("Spot colors"),0,NULL,String(),gNew SpotColorCommand);
@@ -86,6 +87,8 @@ Bool PluginStart(void)
 void PluginEnd(void)
 {
 	PaletteColor::UnloadIcons();
+	ColorScheme::Free();
+	Color::Unload();
 }
 
 Bool PluginMessage(LONG id, void *data)

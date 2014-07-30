@@ -43,6 +43,8 @@ class Color
 		COLOR_SOURCE GetSource(){return m_source;}
 		Color Convert(COLOR_SOURCE source);
 		Vector AsVector() const;
+		bool FromString(const String &str);
+		void ToString(String &str);
 		static void SetWheelProfile(int profile, Bool updateTransform=FALSE);
 		static void SetRGBProfile(int profile, Bool updateTransform=FALSE);
 		static void SetCMYKProfile(int profile, Bool updateTransform=FALSE);
@@ -53,9 +55,11 @@ class Color
 		static void SetDisplayProfile(cmsHPROFILE profile, Bool updateTransform=FALSE);
 		static void UpdateTransforms();
 		static void LoadICCProfiles();
+		static void Unload();
 		static const GeDynamicArray<vnColorProfile> &getRGBProfiles() {return m_RGBProfiles; }
 		static const GeDynamicArray<vnColorProfile> &getCMYKProfiles(){return m_CMYKProfiles;}
 		static const GeDynamicArray<vnColorProfile> &getSpotProfiles(){return m_spotProfiles;}
+		static cmsHPROFILE getDisplayProfile(){return m_displayProfile;}
 	private:
 		Float m_val[4];
 		COLOR_SOURCE m_source;

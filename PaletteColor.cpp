@@ -14,6 +14,8 @@ PaletteColor::PaletteColor()
 	m_color = Color(0.f,1.f,0.f);
 	m_palette = 0;
 	m_colorID = 0;
+	m_selectCallback = NULL;
+	m_selectCallbackData = NULL;
 }
 
 static void maybeFree(BaseBitmap *bmp){
@@ -115,9 +117,23 @@ Int32 PaletteColor::Message(const BaseContainer& msg, BaseContainer& result)
 		GetDragObject(msg, &type, &object);
 		if(type == DRAGTYPE_RGB){
 			Vector *color = static_cast<Vector*>(object);
+<<<<<<< HEAD
 			if(msg.GetInt32(BFM_DRAG_FINISHED)){
+=======
+			if(msg.GetLong(BFM_DRAG_FINISHED)){
+				switch(m_hoverState){
+					case HOVER_LEFT:
+						Palette::InsertPaletteColor(m_palette, m_colorID, Color(*color).SetSource(COLOR_SOURCE_DISPLAY));
+						break;
+					case HOVER_RIGHT:
+						Palette::InsertPaletteColor(m_palette, m_colorID+1, Color(*color).SetSource(COLOR_SOURCE_DISPLAY));
+						break;
+					case HOVER_CENTER:
+						Palette::SetPaletteColor(m_palette, m_colorID, Color(*color).SetSource(COLOR_SOURCE_DISPLAY));
+						break;
+				}
+>>>>>>> 653517188f352a024a1dec4993f6159c9681dd65
 				m_hoverState = HOVER_NONE;
-				Palette::SetPaletteColor(m_palette, m_colorID, Color(*color).SetSource(COLOR_SOURCE_DISPLAY));
 			}
 			else{
 				if (msg.GetInt32(BFM_DRAG_LOST)){
@@ -153,7 +169,23 @@ Int32 PaletteColor::Message(const BaseContainer& msg, BaseContainer& result)
 	return res;
 }
 
+<<<<<<< HEAD
 Bool PaletteColor::CoreMessage(Int32 id, const BaseContainer& msg)
+=======
+Bool PaletteColor::InputEvent(const BaseContainer &msg)
+{
+	if(msg.GetLong(BFM_INPUT_DEVICE) == BFM_INPUT_MOUSE){
+		if(msg.GetLong(BFM_INPUT_CHANNEL) == BFM_INPUT_MOUSELEFT){
+			if(m_selectCallback != NULL){
+				m_selectCallback(m_color,m_selectCallbackData);
+			}
+		}
+	}
+	return SpotColor::InputEvent(msg);
+}
+
+Bool PaletteColor::CoreMessage(LONG id, const BaseContainer& msg)
+>>>>>>> 653517188f352a024a1dec4993f6159c9681dd65
 {
     switch ( id )
     {
@@ -161,7 +193,6 @@ Bool PaletteColor::CoreMessage(Int32 id, const BaseContainer& msg)
 			/*Int32 color =  (Int32) msg.GetVoid( BFM_CORE_PAR1 );
 			Int32 palette = (Int32) msg.GetVoid( BFM_CORE_PAR2 );
 			if(color == m_colorID && palette == m_palette){
-				GePrint("Update color!");
 				Palette::GetPaletteColor(m_palette,m_colorID,m_color);
 				UpdateBitmaps();
 				Redraw();

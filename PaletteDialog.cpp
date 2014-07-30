@@ -9,27 +9,22 @@ PaletteDialog::PaletteDialog()
 
 Bool PaletteDialog::CreateLayout(void)
 {
+<<<<<<< HEAD
 	GePrint("Create Layout!");
     BaseContainer *wprefs=GetWorldContainerInstance();
 	Int32 numColors = m_palette.GetCount();
 
     m_Settings=wprefs->GetContainer(PALETTE_ID);
 
+=======
+>>>>>>> 653517188f352a024a1dec4993f6159c9681dd65
     if (!GeDialog::CreateLayout()) return FALSE;
-
-    SetTitle(GeLoadString(IDS_COLORPICKER));
-	for(int i=0;i<numColors;i++){
-		m_spotColors.Insert(PaletteColor(),i);
+	SetTitle(GeLoadString(IDS_COLORPICKER));
+	GroupBegin(0,BFH_SCALEFIT|BFV_SCALEFIT,0,1,String(),0);
+	if(AddSubDialog(IDC_PALETTE,BFH_SCALEFIT)){
+		AttachSubDialog(&m_paletteSubDiag,IDC_PALETTE);
 	}
-
-    GroupBegin(0,BFH_SCALEFIT|BFV_SCALEFIT,1,0,String(),0);
-		AddButton(1234,BFH_SCALEFIT,0,0,String("Button"));
-		ScrollGroupBegin(1,BFH_SCALEFIT|BFV_SCALEFIT,SCROLLGROUP_HORIZ);
-			GroupBegin(22,BFH_SCALEFIT|BFV_SCALEFIT,0,1,String(),0);
-			GroupEnd();
-		GroupEnd();
     GroupEnd();
-
     return TRUE;
 }
 
@@ -37,6 +32,7 @@ PaletteDialog::~PaletteDialog()
 {
 }
 
+<<<<<<< HEAD
 Bool PaletteDialog::InitValues(void)
 {
 	Palette pal = Palette(String("Test"),3);
@@ -99,6 +95,9 @@ void PaletteDialog::PaletteLayout()
 }
 
 Int32 PaletteCommand::GetState(BaseDocument *doc)
+=======
+LONG PaletteCommand::GetState(BaseDocument *doc)
+>>>>>>> 653517188f352a024a1dec4993f6159c9681dd65
 {
 	return CMD_ENABLED;
 }

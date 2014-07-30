@@ -14,7 +14,7 @@ private:
 public:
 
 	ColorSelectorDialog():m_colorWheel(this), m_colorBox(this){ColorSelectorDialog(new Vector(1.0f));}
-    ColorSelectorDialog(Vector *color):m_colorWheel(this), m_colorBox(this), m_pColor(color), m_iccSearchPaths(NULL) {}
+    ColorSelectorDialog(Vector *color):m_colorWheel(this), m_colorBox(this){}
 	~ColorSelectorDialog();
 
     virtual Bool CreateLayout(void);
@@ -25,23 +25,16 @@ public:
 
 	virtual void UpdateColor(Color color);
 
-	String *m_iccSearchPaths;
-
-	cmsHPROFILE m_displayProfile;
-
-	BaseContainer m_Settings;
-    BasePlugin *m_pPlugin;
-    Vector *m_pColor;
-
-	Color m_DisplayColor;
+	void SetColorScheme(ColorScheme *colorScheme);
 
 	ColorWheel m_colorWheel;
 	ColorBox m_colorBox;
 	SpotColor m_previewColors[4];
+	ColorScheme *m_colorScheme;
 	C4DGadget *wheelArea;
 	C4DGadget *boxArea;
 	C4DGadget *spotArea;
-
+	C4DGadget *m_schemeCombo;
 };
 
 class ColorSelectorCommand : public CommandData

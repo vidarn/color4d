@@ -105,8 +105,67 @@ Color Color::Convert(COLOR_SOURCE target)
 	return Color(out[0], out[1], out[2], out[3]).SetSource(target);
 }
 
-Vector Color::AsVector() const{
+Vector Color::AsVector() const
+{
 	return Vector(m_val[0], m_val[1], m_val[2]);
+}
+
+static int findHexChar(const String::PChar &c, bool &valid)
+{
+	const String hex("0123456789ABCDEF");
+	for(int i=0;i<hex.GetLength();i++){
+		if(hex[i] == c){
+			return i;
+		}
+	}
+	valid = false;
+	return -1;
+}
+
+static void cleanString(String &str)
+{
+	String tmp = str.ToUpper();
+	str = "";
+	const String hex("0123456789ABCDEF");
+	for(int i=0;i<tmp.GetLength();i++){
+		for(int ii=0;ii<hex.GetLength();ii++){
+			if(hex[ii] == tmp[i]){
+				str += " ";
+				str[str.GetLength()-1] = hex[ii];
+				break;
+			}
+		}
+	}
+}
+
+bool Color::FromString(const String &str)
+{
+	String s = str;
+	cleanString(s);
+	if(s.GetLength() >= 6){
+		Real val[3];
+		bool valid = true;
+		for(LONG i=0;i<3;i++){
+			val[i] = (findHexChar(s[i*2],valid)*16.0 + findHexChar(s[i*2+1],valid))/255.0;
+		}
+		if(valid){
+			for(LONG i=0;i<3;i++){
+				m_val[i] = val[i];
+			}
+		}
+		return valid;
+	}
+	return false;
+}
+void Color::ToString(String &str)
+{
+	str = "#000000";
+	const String hex("0123456789ABCDEF");
+	for(LONG i=0;i<3;i++){
+		unsigned char val = m_val[i]*255.0;
+		str[i*2+1]   = hex[val/16];
+		str[i*2+2] = hex[val%16];
+	}
 }
 
 void Color::SetWheelProfile(int profile, Bool updateTransform)
@@ -129,16 +188,24 @@ void Color::SetDisplayProfile(int profile, Bool updateTransform)
 	SetDisplayProfile(m_RGBProfiles[profile].m_profile,updateTransform);
 }
 
+static void createAndFreeTransform(cmsHTRANSFORM &transform, cmsHPROFILE prof, cmsUInt32Number InputFormat, cmsHPROFILE Output, cmsUInt32Number OutputFormat)
+{
+	if(transform != 0){
+		cmsDeleteTransform(transform);
+	}
+	transform = cmsCreateTransform(prof,  InputFormat,  Output,    OutputFormat, INTENT_PERCEPTUAL,0);
+}
+
 void Color::SetWheelProfile(cmsHPROFILE profile, Bool updateTransform)
 {
 	m_wheelProfile = profile;
 	if(updateTransform){
-		m_wheelToRGB =     cmsCreateTransform(m_wheelProfile,  TYPE_RGB_DBL,  m_RGBProfile,    TYPE_RGB_DBL, INTENT_PERCEPTUAL,0);
-		m_wheelToCMYK =    cmsCreateTransform(m_wheelProfile,  TYPE_RGB_DBL,  m_CMYKProfile,   TYPE_CMYK_DBL,INTENT_PERCEPTUAL,0);
-		m_wheelToDisplay = cmsCreateTransform(m_wheelProfile,  TYPE_RGB_DBL,  m_displayProfile,TYPE_RGB_DBL, INTENT_PERCEPTUAL,0);
-		m_RGBToWheel =	   cmsCreateTransform(m_RGBProfile,    TYPE_RGB_DBL,  m_wheelProfile,  TYPE_RGB_DBL, INTENT_PERCEPTUAL,0);
-		m_CMYKToWheel =    cmsCreateTransform(m_CMYKProfile,   TYPE_CMYK_DBL, m_wheelProfile,  TYPE_RGB_DBL, INTENT_PERCEPTUAL,0);
-		m_displayToWheel = cmsCreateTransform(m_displayProfile,TYPE_RGB_DBL,  m_wheelProfile,  TYPE_RGB_DBL, INTENT_PERCEPTUAL,0);
+		createAndFreeTransform(m_wheelToRGB,     m_wheelProfile,  TYPE_RGB_DBL,  m_RGBProfile,    TYPE_RGB_DBL);
+		createAndFreeTransform(m_wheelToCMYK,    m_wheelProfile,  TYPE_RGB_DBL,  m_CMYKProfile,   TYPE_CMYK_DBL);
+		createAndFreeTransform(m_wheelToDisplay, m_wheelProfile,  TYPE_RGB_DBL,  m_displayProfile,TYPE_RGB_DBL);
+		createAndFreeTransform(m_RGBToWheel,     m_RGBProfile,    TYPE_RGB_DBL,  m_wheelProfile,  TYPE_RGB_DBL);
+		createAndFreeTransform(m_CMYKToWheel,    m_CMYKProfile,   TYPE_CMYK_DBL, m_wheelProfile,  TYPE_RGB_DBL);
+		createAndFreeTransform(m_displayToWheel, m_displayProfile,TYPE_RGB_DBL,  m_wheelProfile,  TYPE_RGB_DBL);
 	}
 }
 
@@ -146,12 +213,12 @@ void Color::SetRGBProfile(cmsHPROFILE profile, Bool updateTransform)
 {
 	m_RGBProfile = profile;
 	if(updateTransform){
-		m_RGBToWheel =   cmsCreateTransform(m_RGBProfile,    TYPE_RGB_DBL,  m_wheelProfile,  TYPE_RGB_DBL, INTENT_PERCEPTUAL,0);
-		m_RGBToCMYK =    cmsCreateTransform(m_RGBProfile,    TYPE_RGB_DBL,  m_CMYKProfile,   TYPE_CMYK_DBL,INTENT_PERCEPTUAL,0);
-		m_RGBToDisplay = cmsCreateTransform(m_RGBProfile,    TYPE_RGB_DBL,  m_displayProfile,TYPE_RGB_DBL, INTENT_PERCEPTUAL,0);
-		m_wheelToRGB =	 cmsCreateTransform(m_wheelProfile,  TYPE_RGB_DBL,  m_RGBProfile,    TYPE_RGB_DBL, INTENT_PERCEPTUAL,0);
-		m_CMYKToRGB =    cmsCreateTransform(m_CMYKProfile,   TYPE_CMYK_DBL, m_RGBProfile,    TYPE_RGB_DBL, INTENT_PERCEPTUAL,0);
-		m_displayToRGB = cmsCreateTransform(m_displayProfile,TYPE_RGB_DBL,  m_RGBProfile,    TYPE_RGB_DBL, INTENT_PERCEPTUAL,0);
+		createAndFreeTransform(m_RGBToWheel,   m_RGBProfile,    TYPE_RGB_DBL,  m_wheelProfile,  TYPE_RGB_DBL);
+		createAndFreeTransform(m_RGBToCMYK,    m_RGBProfile,    TYPE_RGB_DBL,  m_CMYKProfile,   TYPE_CMYK_DBL);
+		createAndFreeTransform(m_RGBToDisplay, m_RGBProfile,    TYPE_RGB_DBL,  m_displayProfile,TYPE_RGB_DBL);
+		createAndFreeTransform(m_wheelToRGB,   m_wheelProfile,  TYPE_RGB_DBL,  m_RGBProfile,    TYPE_RGB_DBL);
+		createAndFreeTransform(m_CMYKToRGB,    m_CMYKProfile,   TYPE_CMYK_DBL, m_RGBProfile,    TYPE_RGB_DBL);
+		createAndFreeTransform(m_displayToRGB, m_displayProfile,TYPE_RGB_DBL,  m_RGBProfile,    TYPE_RGB_DBL);
 	}
 }
 
@@ -159,12 +226,12 @@ void Color::SetCMYKProfile(cmsHPROFILE profile, Bool updateTransform)
 {
 	m_CMYKProfile = profile;
 	if(updateTransform){
-		m_CMYKToWheel =   cmsCreateTransform(m_CMYKProfile,   TYPE_CMYK_DBL, m_wheelProfile,  TYPE_RGB_DBL,  INTENT_PERCEPTUAL,0);
-		m_CMYKToRGB =     cmsCreateTransform(m_CMYKProfile,   TYPE_CMYK_DBL, m_RGBProfile,    TYPE_RGB_DBL,  INTENT_PERCEPTUAL,0);
-		m_CMYKToDisplay = cmsCreateTransform(m_CMYKProfile,   TYPE_CMYK_DBL, m_displayProfile,TYPE_RGB_DBL,  INTENT_PERCEPTUAL,0);
-		m_wheelToCMYK =	  cmsCreateTransform(m_wheelProfile,  TYPE_RGB_DBL,  m_CMYKProfile,   TYPE_CMYK_DBL, INTENT_PERCEPTUAL,0);
-		m_RGBToCMYK =     cmsCreateTransform(m_RGBProfile,    TYPE_RGB_DBL,  m_CMYKProfile,   TYPE_CMYK_DBL, INTENT_PERCEPTUAL,0);
-		m_displayToCMYK = cmsCreateTransform(m_displayProfile,TYPE_RGB_DBL,  m_CMYKProfile,   TYPE_CMYK_DBL, INTENT_PERCEPTUAL,0);
+		createAndFreeTransform(m_CMYKToWheel,   m_CMYKProfile,   TYPE_CMYK_DBL, m_wheelProfile,  TYPE_RGB_DBL);
+		createAndFreeTransform(m_CMYKToRGB,     m_CMYKProfile,   TYPE_CMYK_DBL, m_RGBProfile,    TYPE_RGB_DBL);
+		createAndFreeTransform(m_CMYKToDisplay, m_CMYKProfile,   TYPE_CMYK_DBL, m_displayProfile,TYPE_RGB_DBL);
+		createAndFreeTransform(m_wheelToCMYK,   m_wheelProfile,  TYPE_RGB_DBL,  m_CMYKProfile,   TYPE_CMYK_DBL);
+		createAndFreeTransform(m_RGBToCMYK,     m_RGBProfile,    TYPE_RGB_DBL,  m_CMYKProfile,   TYPE_CMYK_DBL);
+		createAndFreeTransform(m_displayToCMYK, m_displayProfile,TYPE_RGB_DBL,  m_CMYKProfile,   TYPE_CMYK_DBL);
 	}
 }
 
@@ -172,29 +239,29 @@ void Color::SetDisplayProfile(cmsHPROFILE profile, Bool updateTransform)
 {
 	m_displayProfile = profile;
 	if(updateTransform){
-		m_displayToWheel =  cmsCreateTransform(m_displayProfile, TYPE_RGB_DBL,  m_wheelProfile,   TYPE_RGB_DBL,  INTENT_PERCEPTUAL,0);
-		m_displayToRGB =    cmsCreateTransform(m_displayProfile, TYPE_RGB_DBL,  m_RGBProfile,     TYPE_RGB_DBL,  INTENT_PERCEPTUAL,0);
-		m_displayToCMYK =   cmsCreateTransform(m_displayProfile, TYPE_RGB_DBL,  m_CMYKProfile,    TYPE_CMYK_DBL, INTENT_PERCEPTUAL,0);
-		m_wheelToDisplay =	cmsCreateTransform(m_wheelProfile,   TYPE_RGB_DBL,  m_displayProfile, TYPE_RGB_DBL,  INTENT_PERCEPTUAL,0);
-		m_RGBToDisplay =    cmsCreateTransform(m_RGBProfile,     TYPE_RGB_DBL,  m_displayProfile, TYPE_RGB_DBL,  INTENT_PERCEPTUAL,0);
-		m_CMYKToDisplay =   cmsCreateTransform(m_CMYKProfile,    TYPE_CMYK_DBL, m_displayProfile, TYPE_RGB_DBL,  INTENT_PERCEPTUAL,0);
+		createAndFreeTransform(m_displayToWheel, m_displayProfile, TYPE_RGB_DBL,  m_wheelProfile,   TYPE_RGB_DBL);
+		createAndFreeTransform(m_displayToRGB,   m_displayProfile, TYPE_RGB_DBL,  m_RGBProfile,     TYPE_RGB_DBL);
+		createAndFreeTransform(m_displayToCMYK,  m_displayProfile, TYPE_RGB_DBL,  m_CMYKProfile,    TYPE_CMYK_DBL);
+		createAndFreeTransform(m_wheelToDisplay, m_wheelProfile,   TYPE_RGB_DBL,  m_displayProfile, TYPE_RGB_DBL);
+		createAndFreeTransform(m_RGBToDisplay,   m_RGBProfile,     TYPE_RGB_DBL,  m_displayProfile, TYPE_RGB_DBL);
+		createAndFreeTransform(m_CMYKToDisplay,  m_CMYKProfile,    TYPE_CMYK_DBL, m_displayProfile, TYPE_RGB_DBL);
 	}
 }
 
 void Color::UpdateTransforms()
 {
-	m_wheelToRGB =     cmsCreateTransform(m_wheelProfile,   TYPE_RGB_DBL,  m_RGBProfile,     TYPE_RGB_DBL,  INTENT_PERCEPTUAL,0);
-	m_wheelToCMYK =    cmsCreateTransform(m_wheelProfile,   TYPE_RGB_DBL,  m_CMYKProfile,    TYPE_CMYK_DBL, INTENT_PERCEPTUAL,0);
-	m_wheelToDisplay = cmsCreateTransform(m_wheelProfile,   TYPE_RGB_DBL,  m_displayProfile, TYPE_RGB_DBL,  INTENT_PERCEPTUAL,0);
-	m_RGBToWheel =     cmsCreateTransform(m_RGBProfile,     TYPE_RGB_DBL,  m_wheelProfile,   TYPE_RGB_DBL,  INTENT_PERCEPTUAL,0);
-	m_RGBToCMYK =      cmsCreateTransform(m_RGBProfile,     TYPE_RGB_DBL,  m_CMYKProfile,    TYPE_CMYK_DBL, INTENT_PERCEPTUAL,0);
-	m_RGBToDisplay =   cmsCreateTransform(m_RGBProfile,     TYPE_RGB_DBL,  m_displayProfile, TYPE_RGB_DBL,  INTENT_PERCEPTUAL,0);
-	m_CMYKToWheel =    cmsCreateTransform(m_CMYKProfile,    TYPE_CMYK_DBL, m_wheelProfile,   TYPE_RGB_DBL,  INTENT_PERCEPTUAL,0);
-	m_CMYKToRGB =      cmsCreateTransform(m_CMYKProfile,    TYPE_CMYK_DBL, m_RGBProfile,     TYPE_RGB_DBL,  INTENT_PERCEPTUAL,0);
-	m_CMYKToDisplay =  cmsCreateTransform(m_CMYKProfile,    TYPE_CMYK_DBL, m_displayProfile, TYPE_RGB_DBL,  INTENT_PERCEPTUAL,0);
-	m_displayToWheel = cmsCreateTransform(m_displayProfile, TYPE_RGB_DBL,  m_wheelProfile,   TYPE_RGB_DBL,  INTENT_PERCEPTUAL,0);
-	m_displayToRGB =   cmsCreateTransform(m_displayProfile, TYPE_RGB_DBL,  m_RGBProfile,     TYPE_RGB_DBL,  INTENT_PERCEPTUAL,0);
-	m_displayToCMYK =  cmsCreateTransform(m_displayProfile, TYPE_RGB_DBL,  m_CMYKProfile,    TYPE_CMYK_DBL, INTENT_PERCEPTUAL,0);
+	createAndFreeTransform(m_wheelToRGB,     m_wheelProfile,   TYPE_RGB_DBL,  m_RGBProfile,     TYPE_RGB_DBL);
+	createAndFreeTransform(m_wheelToCMYK,    m_wheelProfile,   TYPE_RGB_DBL,  m_CMYKProfile,    TYPE_CMYK_DBL);
+	createAndFreeTransform(m_wheelToDisplay, m_wheelProfile,   TYPE_RGB_DBL,  m_displayProfile, TYPE_RGB_DBL);
+	createAndFreeTransform(m_RGBToWheel,     m_RGBProfile,     TYPE_RGB_DBL,  m_wheelProfile,   TYPE_RGB_DBL);
+	createAndFreeTransform(m_RGBToCMYK,      m_RGBProfile,     TYPE_RGB_DBL,  m_CMYKProfile,    TYPE_CMYK_DBL);
+	createAndFreeTransform(m_RGBToDisplay,   m_RGBProfile,     TYPE_RGB_DBL,  m_displayProfile, TYPE_RGB_DBL);
+	createAndFreeTransform(m_CMYKToWheel,    m_CMYKProfile,    TYPE_CMYK_DBL, m_wheelProfile,   TYPE_RGB_DBL);
+	createAndFreeTransform(m_CMYKToRGB,      m_CMYKProfile,    TYPE_CMYK_DBL, m_RGBProfile,     TYPE_RGB_DBL);
+	createAndFreeTransform(m_CMYKToDisplay,  m_CMYKProfile,    TYPE_CMYK_DBL, m_displayProfile, TYPE_RGB_DBL);
+	createAndFreeTransform(m_displayToWheel, m_displayProfile, TYPE_RGB_DBL,  m_wheelProfile,   TYPE_RGB_DBL);
+	createAndFreeTransform(m_displayToRGB,   m_displayProfile, TYPE_RGB_DBL,  m_RGBProfile,     TYPE_RGB_DBL);
+	createAndFreeTransform(m_displayToCMYK,  m_displayProfile, TYPE_RGB_DBL,  m_CMYKProfile,    TYPE_CMYK_DBL);
 }
 
 void Color::LoadICCProfiles()
@@ -256,6 +323,7 @@ void Color::LoadICCProfiles()
 							CMYKPos++;
 						}
 					}
+					cmsDeleteTransform(xform);
 				}
 				delete buffer2;
 			}
@@ -267,6 +335,38 @@ void Color::LoadICCProfiles()
 	}
 	BrowseFiles::Free(bf);
 }
+
+static void deleteTransform(cmsHTRANSFORM transform){
+	if(transform != 0){
+		cmsDeleteTransform(transform);
+	}
+}
+
+void Color::Unload()
+{
+	for(int i=0;i<m_RGBProfiles.GetCount();i++){
+		cmsCloseProfile(m_RGBProfiles[i].m_profile);
+	}
+	for(int i=0;i<m_CMYKProfiles.GetCount();i++){
+		cmsCloseProfile(m_CMYKProfiles[i].m_profile);
+	}
+	for(int i=0;i<m_spotProfiles.GetCount();i++){
+		cmsCloseProfile(m_spotProfiles[i].m_profile);
+	}
+	deleteTransform(m_wheelToRGB);
+	deleteTransform(m_wheelToCMYK);
+	deleteTransform(m_wheelToDisplay);
+	deleteTransform(m_RGBToWheel);
+	deleteTransform(m_RGBToCMYK);
+	deleteTransform(m_RGBToDisplay);
+	deleteTransform(m_CMYKToWheel);
+	deleteTransform(m_CMYKToRGB);
+	deleteTransform(m_CMYKToDisplay);
+	deleteTransform(m_displayToWheel);
+	deleteTransform(m_displayToRGB);
+	deleteTransform(m_displayToCMYK);
+}
+
 
 const Color &Color::operator=(const Color &other)
 {

@@ -18,6 +18,7 @@ class PaletteColor :public SpotColor
 		~PaletteColor();
 
 		virtual Bool Init(void);
+<<<<<<< HEAD
 		virtual void Sized(Int32 w,Int32 h);
 		virtual void DrawMsg(Int32 x1,Int32 y1,Int32 x2,Int32 y2, const BaseContainer &msg);
 		virtual Int32 Message(const BaseContainer& msg, BaseContainer& result);
@@ -26,8 +27,21 @@ class PaletteColor :public SpotColor
 		void UpdateBitmaps();
 		void SetColorID(Int32 id){m_colorID = id;}
 		void SetPaletteID(Int32 id){m_palette = id;}
+=======
+		virtual void Sized(LONG w,LONG h);
+		virtual void DrawMsg(LONG x1,LONG y1,LONG x2,LONG y2, const BaseContainer &msg);
+		virtual Bool InputEvent(const BaseContainer &msg);
+		virtual LONG Message(const BaseContainer& msg, BaseContainer& result);
+		virtual Bool CoreMessage(LONG id, const BaseContainer& msg);
+		virtual void UpdateColor(Color color);
+		void UpdateBitmaps();
+		void SetColorID(LONG id){m_colorID = id;}
+		void SetPaletteID(LONG id){m_palette = id;}
+		void SetSelectCallback(void (*selectCallback)(Color, void *), void *data){m_selectCallback = selectCallback;m_selectCallbackData = data;}
+>>>>>>> 653517188f352a024a1dec4993f6159c9681dd65
 		static void LoadIcons();
 		static void UnloadIcons();
+		
 	private:
 		Int32 m_palette, m_colorID;
 		HOVER_STATE m_hoverState;
@@ -38,4 +52,6 @@ class PaletteColor :public SpotColor
 		BaseBitmap *m_hoverBitmap;
 		BaseBitmap *m_leftHoverBitmap;
 		BaseBitmap *m_rightHoverBitmap;
+		void (*m_selectCallback)(Color, void *);
+		void *m_selectCallbackData;
 };
