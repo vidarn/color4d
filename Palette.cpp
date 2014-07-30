@@ -53,7 +53,7 @@ void Palette::SetColor(Int32 index, const Color &color)
 	m_colors[index] = color;
 }
 
-void Palette::InsertColor(LONG index, const Color &color)
+void Palette::InsertColor(Int32 index, const Color &color)
 {
 	GePrint("Insert Color!");
 	if(index >= m_colors.GetCount()){
@@ -113,20 +113,16 @@ void Palette::GetPalettes(GeDynamicArray<Palette> &palettes)
 	}
 }
 
-<<<<<<< HEAD
-Int32 Palette::SetPalette(const Palette &palette)
-=======
-BaseContainer *Palette::GetPaletteContainer(LONG paletteID, BaseContainer *bc)
+BaseContainer *Palette::GetPaletteContainer(Int32 paletteID, BaseContainer *bc)
 {
-	LONG count = bc->GetLong(NUM_PALETTES);
+	Int32 count = bc->GetInt32(NUM_PALETTES);
 	if(paletteID < count){
 		return bc->GetContainerInstance(FIRST_PALETTE+paletteID);
 	}
 	return nullptr;
 }
 
-/*LONG Palette::SetPalette(const Palette &palette)
->>>>>>> 653517188f352a024a1dec4993f6159c9681dd65
+/*Int32 Palette::SetPalette(const Palette &palette)
 {
 	BaseContainer *bc = GetWorldPluginData(PALETTE_ID);
 	Int32 count = bc->GetInt32(NUM_PALETTES);
@@ -152,20 +148,6 @@ BaseContainer *Palette::GetPaletteContainer(LONG paletteID, BaseContainer *bc)
 void Palette::SetPaletteColor(Int32 paletteID, Int32 colorID, const Color &col)
 {
 	BaseContainer *bc = GetWorldPluginData(PALETTE_ID);
-<<<<<<< HEAD
-	Int32 count = bc->GetInt32(NUM_PALETTES);
-	if(paletteID < count){
-		BaseContainer *c = bc->GetContainerInstance(FIRST_PALETTE+paletteID);
-		if(c!= nullptr){
-			Palette pal;
-			pal.FromContainer(*c);
-			pal.SetColor(colorID,col);
-			pal.ToContainer(*c);
-			bc->SetContainer(FIRST_PALETTE+paletteID,*c);
-			SetWorldPluginData(PALETTE_ID,*bc,FALSE);
-			UpdateColor(paletteID, colorID);
-		}
-=======
 	BaseContainer *c = GetPaletteContainer(paletteID,bc);
 	if(c!= nullptr){
 		Palette pal;
@@ -178,7 +160,7 @@ void Palette::SetPaletteColor(Int32 paletteID, Int32 colorID, const Color &col)
 	}
 }
 
-void Palette::InsertPaletteColor(LONG paletteID, LONG colorID, const Color &col)
+void Palette::InsertPaletteColor(Int32 paletteID, Int32 colorID, const Color &col)
 {
 	BaseContainer *bc = GetWorldPluginData(PALETTE_ID);
 	BaseContainer *c = GetPaletteContainer(paletteID,bc);
@@ -190,29 +172,17 @@ void Palette::InsertPaletteColor(LONG paletteID, LONG colorID, const Color &col)
 		bc->SetContainer(FIRST_PALETTE+paletteID,*c);
 		SetWorldPluginData(PALETTE_ID,*bc,FALSE);
 		UpdatePalette(paletteID);
->>>>>>> 653517188f352a024a1dec4993f6159c9681dd65
 	}
 }
 
 void Palette::GetPaletteColor(Int32 paletteID, Int32 colorID, Color &col)
 {
 	BaseContainer *bc = GetWorldPluginData(PALETTE_ID);
-<<<<<<< HEAD
-	Int32 count = bc->GetInt32(NUM_PALETTES);
-	if(paletteID < count){
-		BaseContainer *c = bc->GetContainerInstance(FIRST_PALETTE+paletteID);
-		if(c!= nullptr){
-			Palette pal;
-			pal.FromContainer(*c);
-			col = pal[colorID];
-		}
-=======
 	BaseContainer *c = GetPaletteContainer(paletteID,bc);
 	if(c!= nullptr){
 		Palette pal;
 		pal.FromContainer(*c);
 		col = pal[colorID];
->>>>>>> 653517188f352a024a1dec4993f6159c9681dd65
 	}
 }
 
@@ -231,10 +201,10 @@ Int32 Palette::AddPalette(const Palette &palette)
 
 void Palette::UpdatePalette(Int32 id)
 {
-	SpecialEventAdd(PALETTE_ID,-1,id);
+	SpecialEventAdd(PALETTE_ID,-1,(Int64)id);
 }
 
 void Palette::UpdateColor(Int32 palette, Int32 color)
 {
-	SpecialEventAdd(PALETTE_ID,color,palette);
+	SpecialEventAdd(PALETTE_ID,color,(Int64)palette);
 }

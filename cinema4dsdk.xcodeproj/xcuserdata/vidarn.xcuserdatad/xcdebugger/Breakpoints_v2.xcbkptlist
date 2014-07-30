@@ -62,9 +62,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "224"
-            endingLineNumber = "224"
-            landmarkName = "Color::LoadICCProfiles()"
-            landmarkType = "5">
+            endingLineNumber = "224">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -79,7 +77,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "226"
             endingLineNumber = "226"
-            landmarkName = "Color::LoadICCProfiles()"
+            landmarkName = "Color::SetCMYKProfile(cmsHPROFILE profile, Bool updateTransform)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -94,9 +92,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "237"
-            endingLineNumber = "237"
-            landmarkName = "Color::LoadICCProfiles()"
-            landmarkType = "5">
+            endingLineNumber = "237">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -111,7 +107,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "231"
             endingLineNumber = "231"
-            landmarkName = "Color::LoadICCProfiles()"
+            landmarkName = "Color::SetCMYKProfile(cmsHPROFILE profile, Bool updateTransform)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -127,14 +123,14 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "248"
             endingLineNumber = "248"
-            landmarkName = "Color::LoadICCProfiles()"
+            landmarkName = "Color::SetDisplayProfile(cmsHPROFILE profile, Bool updateTransform)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Color.cpp"
@@ -143,7 +139,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "258"
             endingLineNumber = "258"
-            landmarkName = "Color::LoadICCProfiles()"
+            landmarkName = "Color::UpdateTransforms()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -159,7 +155,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "232"
             endingLineNumber = "232"
-            landmarkName = "Color::LoadICCProfiles()"
+            landmarkName = "Color::SetCMYKProfile(cmsHPROFILE profile, Bool updateTransform)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -175,7 +171,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "12"
             endingLineNumber = "12"
-            landmarkName = "cmsErrorHandler(cmsContext ContextID, cmsUInt32Number ErrorCode, const char *Text)"
+            landmarkName = "IsKeyDown(Int32 key)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -56,7 +56,7 @@ Bool ColorPickerDialog::CreateLayout(void)
 		AddDlgGroup(DLG_OK|DLG_CANCEL);
     GroupEnd();
 
-	GeDynamicArray<Real> offsets;
+	GeDynamicArray<Float> offsets;
 	offsets.Insert( 0.0,0);
 	m_colorWheel.SetOffsets(offsets);
 
@@ -76,9 +76,9 @@ Bool ColorPickerDialog::InitValues(void)
 
 Bool ColorPickerDialog::Command(Int32 id,const BaseContainer &msg)
 {
-	LONG val;
+	Int32 val;
 	String str;
-	Real rVal[4];
+	Float rVal[4];
 	Color col;
     switch (id)
     {

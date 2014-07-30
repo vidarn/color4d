@@ -11,11 +11,11 @@ void ColorScheme::Init(){
 }
 void ColorScheme::Free()
 {
-	for(LONG i=0;i<m_schemes.GetCount();i++){
+	for(Int32 i=0;i<m_schemes.GetCount();i++){
 		delete m_schemes[i];
 	}
 }
-ColorScheme *ColorScheme::GetColorScheme(LONG id)
+ColorScheme *ColorScheme::GetColorScheme(Int32 id)
 {
 	return m_schemes[id];
 }
@@ -24,16 +24,16 @@ ColorScheme *ColorScheme::GetColorScheme(LONG id)
 
 void TriadScheme::SetupOffsets(ColorWheel *wheel)
 {
-	GeDynamicArray<Real> offsets;
+	GeDynamicArray<Float> offsets;
 	offsets.Insert( 0.0,0);
 	offsets.Insert( 0.4,1);
 	offsets.Insert(-0.4,2);
 	wheel->SetOffsets(offsets);
 }
 
-void TriadScheme::MarkerChanged(LONG marker, Real dist,GeDynamicArray<Real> &offsets)
+void TriadScheme::MarkerChanged(Int32 marker, Float dist,GeDynamicArray<Float> &offsets)
 {
-	LONG otherMarker = marker == 1? 2 : 1;
+	Int32 otherMarker = marker == 1? 2 : 1;
 	offsets[marker] = dist;
 	offsets[otherMarker] = -dist;
 }
@@ -42,7 +42,7 @@ void TriadScheme::MarkerChanged(LONG marker, Real dist,GeDynamicArray<Real> &off
 
 void AdjacentScheme::SetupOffsets(ColorWheel *wheel)
 {
-	GeDynamicArray<Real> offsets;
+	GeDynamicArray<Float> offsets;
 	offsets.Insert( 0.0,0);
 	offsets.Insert( 0.1,1);
 	offsets.Insert(-0.1,2);
@@ -53,7 +53,7 @@ void AdjacentScheme::SetupOffsets(ColorWheel *wheel)
 
 void MonoScheme::SetupOffsets(ColorWheel *wheel)
 {
-	GeDynamicArray<Real> offsets;
+	GeDynamicArray<Float> offsets;
 	offsets.Insert( 0.0,0);
 	wheel->SetOffsets(offsets);
 }
@@ -63,7 +63,7 @@ void MonoScheme::SetupOffsets(ColorWheel *wheel)
 
 void TetradScheme::SetupOffsets(ColorWheel *wheel)
 {
-	GeDynamicArray<Real> offsets;
+	GeDynamicArray<Float> offsets;
 	offsets.Insert( 0.0,0);
 	offsets.Insert( 0.1,1);
 	offsets.Insert( 0.5,2);
@@ -71,7 +71,7 @@ void TetradScheme::SetupOffsets(ColorWheel *wheel)
 	wheel->SetOffsets(offsets);
 }
 
-void TetradScheme::MarkerChanged(LONG marker, Real dist,GeDynamicArray<Real> &offsets)
+void TetradScheme::MarkerChanged(Int32 marker, Float dist,GeDynamicArray<Float> &offsets)
 {
 	if(marker != 2){
 		offsets[marker] = dist;

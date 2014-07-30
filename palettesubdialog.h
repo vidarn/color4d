@@ -17,17 +17,17 @@ public:
 
     virtual Bool CreateLayout(void);
     virtual Bool InitValues(void);
-    virtual Bool Command(LONG id,const BaseContainer &msg);
-	virtual Bool CoreMessage(LONG id, const BaseContainer& msg);
+    virtual Bool Command(Int32 id,const BaseContainer &msg);
+	virtual Bool CoreMessage(Int32 id, const BaseContainer& msg);
 
 	void SetSelectCallback(void (*selectCallback)(Color, void *), void *data);
 	void SetDragable(Bool state);
-	void LoadPalette(LONG id);
+	void LoadPalette(Int32 id);
 	void PaletteLayout();
 
 	BaseContainer m_Settings;
 
-	LONG m_paletteID;
+	Int32 m_paletteID;
 	Palette m_palette;
 	PaletteColor *m_spotColors;
 	C4DGadget *spotArea;

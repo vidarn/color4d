@@ -122,17 +122,10 @@ void ColorWheel::UpdateCanvas()
 			alpha = 120;
 		}
 		m_canvas->SetDrawMode(GE_CM_DRAWMODE_BLEND,alpha);
-<<<<<<< HEAD
 		Float val = m_color[0] + m_offsets[i];
 		Int32 currX =  cos(val*PI2)*m_valuePosition+m_centerX;
 		Int32 currY = -sin(val*PI2)*m_valuePosition+m_centerY;
-		m_canvas->Blit(currX,currY,*m_markerClipMap,0,0,m_markerClipMap->GetBw(),m_markerClipMap->GetBh(),GE_CM_BLIT_COPY);
-=======
-		Real val = m_color[0] + m_offsets[i];
-		LONG currX =  cos(val*PI2)*m_valuePosition+m_centerX;
-		LONG currY = -sin(val*PI2)*m_valuePosition+m_centerY;
 		m_canvas->Blit(currX-m_markerClipMap->GetBw()*0.5,currY-m_markerClipMap->GetBh()*0.5,*m_markerClipMap,0,0,m_markerClipMap->GetBw(),m_markerClipMap->GetBh(),GE_CM_BLIT_COPY);
->>>>>>> 653517188f352a024a1dec4993f6159c9681dd65
 	}
 	m_canvas->EndDraw();
 }
@@ -207,19 +200,11 @@ Bool ColorWheel::InputEvent(const BaseContainer &msg)
 			for(int i=0;i<m_offsets.GetCount();i++){
 				Float val = m_color[0];
 				val += m_offsets[i];
-<<<<<<< HEAD
-				Int32 currX =  cos(val*PI2)*m_valuePosition+m_centerX+m_valueRadius;
-				Int32 currY = -sin(val*PI2)*m_valuePosition+m_centerY+m_valueRadius;
+				Int32 currX =  cos(val*PI2)*m_valuePosition+m_centerX;
+				Int32 currY = -sin(val*PI2)*m_valuePosition+m_centerY;
 				Int32 dx = m_mouseX-currX;
 				Int32 dy = m_mouseY-currY;
 				Float dist = Sqrt(Float(dx*dx + dy*dy));
-=======
-				LONG currX =  cos(val*PI2)*m_valuePosition+m_centerX;
-				LONG currY = -sin(val*PI2)*m_valuePosition+m_centerY;
-				LONG dx = m_mouseX-currX;
-				LONG dy = m_mouseY-currY;
-				Real dist = Sqrt(Real(dx*dx + dy*dy));
->>>>>>> 653517188f352a024a1dec4993f6159c9681dd65
 				if(dist <= m_valueRadius){
 					m_selectedMarker = i;
 				}

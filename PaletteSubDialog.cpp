@@ -35,7 +35,7 @@ Bool PaletteSubDialog::InitValues(void)
     return TRUE;
 }
 
-Bool PaletteSubDialog::Command(LONG id,const BaseContainer &msg)
+Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
 {
 	GeDynamicArray<Palette> pals;
     switch (id)
@@ -51,13 +51,13 @@ Bool PaletteSubDialog::Command(LONG id,const BaseContainer &msg)
     return GeDialog::Command(id,msg);
 }
 
-Bool PaletteSubDialog::CoreMessage(LONG id, const BaseContainer& msg)
+Bool PaletteSubDialog::CoreMessage(Int32 id, const BaseContainer& msg)
 {
     switch ( id )
     {
       case  PALETTE_ID:                                      // internal message
-			LONG color =  (LONG) msg.GetVoid( BFM_CORE_PAR1 );
-			LONG palette = (LONG) msg.GetVoid( BFM_CORE_PAR2 );
+			Int64 color =  (Int64) msg.GetVoid( BFM_CORE_PAR1 );
+			Int64 palette = (Int64) msg.GetVoid( BFM_CORE_PAR2 );
 			if(palette == m_paletteID && color == -1){
 				GePrint("Update palette!");
 				LoadPalette(m_paletteID);
@@ -84,7 +84,7 @@ void PaletteSubDialog::SetDragable(Bool state)
 	}
 }
 
-void PaletteSubDialog::LoadPalette(LONG id)
+void PaletteSubDialog::LoadPalette(Int32 id)
 {
 	GeDynamicArray<Palette> pals;
 	Palette::GetPalettes(pals);
@@ -102,7 +102,7 @@ void PaletteSubDialog::PaletteLayout()
 		delete[] m_spotColors;
 	}
 	m_spotColors = new PaletteColor[m_palette.GetCount()];
-	GePrint("PaletteLayout: " + LongToString(m_palette.GetCount()));
+	GePrint("PaletteLayout: " + String::IntToString(m_palette.GetCount()));
 	for(int i=0;i<m_palette.GetCount();i++){
 		m_spotColors[i].SetColor(m_palette[i]);
 		m_spotColors[i].SetColorID(i);

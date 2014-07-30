@@ -143,13 +143,13 @@ bool Color::FromString(const String &str)
 	String s = str;
 	cleanString(s);
 	if(s.GetLength() >= 6){
-		Real val[3];
+		Float val[3];
 		bool valid = true;
-		for(LONG i=0;i<3;i++){
+		for(Int32 i=0;i<3;i++){
 			val[i] = (findHexChar(s[i*2],valid)*16.0 + findHexChar(s[i*2+1],valid))/255.0;
 		}
 		if(valid){
-			for(LONG i=0;i<3;i++){
+			for(Int32 i=0;i<3;i++){
 				m_val[i] = val[i];
 			}
 		}
@@ -161,7 +161,7 @@ void Color::ToString(String &str)
 {
 	str = "#000000";
 	const String hex("0123456789ABCDEF");
-	for(LONG i=0;i<3;i++){
+	for(Int32 i=0;i<3;i++){
 		unsigned char val = m_val[i]*255.0;
 		str[i*2+1]   = hex[val/16];
 		str[i*2+2] = hex[val%16];

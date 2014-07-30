@@ -25,7 +25,7 @@ Bool SliderSubDialog::CreateLayout(void)
 				iccRGBCombo  = AddComboBox(IDC_RGBICC,BFH_SCALEFIT,10,10);
 			GroupEnd();
 			GroupBegin(4,BFH_SCALEFIT,2,0,String(),0);
-				for(LONG i=0;i<3;i++){
+				for(Int32 i=0;i<3;i++){
 					RGBeditNumber[i] = AddEditNumberArrows(IDC_R+i,BFH_LEFT);
 					RGBsliderArea[i] = AddUserArea(IDC_RSLIDER+i,BFH_SCALEFIT);	
 					m_RGBSlider[i].SetParent(m_parent);
@@ -39,7 +39,7 @@ Bool SliderSubDialog::CreateLayout(void)
 			m_hexText = AddEditText(IDC_HEXTEXT,BFH_SCALEFIT);
 			iccCMYKCombo = AddComboBox(IDC_CMYKICC,BFH_SCALEFIT,10,10);
 			GroupBegin(4,BFH_SCALEFIT,2,0,String(),0);
-				for(LONG i=0;i<4;i++){
+				for(Int32 i=0;i<4;i++){
 					CMYKeditNumber[i] = AddEditNumberArrows(IDC_C+i,BFH_LEFT);
 					CMYKsliderArea[i] = AddUserArea(IDC_CSLIDER+i,BFH_SCALEFIT);	
 					m_CMYKSlider[i].SetParent(m_parent);
@@ -65,11 +65,11 @@ Bool SliderSubDialog::InitValues(void)
     return TRUE;
 }
 
-Bool SliderSubDialog::Command(LONG id,const BaseContainer &msg)
+Bool SliderSubDialog::Command(Int32 id,const BaseContainer &msg)
 {
-	LONG val;
+	Int32 val;
 	String str;
-	Real rVal[4];
+	Float rVal[4];
 	Color col;
     switch (id)
     {
@@ -77,18 +77,18 @@ Bool SliderSubDialog::Command(LONG id,const BaseContainer &msg)
 	case IDC_G:
 	case IDC_B:
 		for(int i=0;i<3;i++){
-			GetReal(RGBeditNumber[i],rVal[i]);
+			GetFloat(RGBeditNumber[i],rVal[i]);
 		}
 		UpdateColor(Color(rVal[0],rVal[1],rVal[2]));
 		break;
 	case IDC_RGBICC:
 		val;
-		GetLong(iccRGBCombo,val);
+		GetInt32(iccRGBCombo,val);
 		ChangeRGBSliderProfile(val);
 		break;
 	case IDC_CMYKICC:
 		val;
-		GetLong(iccCMYKCombo,val);
+		GetInt32(iccCMYKCombo,val);
 		ChangeCMYKSliderProfile(val);
 		break;
 	case IDC_HEXTEXT:
@@ -119,11 +119,11 @@ void SliderSubDialog::FindICCProfiles(){
 		spotbc.SetString(i,spotProfiles[i].m_name);
 	}
 	AddChildren(iccRGBCombo,RGBbc);
-	SetLong(iccRGBCombo,0);
+	SetInt32(iccRGBCombo,0);
 	Enable(iccRGBCombo,TRUE);
 
 	AddChildren(iccCMYKCombo,CMYKbc);
-	SetLong(iccCMYKCombo,0);
+	SetInt32(iccCMYKCombo,0);
 	Enable(iccCMYKCombo,TRUE);
 
 	ChangeRGBSliderProfile(0);
@@ -136,26 +136,26 @@ void SliderSubDialog::UpdateColor(Color color){
 void SliderSubDialog::UpdateColorFromParent(Color color){
 	Color wheel = color.Convert(COLOR_SOURCE_WHEEL);
 	Color RGB = color.Convert(COLOR_SOURCE_RGB);
-	for(LONG i=0;i<3;i++){
+	for(Int32 i=0;i<3;i++){
 		m_RGBSlider[i].UpdateColor(RGB);
-		SetReal(RGBeditNumber[i],RGB[i],0.0,1.0,0.01,FORMAT_REAL);
+		SetFloat(RGBeditNumber[i],RGB[i],0.0,1.0,0.01,FORMAT_FLOAT);
 	}
 	Color CMYK = color.Convert(COLOR_SOURCE_CMYK);
-	for(LONG i=0;i<4;i++){
+	for(Int32 i=0;i<4;i++){
 		m_CMYKSlider[i].UpdateColor(CMYK);
-		SetReal(CMYKeditNumber[i],CMYK[i]);
+		SetFloat(CMYKeditNumber[i],CMYK[i]);
 	}
 	String s;
 	RGB.ToString(s);
 	SetString(m_hexText,s);
 }
 
-void SliderSubDialog::ChangeRGBSliderProfile(LONG index)
+void SliderSubDialog::ChangeRGBSliderProfile(Int32 index)
 {
 	Color::SetRGBProfile(index,TRUE);
 }
 
-void SliderSubDialog::ChangeCMYKSliderProfile(LONG index)
+void SliderSubDialog::ChangeCMYKSliderProfile(Int32 index)
 {
 	Color::SetCMYKProfile(index,TRUE);
 }

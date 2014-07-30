@@ -117,10 +117,7 @@ Int32 PaletteColor::Message(const BaseContainer& msg, BaseContainer& result)
 		GetDragObject(msg, &type, &object);
 		if(type == DRAGTYPE_RGB){
 			Vector *color = static_cast<Vector*>(object);
-<<<<<<< HEAD
 			if(msg.GetInt32(BFM_DRAG_FINISHED)){
-=======
-			if(msg.GetLong(BFM_DRAG_FINISHED)){
 				switch(m_hoverState){
 					case HOVER_LEFT:
 						Palette::InsertPaletteColor(m_palette, m_colorID, Color(*color).SetSource(COLOR_SOURCE_DISPLAY));
@@ -132,7 +129,6 @@ Int32 PaletteColor::Message(const BaseContainer& msg, BaseContainer& result)
 						Palette::SetPaletteColor(m_palette, m_colorID, Color(*color).SetSource(COLOR_SOURCE_DISPLAY));
 						break;
 				}
->>>>>>> 653517188f352a024a1dec4993f6159c9681dd65
 				m_hoverState = HOVER_NONE;
 			}
 			else{
@@ -169,13 +165,10 @@ Int32 PaletteColor::Message(const BaseContainer& msg, BaseContainer& result)
 	return res;
 }
 
-<<<<<<< HEAD
-Bool PaletteColor::CoreMessage(Int32 id, const BaseContainer& msg)
-=======
 Bool PaletteColor::InputEvent(const BaseContainer &msg)
 {
-	if(msg.GetLong(BFM_INPUT_DEVICE) == BFM_INPUT_MOUSE){
-		if(msg.GetLong(BFM_INPUT_CHANNEL) == BFM_INPUT_MOUSELEFT){
+	if(msg.GetInt32(BFM_INPUT_DEVICE) == BFM_INPUT_MOUSE){
+		if(msg.GetInt32(BFM_INPUT_CHANNEL) == BFM_INPUT_MOUSELEFT){
 			if(m_selectCallback != NULL){
 				m_selectCallback(m_color,m_selectCallbackData);
 			}
@@ -184,8 +177,7 @@ Bool PaletteColor::InputEvent(const BaseContainer &msg)
 	return SpotColor::InputEvent(msg);
 }
 
-Bool PaletteColor::CoreMessage(LONG id, const BaseContainer& msg)
->>>>>>> 653517188f352a024a1dec4993f6159c9681dd65
+Bool PaletteColor::CoreMessage(Int32 id, const BaseContainer& msg)
 {
     switch ( id )
     {

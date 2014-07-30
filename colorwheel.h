@@ -37,14 +37,9 @@ class ColorWheel : public GeUserArea
 		GeClipMap *m_wheelClipMap;
 		GeClipMap *m_markerClipMap;
 		GeClipMap *m_canvas;
-<<<<<<< HEAD
+        ColorScheme *m_scheme;
 		Int32 m_mouseX;
 		Int32 m_mouseY;
-=======
-		ColorScheme *m_scheme;
-		LONG m_mouseX;
-		LONG m_mouseY;
->>>>>>> 653517188f352a024a1dec4993f6159c9681dd65
 		Color m_color;
 		Int32 m_w;
 		Int32 m_h;

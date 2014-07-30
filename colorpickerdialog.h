@@ -27,14 +27,8 @@ public:
     virtual Int32 Message(const BaseContainer& msg, BaseContainer& result);
 
 	virtual void UpdateColor(Color color);
-<<<<<<< HEAD
-	void FindICCProfiles();
-	void ChangeRGBSliderProfile(Int32 index);
-	void ChangeCMYKSliderProfile(Int32 index);
+
 	void LoadSpotColors(Int32 index);
-=======
-	void LoadSpotColors(LONG index);
->>>>>>> 653517188f352a024a1dec4993f6159c9681dd65
 
 	BaseContainer m_Settings;
     BasePlugin *m_pPlugin;

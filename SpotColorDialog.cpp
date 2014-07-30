@@ -126,16 +126,12 @@ void SpotColorDialog::LoadSpotColors(Int32 index)
 			}
 			m_spotColors = new SpotColor[numColors];
 			for(int i=0;i<numColors;i+=7){
-<<<<<<< HEAD
+#pragma message("TODO: This looks too complicated... :/")
 				Int32 limit = i+7 < numColors ? i+7 : numColors;
-=======
-				// This looks too complicated... :/
-				LONG limit = i+7 < numColors ? i+7 : numColors;
->>>>>>> 653517188f352a024a1dec4993f6159c9681dd65
 				for(int ii=i;ii<limit;ii++){
 					cmsNamedColorInfo(colorList,ii,name,prefix,suffix,NULL,NULL);
 					String fullName = String(name) + String(suffix);
-					LONG pos;
+					Int32 pos;
 					if(!filterString.Content() || fullName.FindFirst(filterString,&pos)){
 						Color col;
 						cmsDoTransform(xform,&ii,RGB,1);
@@ -176,26 +172,14 @@ Bool SpotColorDialog::InitValues(void)
 
 Bool SpotColorDialog::Command(Int32 id,const BaseContainer &msg)
 {
-<<<<<<< HEAD
 	Int32 val;
-	Float rVal[4];
-    switch (id)
-    {
-	case IDC_SPOTICC:
-		val;
-		GetInt32(iccSpotCombo,val);
-		LoadSpotColors(val);
-		break;
-=======
-	LONG val;
     switch (id){
 		case IDC_SPOTICC:
 		case IDC_LABELCHECKBOX:
 		case IDC_SEARCHTEXT:
-			GetLong(iccSpotCombo,val);
+			GetInt32(iccSpotCombo,val);
 			LoadSpotColors(val);
 			break;
->>>>>>> 653517188f352a024a1dec4993f6159c9681dd65
     }
     return GeDialog::Command(id,msg);
 }

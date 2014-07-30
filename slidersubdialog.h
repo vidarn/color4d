@@ -15,12 +15,12 @@ public:
 
     virtual Bool CreateLayout(void);
     virtual Bool InitValues(void);
-    virtual Bool Command(LONG id,const BaseContainer &msg);
+    virtual Bool Command(Int32 id,const BaseContainer &msg);
 
 	virtual void UpdateColor(Color color);
 	virtual void UpdateColorFromParent(Color color);
-	void ChangeRGBSliderProfile(LONG index);
-	void ChangeCMYKSliderProfile(LONG index);
+	void ChangeRGBSliderProfile(Int32 index);
+	void ChangeCMYKSliderProfile(Int32 index);
 	void SetColor(Vector *color){m_pColor = color;}
 	void SetParent(ColorDialog *parent){m_parent = parent;}
 	void FindICCProfiles();

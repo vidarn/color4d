@@ -8,18 +8,18 @@
 #include "main.h"
 
 
-Bool IsKeyDown(LONG key)
+Bool IsKeyDown(Int32 key)
 {
     BaseContainer res;
-    return GetInputState(BFM_INPUT_KEYBOARD,key,res) && res.GetLong(BFM_INPUT_VALUE);
+    return GetInputState(BFM_INPUT_KEYBOARD,key,res) && res.GetInt32(BFM_INPUT_VALUE);
 }
 
-typedef Bool CChooser(Vector *color, LONG);
+typedef Bool CChooser(Vector *color, Int32);
 CChooser *g_ColorPicker=NULL;
 
-LONG g_InUse=0;
+Int32 g_InUse=0;
 
-Bool ColorPicker(Vector *color, LONG flags)
+Bool ColorPicker(Vector *color, Int32 flags)
 {
     if (IsKeyDown(KEY_SHIFT))
     {
@@ -72,9 +72,9 @@ Bool PluginStart(void)
 	ColorScheme::Init();
 	PaletteColor::LoadIcons();
 	Palette::InitPalettes();
-	Bool result = RegisterCommandPlugin(SPOTCOLOR_ID,String("Spot colors"),0,NULL,String(),gNew SpotColorCommand);
-	result = result && RegisterCommandPlugin(COLORSELECTOR_ID,String("Color wheel"),0,NULL,String(),gNew ColorSelectorCommand);
-	result = result && RegisterCommandPlugin(PALETTE_ID,String("Palette"),0,NULL,String(),gNew PaletteCommand);
+	Bool result = RegisterCommandPlugin(SPOTCOLOR_ID,String("Spot colors"),0,NULL,String(),NewObjClear(SpotColorCommand));
+	result = result && RegisterCommandPlugin(COLORSELECTOR_ID,String("Color wheel"),0,NULL,String(),NewObjClear(ColorSelectorCommand));
+	result = result && RegisterCommandPlugin(PALETTE_ID,String("Palette"),0,NULL,String(),NewObjClear(PaletteCommand));
 	if(result){
 		GePrint("Result!");
 	}
@@ -91,7 +91,7 @@ void PluginEnd(void)
 	Color::Unload();
 }
 
-Bool PluginMessage(LONG id, void *data)
+Bool PluginMessage(Int32 id, void *data)
 {
     switch (id)
     {
