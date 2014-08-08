@@ -26,6 +26,8 @@ class Palette
 		Int32 GetCount(){return  m_colors.GetCount();}
 		Color & operator[](int i){return m_colors[i];}
 		const Palette &operator=(const Palette &pal);
+    
+        String m_name;
 
 		static void InitPalettes();
 		static void GetPalettes(GeDynamicArray<Palette> &palettes);
@@ -37,7 +39,8 @@ class Palette
 		static Int32 AddPalette(const Palette &palette);
 		static void UpdatePalette(Int32 id);
 		static void UpdateColor(Int32 palette, Int32 color);
+    
+    
 	private:
-		String m_name;
 		GeDynamicArray<Color> m_colors;
 };

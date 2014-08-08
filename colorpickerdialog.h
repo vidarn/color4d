@@ -16,8 +16,8 @@ private:
     DescriptionCustomGui    *gad;
 public:
 
-	ColorPickerDialog():m_colorWheel(this), m_colorBox(this){ColorPickerDialog(new Vector(1.0f));}
-    ColorPickerDialog(Vector *color):m_colorWheel(this), m_colorBox(this), m_pColor(color), m_spotColors(NULL) {}
+	ColorPickerDialog():m_colorWheel(this){ColorPickerDialog(new Vector(1.0f));}
+    ColorPickerDialog(Vector *color):m_colorWheel(this), m_pColor(color), m_spotColors(NULL) {}
 	~ColorPickerDialog();
 
     virtual Bool CreateLayout(void);
@@ -39,7 +39,6 @@ public:
 	SliderSubDialog m_sliderSubDiag;
 
 	ColorWheel m_colorWheel;
-	ColorBox m_colorBox;
 	SpotColor *m_spotColors;
 	SpotColor m_previewColors[4];
 	C4DGadget *wheelArea;

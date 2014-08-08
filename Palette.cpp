@@ -37,7 +37,7 @@ void Palette::FromContainer(const BaseContainer &bc)
 	for(int i=0;i<count;i++){
 		m_colors.Push(Color(bc.GetVector(FIRST_COLOR+i)).SetSource(COLOR_SOURCE_DISPLAY));
 	}
-	bc.GetString(PALETTE_NAME,m_name);
+	m_name = bc.GetString(PALETTE_NAME,"HUH?");
 }
 
 void Palette::SetColor(Int32 index, const Vector &color, COLOR_SOURCE source)
@@ -55,17 +55,13 @@ void Palette::SetColor(Int32 index, const Color &color)
 
 void Palette::InsertColor(Int32 index, const Color &color)
 {
-	GePrint("Insert Color!");
 	if(index >= m_colors.GetCount()){
-		GePrint("a");
 		while(index >= m_colors.GetCount()){
-			GePrint("aa");
 			m_colors.Push(Color());
 		}
 		m_colors[index] = color;
 	}
 	else{
-		GePrint("b");
 		m_colors.Insert(color,index);
 	}
 }
@@ -109,6 +105,7 @@ void Palette::GetPalettes(GeDynamicArray<Palette> &palettes)
 		if(c != nullptr){
 			pal.FromContainer(*c);
 			palettes.Push(pal);
+            palettes[palettes.GetCount()-1].m_name = pal.m_name;
 		}
 	}
 }

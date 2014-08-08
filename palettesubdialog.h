@@ -24,13 +24,23 @@ public:
 	void SetDragable(Bool state);
 	void LoadPalette(Int32 id);
 	void PaletteLayout();
+    void UpdatePopup(Int32 current);
 
 	BaseContainer m_Settings;
+    
+    enum Actions
+    {
+        ACTION_LOAD=FIRST_POPUP_ID,
+        ACTION_NEW,
+        ACTION_SAVE,
+        ACTION_COUNT
+    };
 
 	Int32 m_paletteID;
 	Palette m_palette;
 	PaletteColor *m_spotColors;
 	C4DGadget *spotArea;
+    C4DGadget *m_actionPopup;
 	void (*m_selectCallback)(Color, void *);
 	void *m_selectCallbackData;
 	Bool m_dragable;

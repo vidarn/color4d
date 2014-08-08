@@ -31,8 +31,6 @@ Bool ColorPickerDialog::CreateLayout(void)
 		GroupBegin(1,BFH_SCALEFIT,3,1,String(),0);
 			wheelArea = AddUserArea(IDC_COLORWHEEL,BFH_LEFT);	
 			if (wheelArea) AttachUserArea(m_colorWheel,wheelArea);
-			boxArea = AddUserArea(IDC_COLORBOX,BFH_LEFT);	
-			if (boxArea) AttachUserArea(m_colorBox,boxArea);
 			
 			if(AddSubDialog(IDC_SLIDERS,BFH_SCALEFIT)){
 				m_sliderSubDiag.SetColor(m_pColor);
@@ -120,7 +118,6 @@ void ColorPickerDialog::UpdateColor(Color color){
 	m_DisplayColor = color.Convert(COLOR_SOURCE_DISPLAY);
 	Color wheel = color.Convert(COLOR_SOURCE_WHEEL);
 	m_colorWheel.UpdateColor(wheel);
-	m_colorBox.UpdateColor(wheel);
 	GeDynamicArray<Color> offsetColors;
 	m_colorWheel.GetOffsetColors(offsetColors);
 	for(Int32 i=0;i<offsetColors.GetCount();i++){

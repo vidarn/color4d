@@ -113,52 +113,51 @@ void SpotColorDialog::LoadSpotColors(Int32 index)
 	LayoutFlushGroup(6);
 	double RGB[3];
 	Char name[256], prefix[33], suffix[33];
-	cmsHPROFILE profile = m_spotProfiles[index];
-#pragma message("TODO: CHECK THIS TRANSFORM")
-	cmsHTRANSFORM xform = cmsCreateTransform(profile,TYPE_NAMED_COLOR_INDEX,m_displayProfile,TYPE_RGB_DBL,INTENT_PERCEPTUAL,0);
-	if(xform != NULL){
-		cmsNAMEDCOLORLIST* colorList = cmsGetNamedColorList(xform);
-		if(colorList != NULL){
-			Char name[256], prefix[33], suffix[33];
-			Int32 numColors = cmsNamedColorCount(colorList);
-			if(m_spotColors != NULL){
-				delete m_spotColors;
-			}
-			m_spotColors = new SpotColor[numColors];
-			for(int i=0;i<numColors;i+=7){
-#pragma message("TODO: This looks too complicated... :/")
-				Int32 limit = i+7 < numColors ? i+7 : numColors;
-				for(int ii=i;ii<limit;ii++){
-					cmsNamedColorInfo(colorList,ii,name,prefix,suffix,NULL,NULL);
-					String fullName = String(name) + String(suffix);
-					Int32 pos;
-					if(!filterString.Content() || fullName.FindFirst(filterString,&pos)){
-						Color col;
-						cmsDoTransform(xform,&ii,RGB,1);
-						for(int a=0;a<3;a++){
-							col[a] = RGB[a];
-						}
-						col.SetSource(COLOR_SOURCE_DISPLAY);
-						m_spotColors[ii].SetParent(NULL);
+    if(m_spotProfiles.GetCount() > index){
+        cmsHPROFILE profile = m_spotProfiles[index];
+    #pragma message("TODO: CHECK THIS TRANSFORM")
+        cmsHTRANSFORM xform = cmsCreateTransform(profile,TYPE_NAMED_COLOR_INDEX,m_displayProfile,TYPE_RGB_DBL,INTENT_PERCEPTUAL,0);
+        if(xform != NULL){
+            cmsNAMEDCOLORLIST* colorList = cmsGetNamedColorList(xform);
+            if(colorList != NULL){
+                Char name[256], prefix[33], suffix[33];
+                Int32 numColors = cmsNamedColorCount(colorList);
+                if(m_spotColors != NULL){
+                    delete m_spotColors;
+                }
+                m_spotColors = new SpotColor[numColors];
+                for(int i=0;i<numColors;i+=7){
+    #pragma message("TODO: This looks too complicated... :/")
+                    Int32 limit = i+7 < numColors ? i+7 : numColors;
+                    for(int ii=i;ii<limit;ii++){
+                        cmsNamedColorInfo(colorList,ii,name,prefix,suffix,NULL,NULL);
+                        String fullName = String(name) + String(suffix);
+                        Int32 pos;
+                        if(!filterString.Content() || fullName.FindFirst(filterString,&pos)){
+                            Color col;
+                            cmsDoTransform(xform,&ii,RGB,1);
+                            for(int a=0;a<3;a++){
+                                col[a] = RGB[a];
+                            }
+                            col.SetSource(COLOR_SOURCE_DISPLAY);
+                            m_spotColors[ii].SetParent(NULL);
 
-						if(showLabels){
-							GroupBegin(ii+IDC_LASTENTRY,BFH_SCALEFIT,1,0,fullName,FALSE);
-							//GroupBorder(BORDER_WITH_TITLE|BORDER_THIN_IN);
-							AddStaticText(ii*2+IDC_LASTENTRY+1,BFH_SCALEFIT,0,0,fullName,BORDER_NONE);
-						}
-						C4DGadget *area = AddUserArea(ii*2+IDC_LASTENTRY,BFH_SCALEFIT);
-						AttachUserArea(m_spotColors[ii],area);
-						m_spotColors[ii].UpdateColor(col);
-						if(showLabels){
-							GroupEnd();
-						}
-					}
-				}
-			}
-		}
-	}
-	else{
-		GePrint("NULL!");
+                            if(showLabels){
+                                GroupBegin(ii+IDC_LASTENTRY,BFH_SCALEFIT,1,0,fullName,FALSE);
+                                //GroupBorder(BORDER_WITH_TITLE|BORDER_THIN_IN);
+                                AddStaticText(ii*2+IDC_LASTENTRY+1,BFH_SCALEFIT,0,0,fullName,BORDER_NONE);
+                            }
+                            C4DGadget *area = AddUserArea(ii*2+IDC_LASTENTRY,BFH_SCALEFIT);
+                            AttachUserArea(m_spotColors[ii],area);
+                            m_spotColors[ii].UpdateColor(col);
+                            if(showLabels){
+                                GroupEnd();
+                            }
+                        }
+                    }
+                }
+            }
+        }
 	}
 	LayoutChanged(6);
 }

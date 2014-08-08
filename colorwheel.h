@@ -23,6 +23,7 @@ class ColorWheel : public GeUserArea
 
 		void UpdateColor(Color color);
 		void UpdateCircle();
+        void UpdateTriangle();
 		void UpdateMarker();
 		void UpdateCanvas();
 		void MouseUpdate();
@@ -35,6 +36,7 @@ class ColorWheel : public GeUserArea
 		ColorDialog *m_parent;
 		GeDynamicArray<Float> m_offsets;
 		GeClipMap *m_wheelClipMap;
+        GeClipMap *m_triangleClipMap;
 		GeClipMap *m_markerClipMap;
 		GeClipMap *m_canvas;
         ColorScheme *m_scheme;
@@ -45,8 +47,13 @@ class ColorWheel : public GeUserArea
 		Int32 m_h;
 		Float m_centerX;
 		Float m_centerY;
-		Bool m_mouseDown;
+		Bool  m_mouseDown;
 		Int32 m_selectedMarker;
+        Float m_innerRadius;
+        Float m_outerRadius;
+        Float m_oldH;
+        Bool  m_mouseDragTriangle;
+        Float m_triangleW;
 
 		const Float m_valueRadius;
 		const Float m_valuePosition;

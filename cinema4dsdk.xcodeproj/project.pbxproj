@@ -41,6 +41,12 @@
 		136DACBD19895D25002BDC1D /* palettesubdialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 136DACB819895D25002BDC1D /* palettesubdialog.h */; };
 		136DACBE19895D25002BDC1D /* SliderSubDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 136DACB919895D25002BDC1D /* SliderSubDialog.cpp */; };
 		136DACBF19895D25002BDC1D /* slidersubdialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 136DACBA19895D25002BDC1D /* slidersubdialog.h */; };
+		13C2F8CC19901C300065AE04 /* ase_loader.h in Headers */ = {isa = PBXBuildFile; fileRef = 13C2F8CB19901C300065AE04 /* ase_loader.h */; };
+		13C2F8CF199283E70065AE04 /* utf8.h in Headers */ = {isa = PBXBuildFile; fileRef = 13C2F8CE199283E70065AE04 /* utf8.h */; };
+		13C2F8D3199283F10065AE04 /* checked.h in Headers */ = {isa = PBXBuildFile; fileRef = 13C2F8D0199283F10065AE04 /* checked.h */; };
+		13C2F8D4199283F10065AE04 /* core.h in Headers */ = {isa = PBXBuildFile; fileRef = 13C2F8D1199283F10065AE04 /* core.h */; };
+		13C2F8D5199283F10065AE04 /* unchecked.h in Headers */ = {isa = PBXBuildFile; fileRef = 13C2F8D2199283F10065AE04 /* unchecked.h */; };
+		13C2F8D71992AD1E0065AE04 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 13C2F8D61992AD1E0065AE04 /* libiconv.dylib */; };
 		65636C1E08E5922100FBAB34 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65636BEF08E5922100FBAB34 /* main.cpp */; };
 /* End PBXBuildFile section */
 
@@ -115,6 +121,12 @@
 		136DACB919895D25002BDC1D /* SliderSubDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SliderSubDialog.cpp; sourceTree = SOURCE_ROOT; };
 		136DACBA19895D25002BDC1D /* slidersubdialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = slidersubdialog.h; sourceTree = SOURCE_ROOT; };
 		136DACC019895DE4002BDC1D /* colorscheme.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = colorscheme.h; sourceTree = "<group>"; };
+		13C2F8CB19901C300065AE04 /* ase_loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ase_loader.h; sourceTree = SOURCE_ROOT; };
+		13C2F8CE199283E70065AE04 /* utf8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utf8.h; sourceTree = SOURCE_ROOT; };
+		13C2F8D0199283F10065AE04 /* checked.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = checked.h; path = utf8/checked.h; sourceTree = SOURCE_ROOT; };
+		13C2F8D1199283F10065AE04 /* core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core.h; path = utf8/core.h; sourceTree = SOURCE_ROOT; };
+		13C2F8D2199283F10065AE04 /* unchecked.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = unchecked.h; path = utf8/unchecked.h; sourceTree = SOURCE_ROOT; };
+		13C2F8D61992AD1E0065AE04 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		653A926E0858FEB50017BCBC /* _api.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = _api.xcodeproj; path = ../../resource/_api_lib/_api.xcodeproj; sourceTree = SOURCE_ROOT; };
 		6553A1DA0926F00F0034739A /* _api_debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = _api_debug.xcconfig; path = ../../resource/_api_lib/_api_debug.xcconfig; sourceTree = SOURCE_ROOT; };
 		6553A1DB0926F00F0034739A /* _api_release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = _api_release.xcconfig; path = ../../resource/_api_lib/_api_release.xcconfig; sourceTree = SOURCE_ROOT; };
@@ -127,6 +139,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13C2F8D71992AD1E0065AE04 /* libiconv.dylib in Frameworks */,
 				136DACB519895C67002BDC1D /* LittleCMS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -137,6 +150,11 @@
 		65636BD708E5922100FBAB34 /* source */ = {
 			isa = PBXGroup;
 			children = (
+				13C2F8D0199283F10065AE04 /* checked.h */,
+				13C2F8D1199283F10065AE04 /* core.h */,
+				13C2F8D2199283F10065AE04 /* unchecked.h */,
+				13C2F8CE199283E70065AE04 /* utf8.h */,
+				13C2F8CB19901C300065AE04 /* ase_loader.h */,
 				136DACB619895D25002BDC1D /* ColorScheme.cpp */,
 				136DACB719895D25002BDC1D /* PaletteSubDialog.cpp */,
 				136DACB819895D25002BDC1D /* palettesubdialog.h */,
@@ -188,6 +206,7 @@
 		65E51686083D10D0005BFD9A = {
 			isa = PBXGroup;
 			children = (
+				13C2F8D61992AD1E0065AE04 /* libiconv.dylib */,
 				136DACB419895C67002BDC1D /* LittleCMS.framework */,
 				65636BD708E5922100FBAB34 /* source */,
 				65E516A4083D10D1005BFD9A /* _libs */,
@@ -225,17 +244,22 @@
 				131B91B41986B16A00E28986 /* utils.h in Headers */,
 				136DACBD19895D25002BDC1D /* palettesubdialog.h in Headers */,
 				136DACBF19895D25002BDC1D /* slidersubdialog.h in Headers */,
+				13C2F8D4199283F10065AE04 /* core.h in Headers */,
 				131B91B01986B16A00E28986 /* spotcolor.h in Headers */,
 				131B91981986B15A00E28986 /* colorslider.h in Headers */,
+				13C2F8CF199283E70065AE04 /* utf8.h in Headers */,
 				131B91911986B15A00E28986 /* colordialog.h in Headers */,
 				131B91B21986B16A00E28986 /* spotcolordialog.h in Headers */,
+				13C2F8D3199283F10065AE04 /* checked.h in Headers */,
 				131B91A61986B16200E28986 /* palettecolor.h in Headers */,
 				131B918F1986B15A00E28986 /* colorbox.h in Headers */,
 				131B91A41986B16200E28986 /* palette.h in Headers */,
 				131B919A1986B15A00E28986 /* colorwheel.h in Headers */,
 				131B91941986B15A00E28986 /* colorpickerdialog.h in Headers */,
 				131B918D1986B15A00E28986 /* color.h in Headers */,
+				13C2F8CC19901C300065AE04 /* ase_loader.h in Headers */,
 				131B91A81986B16200E28986 /* palettedialog.h in Headers */,
+				13C2F8D5199283F10065AE04 /* unchecked.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
