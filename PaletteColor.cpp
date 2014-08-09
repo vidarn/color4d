@@ -110,7 +110,13 @@ void PaletteColor::UpdateColor(Color color){
 
 Int32 PaletteColor::Message(const BaseContainer& msg, BaseContainer& result)
 {
-	Int32 res = GeUserArea::Message(msg, result);
+    if(msg.GetId() == BFM_GETCURSORINFO){
+        //result.SetString(RESULT_BUBBLEHELP, "Bubble! ^_^");
+        //result.SetBool(RESULT_SUPPRESSBUBBLE, FALSE);
+        //result.SetInt32(RESULT_CURSOR, MOUSE_CROSS);
+        //GePrint("heheh");
+        //HandleHelpString(msg,result,String("test"));
+    }
 	if(msg.GetId() == BFM_DRAGRECEIVE){
 		Int32 type = 0;
 		void *object = NULL;
@@ -156,13 +162,14 @@ Int32 PaletteColor::Message(const BaseContainer& msg, BaseContainer& result)
 						}
 					}
 					Redraw();
+                    GeUserArea::Message(msg, result);
 					return SetDragDestination(MOUSE_POINT_HAND);
 				}
 			}
 		}
 	}
 
-	return res;
+	return GeUserArea::Message(msg, result);
 }
 
 Bool PaletteColor::InputEvent(const BaseContainer &msg)
@@ -182,13 +189,13 @@ Bool PaletteColor::CoreMessage(Int32 id, const BaseContainer& msg)
     switch ( id )
     {
       case  PALETTE_ID:                                      // internal message
-			/*Int32 color =  (Int32) msg.GetVoid( BFM_CORE_PAR1 );
-			Int32 palette = (Int32) msg.GetVoid( BFM_CORE_PAR2 );
+			Int64 color =  (Int64) msg.GetVoid( BFM_CORE_PAR1 );
+			Int64 palette = (Int64) msg.GetVoid( BFM_CORE_PAR2 );
 			if(color == m_colorID && palette == m_palette){
 				Palette::GetPaletteColor(m_palette,m_colorID,m_color);
 				UpdateBitmaps();
 				Redraw();
-			}*/
+			}
         break;
     }
     return GeUserArea::CoreMessage( id, msg );

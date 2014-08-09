@@ -1,5 +1,5 @@
 #pragma once
-#include "color.h"
+#include "namedcolor.h"
 #include "ge_dynamicarray.h"
 
 enum {
@@ -22,9 +22,10 @@ class Palette
 		void FromContainer(const BaseContainer &bc);
 		void SetColor(Int32 index, const Vector &color, COLOR_SOURCE source);
 		void SetColor(Int32 index, const Color &color);
+        void SetColor(Int32 index, const NamedColor &color);
 		void InsertColor(Int32 index, const Color &color);
 		Int32 GetCount(){return  m_colors.GetCount();}
-		Color & operator[](int i){return m_colors[i];}
+		NamedColor & operator[](int i){return m_colors[i];}
 		const Palette &operator=(const Palette &pal);
     
         String m_name;
@@ -42,5 +43,5 @@ class Palette
     
     
 	private:
-		GeDynamicArray<Color> m_colors;
+		GeDynamicArray<NamedColor> m_colors;
 };

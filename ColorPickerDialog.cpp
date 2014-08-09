@@ -28,6 +28,11 @@ Bool ColorPickerDialog::CreateLayout(void)
     SetTitle(GeLoadString(IDS_COLORPICKER));
 
     GroupBegin(0,BFH_SCALEFIT|BFV_SCALEFIT,1,0,String(),0);
+        if(AddSubDialog(IDC_PALETTE,BFH_SCALEFIT)){
+            AttachSubDialog(&m_paletteSubDiag,IDC_PALETTE);
+            m_paletteSubDiag.SetSelectCallback(&SelectColorCallback,(void *)this);
+            m_paletteSubDiag.SetDragable(FALSE);
+        }
 		GroupBegin(1,BFH_SCALEFIT,3,1,String(),0);
 			wheelArea = AddUserArea(IDC_COLORWHEEL,BFH_LEFT);	
 			if (wheelArea) AttachUserArea(m_colorWheel,wheelArea);
@@ -46,11 +51,6 @@ Bool ColorPickerDialog::CreateLayout(void)
 				m_previewColors[0].SetParent(this);
 			GroupEnd();
 		GroupEnd();
-		if(AddSubDialog(IDC_PALETTE,BFH_SCALEFIT)){
-			AttachSubDialog(&m_paletteSubDiag,IDC_PALETTE);
-			m_paletteSubDiag.SetSelectCallback(&SelectColorCallback,(void *)this);
-			m_paletteSubDiag.SetDragable(FALSE);
-		}
 		AddDlgGroup(DLG_OK|DLG_CANCEL);
     GroupEnd();
 

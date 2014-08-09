@@ -139,6 +139,7 @@ void ColorWheel::UpdateCanvas()
 		Int32 currY = -sin(val*PI2)*m_valuePosition+m_centerY;
 		m_canvas->Blit(currX-m_markerClipMap->GetBw()*0.5,currY-m_markerClipMap->GetBh()*0.5,*m_markerClipMap,0,0,m_markerClipMap->GetBw(),m_markerClipMap->GetBh(),GE_CM_BLIT_COPY);
 	}
+    m_canvas->SetDrawMode(GE_CM_DRAWMODE_BLEND,255);
     Int32 currX =  m_color[1]*m_triangleW - m_triangleW*0.5 + m_centerX;
     Int32 currY =  m_color[2]*m_triangleW - m_triangleW*0.5 + m_centerX;
     m_canvas->Blit(currX-m_markerClipMap->GetBw()*0.5,currY-m_markerClipMap->GetBh()*0.5,*m_markerClipMap,0,0,m_markerClipMap->GetBw(),m_markerClipMap->GetBh(),GE_CM_BLIT_COPY);

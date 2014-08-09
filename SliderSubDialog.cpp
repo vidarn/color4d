@@ -17,42 +17,44 @@ Bool SliderSubDialog::CreateLayout(void)
 {
     if (!GeDialog::CreateLayout()) return FALSE;
 
-	GroupBegin(1,BFH_SCALEFIT,3,1,String(),0);
-		GroupBegin(2,BFH_SCALEFIT,1,0,String("RGB"),BFV_BORDERGROUP_FOLD_OPEN);
-			GroupBorder(BORDER_WITH_TITLE|BORDER_THIN_IN);
-			GroupBegin(3,BFH_SCALEFIT,1,2,String(),0);
-				AddStaticText(IDC_ICCLABEL,BFH_SCALEFIT,0,0,String("ICC Profile"),BORDER_NONE);
-				iccRGBCombo  = AddComboBox(IDC_RGBICC,BFH_SCALEFIT,10,10);
-			GroupEnd();
-			GroupBegin(4,BFH_SCALEFIT,2,0,String(),0);
-				for(Int32 i=0;i<3;i++){
-					RGBeditNumber[i] = AddEditNumberArrows(IDC_R+i,BFH_LEFT);
-					RGBsliderArea[i] = AddUserArea(IDC_RSLIDER+i,BFH_SCALEFIT);	
-					m_RGBSlider[i].SetParent(m_parent);
-					m_RGBSlider[i].SetIndex(i);
-					m_RGBSlider[i].SetColorSource(COLOR_SOURCE_RGB);
-					if (RGBsliderArea[i]){
-						AttachUserArea(m_RGBSlider[i],RGBsliderArea[i]);
-					}
-				}
-			GroupEnd();
-			m_hexText = AddEditText(IDC_HEXTEXT,BFH_SCALEFIT);
-			iccCMYKCombo = AddComboBox(IDC_CMYKICC,BFH_SCALEFIT,10,10);
-			GroupBegin(4,BFH_SCALEFIT,2,0,String(),0);
-				for(Int32 i=0;i<4;i++){
-					CMYKeditNumber[i] = AddEditNumberArrows(IDC_C+i,BFH_LEFT);
-					CMYKsliderArea[i] = AddUserArea(IDC_CSLIDER+i,BFH_SCALEFIT);	
-					m_CMYKSlider[i].SetParent(m_parent);
-					m_CMYKSlider[i].SetIndex(i);
-					m_CMYKSlider[i].SetColorSource(COLOR_SOURCE_CMYK);
-					m_CMYKSlider[i].SetValueMax(100.0);
-					if (CMYKsliderArea[i]){
-						AttachUserArea(m_CMYKSlider[i],CMYKsliderArea[i]);
-					}
-				}
-			GroupEnd();
-				
-		GroupEnd();
+	GroupBegin(1,BFH_SCALEFIT,1,0,String(),0);
+        GroupBegin(3,BFH_SCALEFIT,1,0,String("RGB"),BFV_BORDERGROUP_FOLD_OPEN);
+            GroupBorder(BORDER_WITH_TITLE|BORDER_THIN_IN);
+            GroupBegin(4,BFH_SCALEFIT,1,2,String(),0);
+                iccRGBCombo  = AddComboBox(IDC_RGBICC,BFH_SCALEFIT,10,10);
+            GroupEnd();
+            GroupBegin(5,BFH_SCALEFIT,2,0,String(),0);
+                for(Int32 i=0;i<3;i++){
+                    RGBeditNumber[i] = AddEditNumberArrows(IDC_R+i,BFH_LEFT);
+                    RGBsliderArea[i] = AddUserArea(IDC_RSLIDER+i,BFH_SCALEFIT);	
+                    m_RGBSlider[i].SetParent(m_parent);
+                    m_RGBSlider[i].SetIndex(i);
+                    m_RGBSlider[i].SetColorSource(COLOR_SOURCE_RGB);
+                    if (RGBsliderArea[i]){
+                        AttachUserArea(m_RGBSlider[i],RGBsliderArea[i]);
+                    }
+                }
+            GroupEnd();
+        GroupEnd();
+        GroupBegin(6,BFH_SCALEFIT,1,0,String("CMYK"),BFV_BORDERGROUP_FOLD_OPEN);
+            GroupBorder(BORDER_WITH_TITLE|BORDER_THIN_IN);
+            iccCMYKCombo = AddComboBox(IDC_CMYKICC,BFH_SCALEFIT,10,10);
+            GroupBegin(7,BFH_SCALEFIT,2,0,String(),0);
+                for(Int32 i=0;i<4;i++){
+                    CMYKeditNumber[i] = AddEditNumberArrows(IDC_C+i,BFH_LEFT);
+                    CMYKsliderArea[i] = AddUserArea(IDC_CSLIDER+i,BFH_SCALEFIT);	
+                    m_CMYKSlider[i].SetParent(m_parent);
+                    m_CMYKSlider[i].SetIndex(i);
+                    m_CMYKSlider[i].SetColorSource(COLOR_SOURCE_CMYK);
+                    m_CMYKSlider[i].SetValueMax(100.0);
+                    if (CMYKsliderArea[i]){
+                        AttachUserArea(m_CMYKSlider[i],CMYKsliderArea[i]);
+                    }
+                }
+            GroupEnd();
+                
+        GroupEnd();
+        m_hexText = AddEditText(IDC_HEXTEXT,BFH_SCALEFIT);
 	GroupEnd();
     return TRUE;
 }
@@ -93,7 +95,7 @@ Bool SliderSubDialog::Command(Int32 id,const BaseContainer &msg)
 		break;
 	case IDC_HEXTEXT:
 		GetString(m_hexText,str);
-		col.SetSource(COLOR_SOURCE_RGB);
+		col.SetSource(COLOR_SOURCE_DISPLAY);
 		if(col.FromString(str)){
 			UpdateColor(col);
 		}
@@ -136,6 +138,7 @@ void SliderSubDialog::UpdateColor(Color color){
 void SliderSubDialog::UpdateColorFromParent(Color color){
 	Color wheel = color.Convert(COLOR_SOURCE_WHEEL);
 	Color RGB = color.Convert(COLOR_SOURCE_RGB);
+    Color display = color.Convert(COLOR_SOURCE_DISPLAY);
 	for(Int32 i=0;i<3;i++){
 		m_RGBSlider[i].UpdateColor(RGB);
 		SetFloat(RGBeditNumber[i],RGB[i],0.0,1.0,0.01,FORMAT_FLOAT);
@@ -146,16 +149,33 @@ void SliderSubDialog::UpdateColorFromParent(Color color){
 		SetFloat(CMYKeditNumber[i],CMYK[i]);
 	}
 	String s;
-	RGB.ToString(s);
+	display.ToString(s);
 	SetString(m_hexText,s);
 }
 
 void SliderSubDialog::ChangeRGBSliderProfile(Int32 index)
 {
-	Color::SetRGBProfile(index,TRUE);
+    Color::SetRGBProfile(index,TRUE);
+    if(!Color::IsRGBProfileOk()){
+        Color::SetRGBProfile(0,TRUE);
+    }
+    Color col;
+    String str;
+    GetString(m_hexText,str);
+    col.SetSource(COLOR_SOURCE_DISPLAY);
+    if(col.FromString(str)){
+        UpdateColor(col);
+    }
 }
 
 void SliderSubDialog::ChangeCMYKSliderProfile(Int32 index)
 {
-	Color::SetCMYKProfile(index,TRUE);
+    Color::SetCMYKProfile(index,TRUE);
+    Color col;
+    String str;
+    GetString(m_hexText,str);
+    col.SetSource(COLOR_SOURCE_DISPLAY);
+    if(col.FromString(str)){
+        UpdateColor(col);
+    }
 }

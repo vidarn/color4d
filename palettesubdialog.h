@@ -33,6 +33,7 @@ public:
         ACTION_LOAD=FIRST_POPUP_ID,
         ACTION_NEW,
         ACTION_SAVE,
+        ACTION_LABEL,
         ACTION_COUNT
     };
 
@@ -44,4 +45,5 @@ public:
 	void (*m_selectCallback)(Color, void *);
 	void *m_selectCallbackData;
 	Bool m_dragable;
+    Bool m_showLabel;
 };

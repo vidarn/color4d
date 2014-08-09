@@ -7,7 +7,7 @@
 #include <string>
 
 PaletteSubDialog::PaletteSubDialog():
-m_spotColors(NULL), m_selectCallback(NULL),m_dragable(TRUE)
+m_spotColors(NULL), m_selectCallback(NULL),m_dragable(TRUE),m_showLabel(FALSE)
 {
 }
 
@@ -53,6 +53,12 @@ void PaletteSubDialog::UpdatePopup(Int32 current)
     bc.SetString(ACTION_NEW,  "New palette");
     bc.SetString(ACTION_SAVE, "Save palette");
     bc.InsData(0, String(""));
+    if(m_showLabel){
+        bc.SetString(ACTION_LABEL, "Show labels&c&");
+    }else{
+        bc.SetString(ACTION_LABEL, "Show labels");
+    }
+    bc.InsData(0, String(""));
     GeDynamicArray<Palette> pals;
     Palette::GetPalettes(pals);
     for(Int32 i=0;i<pals.GetCount();i++){
@@ -70,6 +76,8 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
 {
 	GeDynamicArray<Palette> pals;
     Palette pal;
+    ASE_FILE aseFile;
+    Filename fn;
     switch (id)
     {
 		case 2:
@@ -81,10 +89,7 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
                     LoadPalette(id);
                     break;
                 case ACTION_LOAD:
-                    ASE_FILE aseFile;
-                    Filename fn;
-                    Bool ok = fn.FileSelect(FILESELECTTYPE_ANYTHING, FILESELECT_LOAD, "Load");
-                    if(ok){
+                    if(fn.FileSelect(FILESELECTTYPE_ANYTHING, FILESELECT_LOAD, "Load")){
                         String s = fn.GetString();
                         Int32 fnLength =  s.GetCStringLen();
                         char *str = NewMem(char,fnLength+1);
@@ -108,10 +113,6 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
                                 
                                 for(Int32 ii=0;ii<group->numColors;ii++){
                                     ASE_COLOR *color = group->colors + ii;
-                                    // Name: color->name (wchar_t *)
-                                    // Color type: color->type (enum, one of ASE_COLORTYPE_RGB, ASE_COLORTYPE_CMYK,
-                                    //        ASE_COLORTYPE_LAB or ASE_COLORTYPE_GRAY)
-                                    // Color values: color->col (float[4], unused channels are -1.f)
                                     Int32 a = 0;
                                     Vector col;
                                     while(color->col[a] != -1.0f && a < 3){
@@ -120,7 +121,14 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
                                         col[a] = color->col[a];
                                         a++;
                                     }
-                                    pal.SetColor(ii, col, COLOR_SOURCE_DISPLAY);
+                                    
+                                    len = wcslen(color->name);
+                                    buffer = NewMem(char, len);
+                                    for(Int32 ii=0;ii<len;ii++){
+                                        buffer[ii] = ((char *) color->name)[ii*4];
+                                    }
+                                    pal.SetColor(ii, NamedColor(Color(col).SetSource(COLOR_SOURCE_DISPLAY),String(buffer,STRINGENCODING_UTF8)));
+                                    DeleteMem(buffer);
                                     GePrint(" ");
                                 }
                                 id = Palette::AddPalette(pal);
@@ -131,6 +139,10 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
                             GePrint("Could not load file " + s);
                         }
                     }
+                    break;
+                case ACTION_LABEL:
+                    m_showLabel = !m_showLabel;
+                    LoadPalette(m_paletteID);
                     break;
                     
             }
@@ -152,7 +164,6 @@ Bool PaletteSubDialog::CoreMessage(Int32 id, const BaseContainer& msg)
 			Int64 color =  (Int64) msg.GetVoid( BFM_CORE_PAR1 );
 			Int64 palette = (Int64) msg.GetVoid( BFM_CORE_PAR2 );
 			if(palette == m_paletteID && color == -1){
-				GePrint("Update palette!");
 				LoadPalette(m_paletteID);
 			}
         break;
@@ -184,7 +195,6 @@ void PaletteSubDialog::LoadPalette(Int32 id)
 	Palette::GetPalettes(pals);
 	m_palette = pals[id];
 	m_paletteID = id;
-	
 	PaletteLayout();
 }
 
@@ -201,8 +211,18 @@ void PaletteSubDialog::PaletteLayout()
 		m_spotColors[i].SetColorID(i);
 		m_spotColors[i].SetSelectCallback(m_selectCallback,m_selectCallbackData);
 		m_spotColors[i].SetDragable(m_dragable);
-		C4DGadget *area = AddUserArea(12 + i,BFV_SCALEFIT);
-		AttachUserArea(m_spotColors[i],area);
+        m_spotColors[i].SetPaletteID(m_paletteID);
+        
+        if(m_showLabel){
+            GroupBegin(40 + i*3,BFV_FIT,1,0,"",FALSE);
+            AddStaticText(40 + i*3+1,BFV_FIT,SizePix(40),0,m_palette[i].m_name,BORDER_NONE);
+        }
+        C4DGadget *area = AddUserArea(40 + i*3+2,BFV_SCALEFIT);
+        AttachUserArea(m_spotColors[i],area);
+        if(m_showLabel){
+            GroupEnd();
+        }
+
 	}
 	LayoutChanged(6);
 }

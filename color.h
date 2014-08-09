@@ -53,6 +53,7 @@ class Color
 		static void SetRGBProfile(cmsHPROFILE profile, Bool updateTransform=FALSE);
 		static void SetCMYKProfile(cmsHPROFILE profile, Bool updateTransform=FALSE);
 		static void SetDisplayProfile(cmsHPROFILE profile, Bool updateTransform=FALSE);
+        static Bool IsRGBProfileOk();
 		static void UpdateTransforms();
 		static void LoadICCProfiles();
 		static void Unload();

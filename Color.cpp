@@ -264,6 +264,11 @@ void Color::UpdateTransforms()
 	createAndFreeTransform(m_displayToCMYK,  m_displayProfile, TYPE_RGB_DBL,  m_CMYKProfile,    TYPE_CMYK_DBL);
 }
 
+Bool Color::IsRGBProfileOk()
+{
+    return m_RGBToDisplay != 0;
+}
+
 void Color::LoadICCProfiles()
 {
 #pragma message("TODO: allow more icc search paths")

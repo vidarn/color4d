@@ -47,6 +47,8 @@
 		13C2F8D4199283F10065AE04 /* core.h in Headers */ = {isa = PBXBuildFile; fileRef = 13C2F8D1199283F10065AE04 /* core.h */; };
 		13C2F8D5199283F10065AE04 /* unchecked.h in Headers */ = {isa = PBXBuildFile; fileRef = 13C2F8D2199283F10065AE04 /* unchecked.h */; };
 		13C2F8D71992AD1E0065AE04 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 13C2F8D61992AD1E0065AE04 /* libiconv.dylib */; };
+		13C2F8DA1996079A0065AE04 /* NamedColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13C2F8D81996079A0065AE04 /* NamedColor.cpp */; };
+		13C2F8DB1996079A0065AE04 /* namedColor.h in Headers */ = {isa = PBXBuildFile; fileRef = 13C2F8D91996079A0065AE04 /* namedColor.h */; };
 		65636C1E08E5922100FBAB34 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65636BEF08E5922100FBAB34 /* main.cpp */; };
 /* End PBXBuildFile section */
 
@@ -127,6 +129,8 @@
 		13C2F8D1199283F10065AE04 /* core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core.h; path = utf8/core.h; sourceTree = SOURCE_ROOT; };
 		13C2F8D2199283F10065AE04 /* unchecked.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = unchecked.h; path = utf8/unchecked.h; sourceTree = SOURCE_ROOT; };
 		13C2F8D61992AD1E0065AE04 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
+		13C2F8D81996079A0065AE04 /* NamedColor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamedColor.cpp; sourceTree = "<group>"; };
+		13C2F8D91996079A0065AE04 /* namedColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = namedColor.h; sourceTree = "<group>"; };
 		653A926E0858FEB50017BCBC /* _api.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = _api.xcodeproj; path = ../../resource/_api_lib/_api.xcodeproj; sourceTree = SOURCE_ROOT; };
 		6553A1DA0926F00F0034739A /* _api_debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = _api_debug.xcconfig; path = ../../resource/_api_lib/_api_debug.xcconfig; sourceTree = SOURCE_ROOT; };
 		6553A1DB0926F00F0034739A /* _api_release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = _api_release.xcconfig; path = ../../resource/_api_lib/_api_release.xcconfig; sourceTree = SOURCE_ROOT; };
@@ -190,6 +194,8 @@
 				131B918B1986B15A00E28986 /* colorwheel.h */,
 				65636BEF08E5922100FBAB34 /* main.cpp */,
 				136DACC019895DE4002BDC1D /* colorscheme.h */,
+				13C2F8D81996079A0065AE04 /* NamedColor.cpp */,
+				13C2F8D91996079A0065AE04 /* namedColor.h */,
 			);
 			path = source;
 			sourceTree = "<group>";
@@ -249,6 +255,7 @@
 				131B91981986B15A00E28986 /* colorslider.h in Headers */,
 				13C2F8CF199283E70065AE04 /* utf8.h in Headers */,
 				131B91911986B15A00E28986 /* colordialog.h in Headers */,
+				13C2F8DB1996079A0065AE04 /* namedColor.h in Headers */,
 				131B91B21986B16A00E28986 /* spotcolordialog.h in Headers */,
 				13C2F8D3199283F10065AE04 /* checked.h in Headers */,
 				131B91A61986B16200E28986 /* palettecolor.h in Headers */,
@@ -375,6 +382,7 @@
 				136DACBC19895D25002BDC1D /* PaletteSubDialog.cpp in Sources */,
 				136DACBE19895D25002BDC1D /* SliderSubDialog.cpp in Sources */,
 				131B91A71986B16200E28986 /* PaletteDialog.cpp in Sources */,
+				13C2F8DA1996079A0065AE04 /* NamedColor.cpp in Sources */,
 				131B91921986B15A00E28986 /* ColorPicker.cpp in Sources */,
 				131B91B31986B16A00E28986 /* Utils.cpp in Sources */,
 				131B91A51986B16200E28986 /* PaletteColor.cpp in Sources */,

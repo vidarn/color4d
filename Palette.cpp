@@ -25,7 +25,8 @@ void Palette::ToContainer(BaseContainer &bc) const
 	Int32 count = m_colors.GetCount();
 	bc.SetInt32(NUM_COLORS,m_colors.GetCount());
 	for(int i=0;i<count;i++){
-		bc.SetVector(FIRST_COLOR+i,m_colors[i].Convert(COLOR_SOURCE_DISPLAY).AsVector());
+		bc.SetVector(FIRST_COLOR+i*2,m_colors[i].Convert(COLOR_SOURCE_DISPLAY).AsVector());
+        bc.SetString(FIRST_COLOR+i*2+1,m_colors[i].m_name);
 	}
 	bc.SetString(PALETTE_NAME,m_name);
 }
@@ -35,9 +36,9 @@ void Palette::FromContainer(const BaseContainer &bc)
 	Int32 count = bc.GetInt32(NUM_COLORS);
 	m_colors.SetCount(0);
 	for(int i=0;i<count;i++){
-		m_colors.Push(Color(bc.GetVector(FIRST_COLOR+i)).SetSource(COLOR_SOURCE_DISPLAY));
+		m_colors.Push(NamedColor(Color(bc.GetVector(FIRST_COLOR+i*2)).SetSource(COLOR_SOURCE_DISPLAY),bc.GetString(FIRST_COLOR+i*2+1)));
 	}
-	m_name = bc.GetString(PALETTE_NAME,"HUH?");
+	m_name = bc.GetString(PALETTE_NAME,"Unnamed");
 }
 
 void Palette::SetColor(Int32 index, const Vector &color, COLOR_SOURCE source)
@@ -47,8 +48,13 @@ void Palette::SetColor(Int32 index, const Vector &color, COLOR_SOURCE source)
 
 void Palette::SetColor(Int32 index, const Color &color)
 {
+	SetColor(index, NamedColor(color,""));
+}
+
+void Palette::SetColor(Int32 index, const NamedColor &color)
+{
 	while(index >= m_colors.GetCount()){
-		m_colors.Push(Color());
+		m_colors.Push(NamedColor());
 	}
 	m_colors[index] = color;
 }
@@ -57,12 +63,12 @@ void Palette::InsertColor(Int32 index, const Color &color)
 {
 	if(index >= m_colors.GetCount()){
 		while(index >= m_colors.GetCount()){
-			m_colors.Push(Color());
+			m_colors.Push(NamedColor());
 		}
-		m_colors[index] = color;
+		m_colors[index] = NamedColor(color,"");
 	}
 	else{
-		m_colors.Insert(color,index);
+		m_colors.Insert(NamedColor(color,""),index);
 	}
 }
 
@@ -153,7 +159,8 @@ void Palette::SetPaletteColor(Int32 paletteID, Int32 colorID, const Color &col)
 		pal.ToContainer(*c);
 		bc->SetContainer(FIRST_PALETTE+paletteID,*c);
 		SetWorldPluginData(PALETTE_ID,*bc,FALSE);
-		UpdateColor(paletteID, colorID);
+		//UpdateColor(paletteID, colorID);
+        UpdatePalette(paletteID);
 	}
 }
 
