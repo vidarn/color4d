@@ -11,10 +11,9 @@ Bool ColorSelectorDialog::CreateLayout(void)
 
     GroupBegin(0,BFH_SCALEFIT|BFV_SCALEFIT,1,0,String(),0);
 		GroupBegin(1,BFH_SCALEFIT,3,1,String(),0);
-			wheelArea = AddUserArea(IDC_COLORWHEEL,BFH_LEFT);	
-			if (wheelArea) AttachUserArea(m_colorWheel,wheelArea);
-			boxArea = AddUserArea(IDC_COLORBOX,BFH_LEFT);	
-			if (boxArea) AttachUserArea(m_colorBox,boxArea);
+        if(AddSubDialog(IDC_COLORWHEEL, BFH_SCALEFIT)){
+            AttachSubDialog(&m_wheelSubDiag, IDC_COLORWHEEL);
+        }
 		GroupEnd();
 		GroupBegin(8,BFH_SCALEFIT,0,1,String(),0);
 		GroupEnd();
@@ -37,6 +36,7 @@ Bool ColorSelectorDialog::InitValues(void)
 	}
 	AddChildren(m_schemeCombo,schemebc);
 	SetColorScheme(ColorScheme::GetColorScheme(0));
+    UpdateColor(Color(0.5f,0.261f,0.375f).SetSource(COLOR_SOURCE_DISPLAY));
     return TRUE;
 }
 
@@ -64,10 +64,9 @@ Int32 ColorSelectorDialog::Message(const BaseContainer& msg, BaseContainer& resu
 
 void ColorSelectorDialog::UpdateColor(Color color){
 	Color wheel = color.Convert(COLOR_SOURCE_WHEEL);
-	m_colorWheel.UpdateColor(wheel);
-	m_colorBox.UpdateColor(wheel);
+	m_wheelSubDiag.UpdateColorFromParent(wheel);
 	GeDynamicArray<Color> offsetColors;
-	m_colorWheel.GetOffsetColors(offsetColors);
+	m_wheelSubDiag.m_colorWheel.GetOffsetColors(offsetColors);
 	for(Int32 i=0;i<offsetColors.GetCount();i++){
 		m_previewColors[i].UpdateColor(offsetColors[i].Convert(COLOR_SOURCE_DISPLAY));
 	}
@@ -76,7 +75,7 @@ void ColorSelectorDialog::UpdateColor(Color color){
 void ColorSelectorDialog::SetColorScheme(ColorScheme *colorScheme)
 {
 	m_colorScheme = colorScheme;
-	m_colorWheel.SetScheme(m_colorScheme);
+	m_wheelSubDiag.m_colorWheel.SetScheme(m_colorScheme);
 	LayoutFlushGroup(8);
 	for(int i=0;i<m_colorScheme->GetNumMarkers();i++){
 		C4DGadget *area = AddUserArea(IDC_TEST4+i,BFH_SCALEFIT);
@@ -84,7 +83,7 @@ void ColorSelectorDialog::SetColorScheme(ColorScheme *colorScheme)
 		m_previewColors[i].SetParent(this);
 	}
 	LayoutChanged(8);
-	UpdateColor(m_colorWheel.GetColor());
+	UpdateColor(m_wheelSubDiag.m_colorWheel.GetColor());
 }
 
 Int32 ColorSelectorCommand::GetState(BaseDocument *doc)

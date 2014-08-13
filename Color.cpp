@@ -77,7 +77,7 @@ Color Color::Convert(COLOR_SOURCE target)
 			out[i] = 0.0;
 		}
 	if(m_source == COLOR_SOURCE_WHEEL){
-		Vector tmp = HSLtoRGB(Vector(in[0],in[1],in[2]));
+		Vector tmp = HSVToRGB(Vector(in[0],in[1],in[2]));
 		in[0] = tmp.x; in[1] = tmp.y; in[2] = tmp.z;
 		if(target == COLOR_SOURCE_RGB)     cmsDoTransform(m_wheelToRGB,     in, out, 1);
 		if(target == COLOR_SOURCE_CMYK)    cmsDoTransform(m_wheelToCMYK,    in, out, 1);
@@ -99,7 +99,7 @@ Color Color::Convert(COLOR_SOURCE target)
 		if(target == COLOR_SOURCE_CMYK)    cmsDoTransform(m_displayToCMYK,  in, out, 1);
 	}
 	if(target == COLOR_SOURCE_WHEEL){
-		Vector tmp = RGBToHSL(Vector(out[0],out[1],out[2]));
+		Vector tmp = RGBToHSV(Vector(out[0],out[1],out[2]));
 		out[0] = tmp.x;out[1] = tmp.y;out[2] = tmp.z;
 	}
 	return Color(out[0], out[1], out[2], out[3]).SetSource(target);

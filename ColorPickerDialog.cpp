@@ -34,9 +34,10 @@ Bool ColorPickerDialog::CreateLayout(void)
             m_paletteSubDiag.SetDragable(FALSE);
         }
 		GroupBegin(1,BFH_SCALEFIT,3,1,String(),0);
-			wheelArea = AddUserArea(IDC_COLORWHEEL,BFH_LEFT);	
-			if (wheelArea) AttachUserArea(m_colorWheel,wheelArea);
-			
+            if(AddSubDialog(IDC_COLORWHEEL, BFH_LEFT)){
+                AttachSubDialog(&m_wheelSubDiag, IDC_COLORWHEEL);
+                m_wheelSubDiag.SetColor(m_pColor);
+            }
 			if(AddSubDialog(IDC_SLIDERS,BFH_SCALEFIT)){
 				m_sliderSubDiag.SetColor(m_pColor);
 				m_sliderSubDiag.SetParent(this);
@@ -56,7 +57,7 @@ Bool ColorPickerDialog::CreateLayout(void)
 
 	GeDynamicArray<Float> offsets;
 	offsets.Insert( 0.0,0);
-	m_colorWheel.SetOffsets(offsets);
+	m_wheelSubDiag.m_colorWheel.SetOffsets(offsets);
 
     return TRUE;
 }
@@ -74,9 +75,7 @@ Bool ColorPickerDialog::InitValues(void)
 
 Bool ColorPickerDialog::Command(Int32 id,const BaseContainer &msg)
 {
-	Int32 val;
 	String str;
-	Float rVal[4];
 	Color col;
     switch (id)
     {
@@ -117,9 +116,9 @@ Int32 ColorPickerDialog::Message(const BaseContainer& msg, BaseContainer& result
 void ColorPickerDialog::UpdateColor(Color color){
 	m_DisplayColor = color.Convert(COLOR_SOURCE_DISPLAY);
 	Color wheel = color.Convert(COLOR_SOURCE_WHEEL);
-	m_colorWheel.UpdateColor(wheel);
+	m_wheelSubDiag.UpdateColorFromParent(wheel);
 	GeDynamicArray<Color> offsetColors;
-	m_colorWheel.GetOffsetColors(offsetColors);
+	m_wheelSubDiag.m_colorWheel.GetOffsetColors(offsetColors);
 	for(Int32 i=0;i<offsetColors.GetCount();i++){
 		m_previewColors[i].UpdateColor(offsetColors[i].Convert(COLOR_SOURCE_DISPLAY));
 	}

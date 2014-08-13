@@ -1,7 +1,7 @@
 #pragma once
 #include "colordialog.h"
 #include "colorbox.h"
-#include "colorwheel.h"
+#include "colorwheelsubdialog.h"
 #include "colorslider.h"
 #include "color.h"
 #include "spotcolor.h"
@@ -13,8 +13,8 @@ private:
     DescriptionCustomGui    *gad;
 public:
 
-	ColorSelectorDialog():m_colorWheel(this), m_colorBox(this){ColorSelectorDialog(new Vector(1.0f));}
-    ColorSelectorDialog(Vector *color):m_colorWheel(this), m_colorBox(this){}
+	ColorSelectorDialog():m_wheelSubDiag(this){ColorSelectorDialog(new Vector(1.0f));}
+    ColorSelectorDialog(Vector *color):m_wheelSubDiag(this){}
 	~ColorSelectorDialog();
 
     virtual Bool CreateLayout(void);
@@ -27,11 +27,12 @@ public:
 
 	void SetColorScheme(ColorScheme *colorScheme);
 
-	ColorWheel m_colorWheel;
-	ColorBox m_colorBox;
+    ColorWheelSubDialog m_wheelSubDiag;
+	//ColorWheel m_colorWheel;
+	//ColorBox m_colorBox;
 	SpotColor m_previewColors[4];
 	ColorScheme *m_colorScheme;
-	C4DGadget *wheelArea;
+	//C4DGadget *wheelArea;
 	C4DGadget *boxArea;
 	C4DGadget *spotArea;
 	C4DGadget *m_schemeCombo;

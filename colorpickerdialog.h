@@ -1,7 +1,6 @@
 #pragma once
 #include "c4d.h"
 #include "colorbox.h"
-#include "colorwheel.h"
 #include "colorslider.h"
 #include "color.h"
 #include "colordialog.h"
@@ -9,6 +8,7 @@
 #include "ge_dynamicarray.h"
 #include "palettesubdialog.h"
 #include "slidersubdialog.h"
+#include "colorwheelsubdialog.h"
 
 class ColorPickerDialog : public ColorDialog
 {
@@ -16,8 +16,8 @@ private:
     DescriptionCustomGui    *gad;
 public:
 
-	ColorPickerDialog():m_colorWheel(this){ColorPickerDialog(new Vector(1.0f));}
-    ColorPickerDialog(Vector *color):m_colorWheel(this), m_pColor(color), m_spotColors(NULL) {}
+	ColorPickerDialog():m_wheelSubDiag(this){ColorPickerDialog(new Vector(1.0f));}
+    ColorPickerDialog(Vector *color):m_wheelSubDiag(this), m_pColor(color), m_spotColors(NULL) {}
 	~ColorPickerDialog();
 
     virtual Bool CreateLayout(void);
@@ -37,11 +37,9 @@ public:
 	Color m_DisplayColor;
 	PaletteSubDialog m_paletteSubDiag;
 	SliderSubDialog m_sliderSubDiag;
-
-	ColorWheel m_colorWheel;
+	ColorWheelSubDialog m_wheelSubDiag;
+    
 	SpotColor *m_spotColors;
 	SpotColor m_previewColors[4];
-	C4DGadget *wheelArea;
-	C4DGadget *boxArea;
 	C4DGadget *spotArea;
 };

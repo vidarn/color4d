@@ -49,6 +49,8 @@
 		13C2F8D71992AD1E0065AE04 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 13C2F8D61992AD1E0065AE04 /* libiconv.dylib */; };
 		13C2F8DA1996079A0065AE04 /* NamedColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13C2F8D81996079A0065AE04 /* NamedColor.cpp */; };
 		13C2F8DB1996079A0065AE04 /* namedColor.h in Headers */ = {isa = PBXBuildFile; fileRef = 13C2F8D91996079A0065AE04 /* namedColor.h */; };
+		13C2F8DE1996460E0065AE04 /* ColorWheelSubDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13C2F8DC1996460E0065AE04 /* ColorWheelSubDialog.cpp */; };
+		13C2F8DF1996460E0065AE04 /* colorwheelsubdialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 13C2F8DD1996460E0065AE04 /* colorwheelsubdialog.h */; };
 		65636C1E08E5922100FBAB34 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65636BEF08E5922100FBAB34 /* main.cpp */; };
 /* End PBXBuildFile section */
 
@@ -131,6 +133,8 @@
 		13C2F8D61992AD1E0065AE04 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		13C2F8D81996079A0065AE04 /* NamedColor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamedColor.cpp; sourceTree = "<group>"; };
 		13C2F8D91996079A0065AE04 /* namedColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = namedColor.h; sourceTree = "<group>"; };
+		13C2F8DC1996460E0065AE04 /* ColorWheelSubDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColorWheelSubDialog.cpp; sourceTree = "<group>"; };
+		13C2F8DD1996460E0065AE04 /* colorwheelsubdialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = colorwheelsubdialog.h; sourceTree = "<group>"; };
 		653A926E0858FEB50017BCBC /* _api.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = _api.xcodeproj; path = ../../resource/_api_lib/_api.xcodeproj; sourceTree = SOURCE_ROOT; };
 		6553A1DA0926F00F0034739A /* _api_debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = _api_debug.xcconfig; path = ../../resource/_api_lib/_api_debug.xcconfig; sourceTree = SOURCE_ROOT; };
 		6553A1DB0926F00F0034739A /* _api_release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = _api_release.xcconfig; path = ../../resource/_api_lib/_api_release.xcconfig; sourceTree = SOURCE_ROOT; };
@@ -190,6 +194,8 @@
 				131B91871986B15A00E28986 /* colorselectordialog.h */,
 				131B91881986B15A00E28986 /* ColorSlider.cpp */,
 				131B91891986B15A00E28986 /* colorslider.h */,
+				13C2F8DC1996460E0065AE04 /* ColorWheelSubDialog.cpp */,
+				13C2F8DD1996460E0065AE04 /* colorwheelsubdialog.h */,
 				131B918A1986B15A00E28986 /* ColorWheel.cpp */,
 				131B918B1986B15A00E28986 /* colorwheel.h */,
 				65636BEF08E5922100FBAB34 /* main.cpp */,
@@ -248,6 +254,7 @@
 				131B91961986B15A00E28986 /* colorselectordialog.h in Headers */,
 				131B91A21986B16200E28986 /* main.h in Headers */,
 				131B91B41986B16A00E28986 /* utils.h in Headers */,
+				13C2F8DF1996460E0065AE04 /* colorwheelsubdialog.h in Headers */,
 				136DACBD19895D25002BDC1D /* palettesubdialog.h in Headers */,
 				136DACBF19895D25002BDC1D /* slidersubdialog.h in Headers */,
 				13C2F8D4199283F10065AE04 /* core.h in Headers */,
@@ -381,6 +388,7 @@
 				131B91901986B15A00E28986 /* ColorDialog.cpp in Sources */,
 				136DACBC19895D25002BDC1D /* PaletteSubDialog.cpp in Sources */,
 				136DACBE19895D25002BDC1D /* SliderSubDialog.cpp in Sources */,
+				13C2F8DE1996460E0065AE04 /* ColorWheelSubDialog.cpp in Sources */,
 				131B91A71986B16200E28986 /* PaletteDialog.cpp in Sources */,
 				13C2F8DA1996079A0065AE04 /* NamedColor.cpp in Sources */,
 				131B91921986B15A00E28986 /* ColorPicker.cpp in Sources */,
