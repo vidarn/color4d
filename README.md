@@ -1,6 +1,5 @@
 ## TODO ##
 * Load/write common palette files
-* Pick colors from screen
 * Palette shader
 * Better scheme preview
 * Handle multiple documents and save/load
@@ -18,3 +17,6 @@
 * Load palette color in color picker
 * Prettier color picker
 * Faster color picker
+
+## On hold ##
+* Pick colors from screen
