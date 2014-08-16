@@ -1,6 +1,6 @@
 #include "spotcolor.h"
 #include "colordialog.h"
-
+#include "utils.h"
 
 
 SpotColor::SpotColor(ColorDialog *parent)
@@ -49,7 +49,9 @@ void SpotColor::Sized(Int32 w,Int32 h)
 void SpotColor::DrawMsg(Int32 x1,Int32 y1,Int32 x2,Int32 y2, const BaseContainer &msg)
 {
 	OffScreenOn();
-	DrawSetPen(m_color.Convert(COLOR_SOURCE_DISPLAY).AsVector());
+    Vector tmp = m_color.Convert(COLOR_SOURCE_DISPLAY).AsVector();
+    ClampColor(tmp);
+	DrawSetPen(tmp);
 	DrawRectangle(x1,y1,x2,y2);
 }
 

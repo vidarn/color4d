@@ -2,6 +2,7 @@
 #include "main.h"
 #include "c4d_symbols.h"
 #include "c4d_file.h"
+#include "utils.h"
 
 // TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO
 //
@@ -115,6 +116,7 @@ Int32 ColorPickerDialog::Message(const BaseContainer& msg, BaseContainer& result
 
 void ColorPickerDialog::UpdateColor(Color color){
 	m_DisplayColor = color.Convert(COLOR_SOURCE_DISPLAY);
+    ClampColor(m_DisplayColor);
 	Color wheel = color.Convert(COLOR_SOURCE_WHEEL);
 	m_wheelSubDiag.UpdateColorFromParent(wheel);
 	GeDynamicArray<Color> offsetColors;

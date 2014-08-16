@@ -218,6 +218,7 @@ void ColorWheel::DrawMsg(Int32 x1,Int32 y1,Int32 x2,Int32 y2, const BaseContaine
 }
 
 void ColorWheel::UpdateColor(Color color){
+    ClampColor(color);
     Float newH = color.Convert(COLOR_SOURCE_WHEEL)[0];
     m_color = color;
     if(m_oldH != newH){
@@ -364,6 +365,7 @@ void ColorWheel::GetOffsetColors(GeDynamicArray<Color> &colors)
 
 void ColorWheel::SetColor(Color color){
 	m_color = color;
+    ClampColor(m_color);
 }
 
 void ColorWheel::SetScheme(ColorScheme *scheme){

@@ -2,6 +2,7 @@
 #include "main.h"
 #include "c4d_symbols.h"
 #include "colorpickerdialog.h"
+#include "utils.h"
 
 SliderSubDialog::SliderSubDialog()
 {
@@ -139,6 +140,7 @@ void SliderSubDialog::UpdateColorFromParent(Color color){
 	Color wheel = color.Convert(COLOR_SOURCE_WHEEL);
 	Color RGB = color.Convert(COLOR_SOURCE_RGB);
     Color display = color.Convert(COLOR_SOURCE_DISPLAY);
+    ClampColor(display);
 	for(Int32 i=0;i<3;i++){
 		m_RGBSlider[i].UpdateColor(RGB);
 		SetFloat(RGBeditNumber[i],RGB[i],0.0,1.0,0.01,FORMAT_FLOAT);

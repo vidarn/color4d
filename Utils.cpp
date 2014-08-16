@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "color.h"
 
 Float Wrap(Float val, Float min, Float max)
 {
@@ -29,4 +30,11 @@ void ClampColor(Vector &col)
 	for(int i=0;i<3;i++){
 		col[i] = ClampValue(col[i],0.0,1.0);
 	}
+}
+
+void ClampColor(Color &col)
+{
+    for(int i=0;i<3;i++){
+        col[i] = ClampValue(col[i], 0.0, 1.0);
+    }
 }
