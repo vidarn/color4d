@@ -3,7 +3,6 @@
 * Palette shader
 * Better scheme preview
 * Handle multiple documents and save/load
-* Fix out of gammut colors
 * Fix pressing enter in color picker
 * Fix changing offsets in blender color picker
 
@@ -17,6 +16,7 @@
 * Load palette color in color picker
 * Prettier color picker
 * Faster color picker
+* Fix out of gammut colors
 
 ## On hold ##
 * Pick colors from screen
