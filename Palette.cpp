@@ -1,4 +1,7 @@
 #include "palette.h"
+#define ASE_NO_UTF8
+#include "ase_loader.h"
+#include "ase_writer.h"
 
 Palette::Palette():
 	m_name("Unnamed"),m_inScene(true)
@@ -92,12 +95,12 @@ void Palette::InitPalettes()
         BaseContainer bc;
         bc.SetInt32(NUM_PALETTES,1);
         BaseContainer palC;
-        Palette stdPal(String("Default"),5);
-        stdPal.SetColor(0,Color(1.0f,0.f,0.f));
-        stdPal.SetColor(1,Color(1.0f,1.f,0.f));
-        stdPal.SetColor(2,Color(1.0f,1.f,1.f));
-        stdPal.SetColor(3,Color(0.0f,1.f,1.f));
-        stdPal.SetColor(4,Color(0.0f,0.f,1.f));
+        Palette stdPal;
+        Filename fName = GeGetPluginPath() + Filename("default.ase");
+        if(!Palette::LoadASEFile(fName.GetString(), stdPal)){
+            stdPal = Palette(String("Default"),1);
+            stdPal.SetColor(0,Color(0.0f,0.f,0.f));
+        }
         stdPal.ToContainer(palC);
         bc.SetContainer(FIRST_PALETTE,palC);
         doc->BaseList2D::GetDataInstance()->SetContainer(PALETTE_ID, bc);
@@ -196,4 +199,80 @@ void Palette::UpdatePalette(Int32 id)
 void Palette::UpdateColor(Int32 palette, Int32 color)
 {
 	SpecialEventAdd(PALETTE_ID,color,(Int64)palette);
+}
+
+Bool Palette::LoadASEFile(String s, Palette &pal)
+{
+    ASE_FILE aseFile;
+    Int32 fnLength =  s.GetCStringLen();
+    char *str = NewMem(char,fnLength+1);
+    s.GetCString(str, fnLength+1);
+    ASE_ERRORTYPE error = ase_openAndReadAseFile(&aseFile, str);
+    DeleteMem(str);
+    if(!error){
+        for(Int32 i=0;i<aseFile.numGroups;i++){
+            ASE_GROUP *group = aseFile.groups + i;
+            pal.m_name = String((UInt16*)group->name);
+            
+            for(Int32 ii=0;ii<group->numColors;ii++){
+                ASE_COLOR *color = group->colors + ii;
+                Int32 a = 0;
+                Vector col;
+                while(color->col[a] != -1.0f && a < 3){
+                    printf("a: %d\n",a);
+                    GePrint(String::FloatToString(color->col[a]));
+                    col[a] = color->col[a];
+                    a++;
+                }
+                pal.SetColor(ii, NamedColor(Color(col).SetSource(COLOR_SOURCE_DISPLAY),String((UInt16*)color->name)));
+            }
+        }
+        ase_freeAseFile(&aseFile);
+    } else {
+        GePrint("Could not load file " + s);
+    }
+    return !error;
+}
+
+Bool Palette::SaveASEFile(String s, const Palette &pal)
+{
+    ASE_FILE aseFile;
+    Int32 fnLength =  s.GetCStringLen();
+    char *str = NewMem(char,fnLength+1);
+    s.GetCString(str, fnLength+1);
+    aseFile.numGroups = 1;
+    aseFile.groups = NewMem(ASE_GROUP, 1);
+    ASE_GROUP *group = aseFile.groups;
+    UInt16 numChar = pal.m_name.GetLength() + 1;
+    UInt16 *buffer = NewMem(UInt16, numChar);
+    pal.m_name.GetUcBlockNull(buffer, numChar);
+    group->name = (char *)buffer;
+    UInt16 numColors = pal.GetCount();
+    group->numColors = numColors;
+    group->colors = NewMem(ASE_COLOR, numColors);
+    for(UInt16 i=0;i<numColors;++i){
+        ASE_COLOR *col = group->colors + i;
+        NamedColor color(pal[i]);
+        Vector v = color.Convert(COLOR_SOURCE_DISPLAY).AsVector();
+        numChar = color.m_name.GetLength()+1;
+        col->name = (char *)NewMem(UInt16, numChar);
+        color.m_name.GetUcBlockNull((UInt16 *)col->name, numChar);
+        for(UInt16 ii=0;ii<3;++ii){
+            col->col[ii] = v[ii];
+        }
+        col->col[3] = -1.0f;
+        col->type = ASE_COLORTYPE_RGB;
+    }
+    ASE_ERRORTYPE error = ase_openAndWriteAseFile(&aseFile, str);
+    if(error){
+        GePrint(ase_getErrorString(error));
+    }
+    for(UInt16 i=0;i<numColors;++i){
+        DeleteMem(group->colors[i].name);
+    }
+    DeleteMem(group->colors);
+    DeleteMem(aseFile.groups);
+    DeleteMem(buffer);
+    DeleteMem(str);
+    GePrint("Saved file " + s);
 }

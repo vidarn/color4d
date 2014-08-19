@@ -2,9 +2,6 @@
 #include "main.h"
 #include "c4d_symbols.h"
 #include "c4d_file.h"
-#define ASE_NO_UTF8
-#include "ase_loader.h"
-#include "ase_writer.h"
 #include <iconv.h>
 #include <string>
 
@@ -78,7 +75,6 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
 {
 	GeDynamicArray<Palette> pals;
     Palette pal;
-    ASE_FILE aseFile;
     Filename fn;
     switch (id)
     {
@@ -94,80 +90,17 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
                 case ACTION_LOAD:
                     if(fn.FileSelect(FILESELECTTYPE_ANYTHING, FILESELECT_LOAD, "Load")){
                         String s = fn.GetString();
-                        Int32 fnLength =  s.GetCStringLen();
-                        char *str = NewMem(char,fnLength+1);
-                        s.GetCString(str, fnLength+1);
-                        ASE_ERRORTYPE error = ase_openAndReadAseFile(&aseFile, str);
-                        DeleteMem(str);
-                        if(!error){
-                            for(Int32 i=0;i<aseFile.numGroups;i++){
-                                ASE_GROUP *group = aseFile.groups + i;
-                                pal.m_name = String((UInt16*)group->name);
-                                
-                                for(Int32 ii=0;ii<group->numColors;ii++){
-                                    ASE_COLOR *color = group->colors + ii;
-                                    Int32 a = 0;
-                                    Vector col;
-                                    while(color->col[a] != -1.0f && a < 3){
-                                        printf("a: %d\n",a);
-                                        GePrint(String::FloatToString(color->col[a]));
-                                        col[a] = color->col[a];
-                                        a++;
-                                    }
-                                    pal.SetColor(ii, NamedColor(Color(col).SetSource(COLOR_SOURCE_DISPLAY),String((UInt16*)color->name)));
-                                }
-                                id = Palette::AddPalette(pal);
-                                LoadPalette(id);
-                                Palette::UpdateAll();
-                            }
-                        } else {
-                            GePrint("Could not load file " + s);
+                        if(Palette::LoadASEFile(s, pal)){
+                            id = Palette::AddPalette(pal);
+                            LoadPalette(id);
+                            Palette::UpdateAll();
                         }
-                        ase_freeAseFile(&aseFile);
                     }
                     break;
                 case ACTION_SAVE:
                     if(fn.FileSelect(FILESELECTTYPE_ANYTHING, FILESELECT_SAVE, "Save", "ase")){
                         String s = fn.GetString();
-                        Int32 fnLength =  s.GetCStringLen();
-                        char *str = NewMem(char,fnLength+1);
-                        s.GetCString(str, fnLength+1);
-                        aseFile.numGroups = 1;
-                        aseFile.groups = NewMem(ASE_GROUP, 1);
-                        ASE_GROUP *group = aseFile.groups;
-                        UInt16 numChar = m_palette.m_name.GetLength() + 1;
-                        UInt16 *buffer = NewMem(UInt16, numChar);
-                        m_palette.m_name.GetUcBlockNull(buffer, numChar);
-                        group->name = (char *)buffer;
-                        UInt16 numColors = m_palette.GetCount();
-                        group->numColors = numColors;
-                        group->colors = NewMem(ASE_COLOR, numColors);
-                        for(UInt16 i=0;i<numColors;++i){
-                            ASE_COLOR *col = group->colors + i;
-                            NamedColor &color = m_palette[i];
-                            Vector v = color.Convert(COLOR_SOURCE_DISPLAY).AsVector();
-                            numChar = color.m_name.GetLength()+1;
-                            col->name = (char *)NewMem(UInt16, numChar);
-                            color.m_name.GetUcBlockNull((UInt16 *)col->name, numChar);
-                            for(UInt16 ii=0;ii<3;++ii){
-                                col->col[ii] = v[ii];
-                            }
-                            col->col[3] = -1.0f;
-                            col->type = ASE_COLORTYPE_RGB;
-                        }
-                        ASE_ERRORTYPE error = ase_openAndWriteAseFile(&aseFile, str);
-                        if(error){
-                            GePrint(ase_getErrorString(error));
-                        }
-                        for(UInt16 i=0;i<numColors;++i){
-                            DeleteMem(group->colors[i].name);
-                        }
-                        DeleteMem(group->colors);
-                        DeleteMem(aseFile.groups);
-                        DeleteMem(buffer);
-                        DeleteMem(str);
-                        GePrint("Saved file " + s);
-                        
+                        Palette::SaveASEFile(s, m_palette);
                     }
                 case ACTION_LABEL:
                     m_showLabel = !m_showLabel;

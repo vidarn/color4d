@@ -1,7 +1,6 @@
 ## TODO ##
 * Palette shader
 * Better scheme preview
-* Handle multiple documents and save/load
 * Fix pressing enter in color picker
 * Add controls to palette
 * Enable/disable color picker in menu
@@ -21,6 +20,7 @@
 * Load/write common palette files
 * Fix out of gammut colors
 * Fix changing offsets in blender color picker
+* Handle multiple documents and save/load
 
 ## On hold ##
 * Pick colors from screen

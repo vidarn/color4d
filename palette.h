@@ -24,8 +24,9 @@ class Palette
 		void SetColor(Int32 index, const Color &color);
         void SetColor(Int32 index, const NamedColor &color);
 		void InsertColor(Int32 index, const Color &color);
-		Int32 GetCount(){return  m_colors.GetCount();}
+		Int32 GetCount() const {return  m_colors.GetCount();}
 		NamedColor & operator[](int i){return m_colors[i];}
+        const NamedColor & operator[](int i) const {return m_colors[i];}
 		const Palette &operator=(const Palette &pal);
     
         String m_name;
@@ -42,6 +43,8 @@ class Palette
         static void UpdateAll();
 		static void UpdatePalette(Int32 id);
 		static void UpdateColor(Int32 palette, Int32 color);
+        static Bool LoadASEFile(String filename, Palette &palette);
+        static Bool SaveASEFile(String filename, const Palette &palette);
     
     
 	private:
