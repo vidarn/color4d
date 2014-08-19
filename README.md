@@ -1,5 +1,4 @@
 ## TODO ##
-* Load/write common palette files
 * Pick colors from screen
 * Palette shader
 * Better scheme preview
@@ -7,6 +6,7 @@
 * Fix out of gammut colors
 * Fix pressing enter in color picker
 * Fix changing offsets in blender color picker
+* Add controls to palette
 
 ## Done ##
 * Search spot colors
@@ -18,3 +18,4 @@
 * Load palette color in color picker
 * Prettier color picker
 * Faster color picker
+* Load/write common palette files

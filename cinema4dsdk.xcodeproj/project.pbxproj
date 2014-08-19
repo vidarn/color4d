@@ -51,6 +51,8 @@
 		13C2F8DB1996079A0065AE04 /* namedColor.h in Headers */ = {isa = PBXBuildFile; fileRef = 13C2F8D91996079A0065AE04 /* namedColor.h */; };
 		13C2F8DE1996460E0065AE04 /* ColorWheelSubDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13C2F8DC1996460E0065AE04 /* ColorWheelSubDialog.cpp */; };
 		13C2F8DF1996460E0065AE04 /* colorwheelsubdialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 13C2F8DD1996460E0065AE04 /* colorwheelsubdialog.h */; };
+		13E787F019A32FC500F55002 /* ase_common.h in Headers */ = {isa = PBXBuildFile; fileRef = 13E787EE19A32FC500F55002 /* ase_common.h */; };
+		13E787F119A32FC500F55002 /* ase_writer.h in Headers */ = {isa = PBXBuildFile; fileRef = 13E787EF19A32FC500F55002 /* ase_writer.h */; };
 		65636C1E08E5922100FBAB34 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65636BEF08E5922100FBAB34 /* main.cpp */; };
 /* End PBXBuildFile section */
 
@@ -135,6 +137,9 @@
 		13C2F8D91996079A0065AE04 /* namedColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = namedColor.h; sourceTree = "<group>"; };
 		13C2F8DC1996460E0065AE04 /* ColorWheelSubDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColorWheelSubDialog.cpp; sourceTree = "<group>"; };
 		13C2F8DD1996460E0065AE04 /* colorwheelsubdialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = colorwheelsubdialog.h; sourceTree = "<group>"; };
+		13E787EE19A32FC500F55002 /* ase_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ase_common.h; sourceTree = SOURCE_ROOT; };
+		13E787EF19A32FC500F55002 /* ase_writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ase_writer.h; sourceTree = SOURCE_ROOT; };
+		13E787F319A3308600F55002 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		653A926E0858FEB50017BCBC /* _api.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = _api.xcodeproj; path = ../../resource/_api_lib/_api.xcodeproj; sourceTree = SOURCE_ROOT; };
 		6553A1DA0926F00F0034739A /* _api_debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = _api_debug.xcconfig; path = ../../resource/_api_lib/_api_debug.xcconfig; sourceTree = SOURCE_ROOT; };
 		6553A1DB0926F00F0034739A /* _api_release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = _api_release.xcconfig; path = ../../resource/_api_lib/_api_release.xcconfig; sourceTree = SOURCE_ROOT; };
@@ -158,11 +163,13 @@
 		65636BD708E5922100FBAB34 /* source */ = {
 			isa = PBXGroup;
 			children = (
+				13E787EE19A32FC500F55002 /* ase_common.h */,
+				13E787EF19A32FC500F55002 /* ase_writer.h */,
 				13C2F8D0199283F10065AE04 /* checked.h */,
+				13C2F8CB19901C300065AE04 /* ase_loader.h */,
 				13C2F8D1199283F10065AE04 /* core.h */,
 				13C2F8D2199283F10065AE04 /* unchecked.h */,
 				13C2F8CE199283E70065AE04 /* utf8.h */,
-				13C2F8CB19901C300065AE04 /* ase_loader.h */,
 				136DACB619895D25002BDC1D /* ColorScheme.cpp */,
 				136DACB719895D25002BDC1D /* PaletteSubDialog.cpp */,
 				136DACB819895D25002BDC1D /* palettesubdialog.h */,
@@ -218,6 +225,7 @@
 		65E51686083D10D0005BFD9A = {
 			isa = PBXGroup;
 			children = (
+				13E787F319A3308600F55002 /* libicucore.dylib */,
 				13C2F8D61992AD1E0065AE04 /* libiconv.dylib */,
 				136DACB419895C67002BDC1D /* LittleCMS.framework */,
 				65636BD708E5922100FBAB34 /* source */,
@@ -254,6 +262,7 @@
 				131B91961986B15A00E28986 /* colorselectordialog.h in Headers */,
 				131B91A21986B16200E28986 /* main.h in Headers */,
 				131B91B41986B16A00E28986 /* utils.h in Headers */,
+				13E787F019A32FC500F55002 /* ase_common.h in Headers */,
 				13C2F8DF1996460E0065AE04 /* colorwheelsubdialog.h in Headers */,
 				136DACBD19895D25002BDC1D /* palettesubdialog.h in Headers */,
 				136DACBF19895D25002BDC1D /* slidersubdialog.h in Headers */,
@@ -271,6 +280,7 @@
 				131B919A1986B15A00E28986 /* colorwheel.h in Headers */,
 				131B91941986B15A00E28986 /* colorpickerdialog.h in Headers */,
 				131B918D1986B15A00E28986 /* color.h in Headers */,
+				13E787F119A32FC500F55002 /* ase_writer.h in Headers */,
 				13C2F8CC19901C300065AE04 /* ase_loader.h in Headers */,
 				131B91A81986B16200E28986 /* palettedialog.h in Headers */,
 				13C2F8D5199283F10065AE04 /* unchecked.h in Headers */,
@@ -429,6 +439,7 @@
 					"$(C4D_ROOTDIR)/resource/modules/modeling/res/description",
 					"$(C4D_ROOTDIR)/resource/modules/sculpt/res/description",
 					"$(C4D_ROOTDIR)/plugins/colorpicker/lib/lcms2-2.6/include",
+					/opt/local/include,
 				);
 				SKIP_INSTALL = NO;
 			};
@@ -455,6 +466,7 @@
 					"$(C4D_ROOTDIR)/resource/modules/modeling/res/description",
 					"$(C4D_ROOTDIR)/resource/modules/sculpt/res/description",
 					"$(C4D_ROOTDIR)/plugins/colorpicker/lib/lcms2-2.6/include",
+					/opt/local/include,
 				);
 				SKIP_INSTALL = NO;
 			};
