@@ -287,6 +287,7 @@ Bool ColorWheel::InputEvent(const BaseContainer &msg)
 			m_mouseDown = TRUE;
 			Global2Local(&m_mouseX, &m_mouseY);
             {
+                // Handle switching of palette type
                 Int32 currX =  m_valueRadius;
                 Int32 currY =  m_valueRadius;
                 if(CheckMarkerSelect(currX, currY)){
@@ -311,12 +312,16 @@ Bool ColorWheel::InputEvent(const BaseContainer &msg)
                 Int32 dy = m_mouseY-m_centerY;
                 m_mouseDragTriangle = Abs(dx)*2 < m_triangleW && Abs(dy)*2 < m_triangleW && m_type == COLOR_WHEEL_RECTANGLE;
                 m_selectedMarker = 0;
+                float radius = m_valuePosition;
+                if(m_type == COLOR_WHEEL_BLENDER){
+                    radius = m_color[1]*m_outerRadius;
+                }
                 if(!m_mouseDragTriangle){
                     for(int i=0;i<m_offsets.GetCount();i++){
                         Float val = m_color[0];
                         val += m_offsets[i];
-                        Int32 currX =  cos(val*PI2)*m_valuePosition+m_centerX;
-                        Int32 currY = -sin(val*PI2)*m_valuePosition+m_centerY;
+                        Int32 currX =  cos(val*PI2)*radius+m_centerX;
+                        Int32 currY = -sin(val*PI2)*radius+m_centerY;
                         if(CheckMarkerSelect(currX, currY)){
                             m_selectedMarker = i;
                         }
