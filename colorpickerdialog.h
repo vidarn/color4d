@@ -16,8 +16,8 @@ private:
     DescriptionCustomGui    *gad;
 public:
 
-	ColorPickerDialog():m_wheelSubDiag(this){ColorPickerDialog(new Vector(1.0f));}
-    ColorPickerDialog(Vector *color):m_wheelSubDiag(this), m_pColor(color), m_spotColors(NULL) {}
+	ColorPickerDialog():m_wheelSubDiag(this),m_paletteSubDiag(1){ColorPickerDialog(new Vector(1.0f));}
+    ColorPickerDialog(Vector *color):m_wheelSubDiag(this), m_pColor(color), m_spotColors(NULL),m_paletteSubDiag(1) {}
 	~ColorPickerDialog();
 
     virtual Bool CreateLayout(void);

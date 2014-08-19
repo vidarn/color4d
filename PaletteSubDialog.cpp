@@ -8,8 +8,8 @@
 #include <iconv.h>
 #include <string>
 
-PaletteSubDialog::PaletteSubDialog():
-m_spotColors(NULL), m_selectCallback(NULL),m_dragable(TRUE),m_showLabel(FALSE)
+PaletteSubDialog::PaletteSubDialog(Int32 id):
+m_spotColors(NULL), m_selectCallback(NULL),m_dragable(TRUE),m_showLabel(FALSE),m_id(id)
 {
 }
 
@@ -89,6 +89,7 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
                     pal.SetColor(0, Color(0.f, 0.f, 0.f).SetSource(COLOR_SOURCE_DISPLAY));
                     id = Palette::AddPalette(pal);
                     LoadPalette(id);
+                    Palette::UpdateAll();
                     break;
                 case ACTION_LOAD:
                     if(fn.FileSelect(FILESELECTTYPE_ANYTHING, FILESELECT_LOAD, "Load")){
@@ -117,7 +118,7 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
                                 }
                                 id = Palette::AddPalette(pal);
                                 LoadPalette(id);
-                                
+                                Palette::UpdateAll();
                             }
                         } else {
                             GePrint("Could not load file " + s);
@@ -188,10 +189,13 @@ Bool PaletteSubDialog::CoreMessage(Int32 id, const BaseContainer& msg)
 {
     switch ( id )
     {
-      case  PALETTE_ID:                                      // internal message
+      case  PALETTE_ID:
 			Int64 color =  (Int64) msg.GetVoid( BFM_CORE_PAR1 );
 			Int64 palette = (Int64) msg.GetVoid( BFM_CORE_PAR2 );
-			if(palette == m_paletteID && color == -1){
+            if( palette == -1){
+                m_paletteID = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_ID)->GetInt32(m_id);
+            }
+			if((palette == m_paletteID || palette == -1) && color == -1){
 				LoadPalette(m_paletteID);
 			}
         break;
@@ -223,6 +227,7 @@ void PaletteSubDialog::LoadPalette(Int32 id)
 	Palette::GetPalettes(pals);
 	m_palette = pals[id];
 	m_paletteID = id;
+    GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_ID)->SetInt32(m_id, m_paletteID);
 	PaletteLayout();
 }
 

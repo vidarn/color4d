@@ -12,7 +12,7 @@ private:
     DescriptionCustomGui    *gad;
 public:
 
-	PaletteSubDialog();
+	PaletteSubDialog(Int32 id);
 	~PaletteSubDialog();
 
     virtual Bool CreateLayout(void);
@@ -37,6 +37,7 @@ public:
         ACTION_COUNT
     };
 
+    Int32 m_id;
 	Int32 m_paletteID;
 	Palette m_palette;
 	PaletteColor *m_spotColors;

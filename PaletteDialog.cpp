@@ -2,7 +2,7 @@
 #include "main.h"
 #include "c4d_symbols.h"
 #include "c4d_file.h"
-PaletteDialog::PaletteDialog()
+PaletteDialog::PaletteDialog():m_paletteSubDiag(2)
 {
 }
 

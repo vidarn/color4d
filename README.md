@@ -1,10 +1,12 @@
 ## TODO ##
-* Pick colors from screen
 * Palette shader
 * Better scheme preview
 * Handle multiple documents and save/load
 * Fix pressing enter in color picker
 * Add controls to palette
+* Enable/disable color picker in menu
+* Allow dragging of palette colors
+* Button for removing palette colors
 
 ## Done ##
 * Search spot colors

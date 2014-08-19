@@ -5,6 +5,7 @@
 #include "c4d_symbols.h"
 #include "spotcolordialog.h"
 #include "palettedialog.h"
+#include "paletteSceneHook.h"
 #include "main.h"
 
 
@@ -71,10 +72,10 @@ Bool PluginStart(void)
 	Color::UpdateTransforms();
 	ColorScheme::Init();
 	PaletteColor::LoadIcons();
-	Palette::InitPalettes();
 	Bool result = RegisterCommandPlugin(SPOTCOLOR_ID,String("Spot colors"),0,NULL,String(),NewObjClear(SpotColorCommand));
 	result = result && RegisterCommandPlugin(COLORSELECTOR_ID,String("Color wheel"),0,NULL,String(),NewObjClear(ColorSelectorCommand));
 	result = result && RegisterCommandPlugin(PALETTE_ID,String("Palette"),0,NULL,String(),NewObjClear(PaletteCommand));
+    result = result && Register_PaletteSceneHook();
 	if(result){
 		GePrint("Result!");
 	}
@@ -98,6 +99,10 @@ Bool PluginMessage(Int32 id, void *data)
     case C4DPL_INIT_SYS:
         {
             if(!resource.Init()) return FALSE;
+            
+            //if (!RegisterDescription(PALETTE_SCENE_HOOK_ID, "Dscenehooksettings"))
+               // return false;
+
 
             OperatingSystem *os=(OperatingSystem*)data;
 

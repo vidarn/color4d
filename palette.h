@@ -29,6 +29,7 @@ class Palette
 		const Palette &operator=(const Palette &pal);
     
         String m_name;
+        Bool m_inScene;
 
 		static void InitPalettes();
 		static void GetPalettes(GeDynamicArray<Palette> &palettes);
@@ -38,6 +39,7 @@ class Palette
 		static void InsertPaletteColor(Int32 paletteID, Int32 colorID, const Color &col);
 		static void GetPaletteColor(Int32 paletteID, Int32 colorID, Color &col);
 		static Int32 AddPalette(const Palette &palette);
+        static void UpdateAll();
 		static void UpdatePalette(Int32 id);
 		static void UpdateColor(Int32 palette, Int32 color);
     
