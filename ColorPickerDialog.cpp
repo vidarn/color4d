@@ -51,6 +51,13 @@ Bool ColorPickerDialog::CreateLayout(void)
 				C4DGadget *area = AddUserArea(IDC_TEST4,BFH_SCALEFIT);
 				AttachUserArea(m_previewColors[0],area);
 				m_previewColors[0].SetParent(this);
+    
+                m_oldColor = Color(*m_pColor).SetSource(COLOR_SOURCE_DISPLAY);
+                m_previewColors[1].SetParent(this);
+                area = AddUserArea(IDC_TEST5,BFH_SCALEFIT);
+                AttachUserArea(m_previewColors[1],area);
+                m_previewColors[1].SetParent(this);
+                m_previewColors[1].SetColor(m_oldColor);
 			GroupEnd();
 		GroupEnd();
 		AddDlgGroup(DLG_OK|DLG_CANCEL);
@@ -69,7 +76,7 @@ ColorPickerDialog::~ColorPickerDialog()
 
 Bool ColorPickerDialog::InitValues(void)
 {
-	UpdateColor(Color(*m_pColor).SetSource(COLOR_SOURCE_DISPLAY));
+	UpdateColor(m_oldColor);
     if (!GeDialog::InitValues()) return FALSE;
     return TRUE;
 }

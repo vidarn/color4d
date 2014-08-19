@@ -33,6 +33,7 @@ public:
 	BaseContainer m_Settings;
     BasePlugin *m_pPlugin;
     Vector *m_pColor;
+    Color m_oldColor;
 
 	Color m_DisplayColor;
 	PaletteSubDialog m_paletteSubDiag;
@@ -40,6 +41,6 @@ public:
 	ColorWheelSubDialog m_wheelSubDiag;
     
 	SpotColor *m_spotColors;
-	SpotColor m_previewColors[4];
+	SpotColor m_previewColors[2];
 	C4DGadget *spotArea;
 };
