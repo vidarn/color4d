@@ -4,7 +4,6 @@
 * Better scheme preview
 * Handle multiple documents and save/load
 * Fix pressing enter in color picker
-* Fix changing offsets in blender color picker
 
 ## Done ##
 * Search spot colors
@@ -17,6 +16,7 @@
 * Prettier color picker
 * Faster color picker
 * Fix out of gammut colors
+* Fix changing offsets in blender color picker
 
 ## On hold ##
 * Pick colors from screen
