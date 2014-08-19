@@ -4,7 +4,6 @@
 * Fix pressing enter in color picker
 * Add controls to palette
 * Enable/disable color picker in menu
-* Allow dragging of palette colors
 * Button for removing palette colors
 
 ## Done ##
@@ -21,6 +20,7 @@
 * Fix out of gammut colors
 * Fix changing offsets in blender color picker
 * Handle multiple documents and save/load
+* Allow dragging of palette colors
 
 ## On hold ##
 * Pick colors from screen
