@@ -24,6 +24,7 @@ class PaletteColor :public SpotColor
 		virtual Int32 Message(const BaseContainer& msg, BaseContainer& result);
 		virtual Bool CoreMessage(Int32 id, const BaseContainer& msg);
 		virtual void UpdateColor(Color color);
+        virtual void HandleClick();
 		void UpdateBitmaps();
 		void SetColorID(Int32 id){m_colorID = id;}
 		void SetPaletteID(Int32 id){m_palette = id;}

@@ -25,6 +25,7 @@ class SpotColor : public GeUserArea
 		void SetColor(Color color);
 		Color GetColor();
 		void SetDragable(Bool state){m_dragable = state;}
+        virtual void HandleClick();
 
 		ColorDialog *m_parent;
 		Color m_color;

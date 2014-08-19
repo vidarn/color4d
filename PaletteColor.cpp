@@ -1,4 +1,5 @@
 #include "palettecolor.h"
+#include "c4d_general.h"
 
 BaseBitmap *PaletteColor::m_refreshIcon = 0;
 BaseBitmap *PaletteColor::m_leftArrowIcon = 0;
@@ -108,15 +109,20 @@ void PaletteColor::UpdateColor(Color color){
 	Redraw();
 }
 
+void PaletteColor::HandleClick()
+{
+    GePrint("Hejsan");
+    if(m_selectCallback != NULL){
+        m_selectCallback(m_color,m_selectCallbackData);
+    }else{
+        Vector vec = m_color.Convert(COLOR_SOURCE_DISPLAY).AsVector();
+        GeChooseColor(&vec,DR_COLORFIELD_ICC_BASEDOC);
+        Palette::SetPaletteColor(m_palette, m_colorID, Color(vec).SetSource(COLOR_SOURCE_DISPLAY));
+    }
+}
+
 Int32 PaletteColor::Message(const BaseContainer& msg, BaseContainer& result)
 {
-    if(msg.GetId() == BFM_GETCURSORINFO){
-        //result.SetString(RESULT_BUBBLEHELP, "Bubble! ^_^");
-        //result.SetBool(RESULT_SUPPRESSBUBBLE, FALSE);
-        //result.SetInt32(RESULT_CURSOR, MOUSE_CROSS);
-        //GePrint("heheh");
-        //HandleHelpString(msg,result,String("test"));
-    }
 	if(msg.GetId() == BFM_DRAGRECEIVE){
 		Int32 type = 0;
 		void *object = NULL;
@@ -174,13 +180,6 @@ Int32 PaletteColor::Message(const BaseContainer& msg, BaseContainer& result)
 
 Bool PaletteColor::InputEvent(const BaseContainer &msg)
 {
-	if(msg.GetInt32(BFM_INPUT_DEVICE) == BFM_INPUT_MOUSE){
-		if(msg.GetInt32(BFM_INPUT_CHANNEL) == BFM_INPUT_MOUSELEFT){
-			if(m_selectCallback != NULL){
-				m_selectCallback(m_color,m_selectCallbackData);
-			}
-		}
-	}
 	return SpotColor::InputEvent(msg);
 }
 

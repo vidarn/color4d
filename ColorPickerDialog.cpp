@@ -32,7 +32,7 @@ Bool ColorPickerDialog::CreateLayout(void)
         if(AddSubDialog(IDC_PALETTE,BFH_SCALEFIT)){
             AttachSubDialog(&m_paletteSubDiag,IDC_PALETTE);
             m_paletteSubDiag.SetSelectCallback(&SelectColorCallback,(void *)this);
-            m_paletteSubDiag.SetDragable(FALSE);
+            m_paletteSubDiag.SetDragable(TRUE);
         }
 		GroupBegin(1,BFH_SCALEFIT,3,1,String(),0);
             if(AddSubDialog(IDC_COLORWHEEL, BFH_LEFT)){

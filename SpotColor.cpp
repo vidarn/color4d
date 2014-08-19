@@ -66,7 +66,9 @@ Bool SpotColor::InputEvent(const BaseContainer &msg)
 		if(msg.GetInt32(BFM_INPUT_CHANNEL) == BFM_INPUT_MOUSELEFT){
 			if(m_dragable){
 				Vector col = m_color.Convert(COLOR_SOURCE_DISPLAY).AsVector();
-				HandleMouseDrag(msg,DRAGTYPE_RGB,&col,0);
+				if(!HandleMouseDrag(msg,DRAGTYPE_RGB,&col,0)){
+                    HandleClick();
+                }
 			}
 		}
 	}
@@ -79,4 +81,8 @@ void SpotColor::SetColor(Color color){
 
 Color SpotColor::GetColor(){
 	return m_color;
+}
+
+void SpotColor::HandleClick()
+{
 }

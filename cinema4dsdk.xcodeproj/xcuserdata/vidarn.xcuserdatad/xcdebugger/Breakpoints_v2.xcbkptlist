@@ -322,11 +322,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Palette.cpp"
-            timestampString = "430140010.359407"
+            timestampString = "430140690.458649"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
+            startingLineNumber = "154"
+            endingLineNumber = "154"
             landmarkName = "Palette::InsertPaletteColor(Int32 paletteID, Int32 colorID, const Color &amp;col)"
             landmarkType = "5">
          </BreakpointContent>
@@ -338,11 +338,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Palette.cpp"
-            timestampString = "430140010.359407"
+            timestampString = "430140690.458649"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "145"
-            endingLineNumber = "145"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
             landmarkName = "Palette::SetPaletteColor(Int32 paletteID, Int32 colorID, const Color &amp;col)"
             landmarkType = "5">
          </BreakpointContent>
@@ -354,11 +354,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Palette.cpp"
-            timestampString = "430140010.359407"
+            timestampString = "430140690.458649"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "144"
-            endingLineNumber = "144"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
             landmarkName = "Palette::SetPaletteColor(Int32 paletteID, Int32 colorID, const Color &amp;col)"
             landmarkType = "5">
          </BreakpointContent>
@@ -434,11 +434,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Palette.cpp"
-            timestampString = "430140010.359407"
+            timestampString = "430141803.387971"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "242"
-            endingLineNumber = "242"
+            startingLineNumber = "237"
+            endingLineNumber = "237"
             landmarkName = "Palette::LoadASEFile(String s, Palette &amp;pal)"
             landmarkType = "5">
          </BreakpointContent>

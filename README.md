@@ -24,3 +24,4 @@
 
 ## On hold ##
 * Pick colors from screen
+* Support undo

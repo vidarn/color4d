@@ -143,8 +143,8 @@ void Palette::SetPaletteColor(Int32 paletteID, Int32 colorID, const Color &col)
 		pal.ToContainer(*c);
 		bc->SetContainer(FIRST_PALETTE+paletteID,*c);
 		SetWorldPluginData(PALETTE_ID,*bc,FALSE);
-		//UpdateColor(paletteID, colorID);
         UpdatePalette(paletteID);
+        GetActiveDocument()->SetChanged();
 	}
 }
 
@@ -160,6 +160,7 @@ void Palette::InsertPaletteColor(Int32 paletteID, Int32 colorID, const Color &co
 		bc->SetContainer(FIRST_PALETTE+paletteID,*c);
 		SetWorldPluginData(PALETTE_ID,*bc,FALSE);
 		UpdatePalette(paletteID);
+        GetActiveDocument()->SetChanged();
 	}
 }
 
@@ -183,6 +184,7 @@ Int32 Palette::AddPalette(const Palette &palette)
 	palette.ToContainer(pal);
 	bc->SetContainer(FIRST_PALETTE+count,pal);
 	bc->SetInt32(NUM_PALETTES,count+1);
+    GetActiveDocument()->SetChanged();
 	return count;
 }
 
