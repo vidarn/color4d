@@ -77,7 +77,7 @@ void ColorWheel::UpdateCircle()
                         if(posY > 0){
                             hue = 1.0 - hue;
                         }
-                        saturation = dist/m_outerRadius;
+                        saturation = Pow(dist/m_outerRadius,2.0);
                         break;
                     }
                     col = Color(hue,saturation,1.0).SetSource(COLOR_SOURCE_WHEEL).Convert(COLOR_SOURCE_DISPLAY).AsVector()*val + col*(1.0-val);
@@ -156,7 +156,7 @@ void ColorWheel::UpdateCanvas()
 		Float val = m_color[0] + m_offsets[i];
         Float valuePosition = m_valuePosition;
         if(m_type == COLOR_WHEEL_BLENDER){
-            valuePosition = m_color[1]*m_outerRadius;
+            valuePosition = Pow(m_color[1],1.0/2.0)*m_outerRadius;
         }
 		Int32 currX =  cos(val*PI2)*valuePosition+m_centerX;
 		Int32 currY = -sin(val*PI2)*valuePosition+m_centerY;
@@ -258,6 +258,7 @@ void ColorWheel::MouseUpdate(){
         }
         if(m_type == COLOR_WHEEL_BLENDER){
             Float saturation = dist;
+            saturation = Pow(dist,2.0);
             m_color[1] = saturation;
         }
     }
