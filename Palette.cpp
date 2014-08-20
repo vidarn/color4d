@@ -75,6 +75,17 @@ void Palette::InsertColor(Int32 index, const Color &color)
 	}
 }
 
+void Palette::RemoveColor(Int32 index)
+{
+    if(m_colors.GetCount() == 1){
+        m_colors[0] = NamedColor();
+    }else{
+        if(index < m_colors.GetCount()){
+            m_colors.Remove(index);
+        }
+    }
+}
+
 const Palette &Palette::operator=(const Palette &pal)
 {
 	m_colors.SetCount(0);
@@ -156,6 +167,23 @@ void Palette::InsertPaletteColor(Int32 paletteID, Int32 colorID, const Color &co
 		Palette pal;
 		pal.FromContainer(*c);
 		pal.InsertColor(colorID,col);
+		pal.ToContainer(*c);
+		bc->SetContainer(FIRST_PALETTE+paletteID,*c);
+		SetWorldPluginData(PALETTE_ID,*bc,FALSE);
+		UpdatePalette(paletteID);
+        GetActiveDocument()->SetChanged();
+	}
+}
+
+
+void Palette::RemovePaletteColor(Int32 paletteID, Int32 colorID)
+{
+    BaseContainer *bc = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_ID);
+	BaseContainer *c = GetPaletteContainer(paletteID,bc);
+	if(c!= nullptr){
+		Palette pal;
+		pal.FromContainer(*c);
+		pal.RemoveColor(colorID);
 		pal.ToContainer(*c);
 		bc->SetContainer(FIRST_PALETTE+paletteID,*c);
 		SetWorldPluginData(PALETTE_ID,*bc,FALSE);

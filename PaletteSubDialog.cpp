@@ -16,8 +16,10 @@ Bool PaletteSubDialog::CreateLayout(void)
     if (!GeDialog::CreateLayout()) return FALSE;
 
     GroupBegin(0,BFH_SCALEFIT|BFV_SCALEFIT,0,1,String(),0);
-		GroupBegin(1,BFV_SCALEFIT,0,1,String(),0);
-            m_actionPopup = AddPopupButton(2,BFH_LEFT);
+		GroupBegin(1,BFV_SCALEFIT,1,0,String(),0);
+            m_actionPopup = AddPopupButton(3,BFH_LEFT);
+            m_trashArea = AddUserArea(4, BFH_CENTER);
+            AttachUserArea(m_trash, m_trashArea);
 		GroupEnd();
 		ScrollGroupBegin(2,BFH_SCALEFIT|BFV_SCALEFIT,SCROLLGROUP_HORIZ);
 			GroupBegin(6,BFH_SCALEFIT|BFV_SCALEFIT,0,1,String(),0);
@@ -78,7 +80,7 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
     Filename fn;
     switch (id)
     {
-		case 2:
+		case 3:
             GePrint("Tjohoo!");
             switch(msg.GetInt32(BFM_ACTION_VALUE)){
                 case ACTION_NEW:
@@ -86,7 +88,7 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
                     id = Palette::AddPalette(pal);
                     LoadPalette(id);
                     Palette::UpdateAll();
-                    break;
+                    return TRUE;
                 case ACTION_LOAD:
                     if(fn.FileSelect(FILESELECTTYPE_ANYTHING, FILESELECT_LOAD, "Load")){
                         String s = fn.GetString();
@@ -96,25 +98,27 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
                             Palette::UpdateAll();
                         }
                     }
-                    break;
+                    return TRUE;
                 case ACTION_SAVE:
                     if(fn.FileSelect(FILESELECTTYPE_ANYTHING, FILESELECT_SAVE, "Save", "ase")){
                         String s = fn.GetString();
                         Palette::SaveASEFile(s, m_palette);
                     }
+                    return TRUE;
                 case ACTION_LABEL:
                     m_showLabel = !m_showLabel;
                     LoadPalette(m_paletteID);
-                    break;
+                    return TRUE;
                     
             }
             if(msg.GetInt32(BFM_ACTION_VALUE) >= ACTION_COUNT){
                 LoadPalette(msg.GetInt32(BFM_ACTION_VALUE)-ACTION_COUNT);
             }
-            break;
+            return TRUE;
 		default:
 			break;
     }
+    GePrint("apa");
     return GeDialog::Command(id,msg);
 }
 

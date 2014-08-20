@@ -4,6 +4,7 @@
 BaseBitmap *PaletteColor::m_refreshIcon = 0;
 BaseBitmap *PaletteColor::m_leftArrowIcon = 0;
 BaseBitmap *PaletteColor::m_rightArrowIcon = 0;
+BaseBitmap *PaletteColor::m_crossIcon = 0;
 
 PaletteColor::PaletteColor()
 {
@@ -12,6 +13,7 @@ PaletteColor::PaletteColor()
 	m_hoverBitmap      = NULL;
 	m_leftHoverBitmap  = NULL;
 	m_rightHoverBitmap = NULL;
+    m_crossHoverBitmap = NULL;
 	m_color = Color(0.f,1.f,0.f);
 	m_palette = 0;
 	m_colorID = 0;
@@ -29,6 +31,7 @@ PaletteColor::~PaletteColor()
 	maybeFree(m_hoverBitmap);
 	maybeFree(m_leftHoverBitmap);
 	maybeFree(m_rightHoverBitmap);
+    maybeFree(m_crossHoverBitmap);
 }
 
 
@@ -38,6 +41,7 @@ Bool PaletteColor::Init(void)
 	m_hoverBitmap = BaseBitmap::Alloc();
 	m_leftHoverBitmap = BaseBitmap::Alloc();
 	m_rightHoverBitmap = BaseBitmap::Alloc();
+    m_crossHoverBitmap = BaseBitmap::Alloc();
 	UpdateBitmaps();
 	return TRUE;
 }
@@ -64,12 +68,15 @@ void PaletteColor::DrawMsg(Int32 x1,Int32 y1,Int32 x2,Int32 y2, const BaseContai
 		case HOVER_RIGHT:
 			bitmap = m_rightHoverBitmap;
 			break;
+        case HOVER_DELETE:
+            bitmap = m_crossHoverBitmap;
+            break;
 	}
 	DrawBitmap(bitmap,x1,y1,bitmap->GetBw(),bitmap->GetBh(),0,0,bitmap->GetBw(),bitmap->GetBh(),BMP_NORMAL);
 }
 
 
-static void updateBitmap(BaseBitmap *canvas, const Vector &col, Int32 m_w, Int32 m_h, Float horiz, BaseBitmap *icon, Int32 alpha)
+static void updateBitmap(BaseBitmap *canvas, const Vector &col, Int32 m_w, Int32 m_h, Float horiz, Float vertic, BaseBitmap *icon, Float alpha)
 {
 	canvas->Init(m_w,m_h,32);
 	UInt16 cr = col.x*255;
@@ -79,12 +86,12 @@ static void updateBitmap(BaseBitmap *canvas, const Vector &col, Int32 m_w, Int32
 	if(icon != NULL){
 		Int32 w = icon->GetBw();
 		Int32 h = icon->GetBh();
-		for(int y = 0, yy = m_h/2-h/2; y < h; y++, yy++){
+		for(int y = 0, yy = m_h*vertic-h*vertic; y < h; y++, yy++){
 			for(int x=0, xx = m_w*horiz-w*horiz; x < w; x++, xx++){
 				UInt16 r, g, b, a;
 				icon->GetPixel(x,y,&r,&g,&b);
 				icon->GetAlphaPixel(icon->GetInternalChannel(),x,y,&a);
-				float aa = a/255.f;
+				float aa = a/255.f*alpha;
 				r = r*aa + cr*(1.f-aa);
 				g = g*aa + cg*(1.f-aa);
 				b = b*aa + cb*(1.f-aa);
@@ -97,10 +104,11 @@ static void updateBitmap(BaseBitmap *canvas, const Vector &col, Int32 m_w, Int32
 void PaletteColor::UpdateBitmaps(){
 	Vector col = m_color.Convert(COLOR_SOURCE_DISPLAY).AsVector();
 	Float dim = 0.7;
-	updateBitmap(m_normalBitmap,        col,m_w,m_h,0.f, NULL,              0);
-	updateBitmap(m_hoverBitmap,     col*dim,m_w,m_h,0.5f,m_refreshIcon,   255);
-	updateBitmap(m_leftHoverBitmap, col*dim,m_w,m_h,0.f, m_leftArrowIcon, 255);
-	updateBitmap(m_rightHoverBitmap,col*dim,m_w,m_h,1.f, m_rightArrowIcon,255);
+	updateBitmap(m_normalBitmap,        col,m_w,m_h,1.f, 0.f, NULL,            0.0f);
+	updateBitmap(m_hoverBitmap,     col*dim,m_w,m_h,0.5f,0.5f,m_refreshIcon,   1.0f);
+	updateBitmap(m_leftHoverBitmap, col*dim,m_w,m_h,0.f, 0.5f,m_leftArrowIcon, 1.0f);
+	updateBitmap(m_rightHoverBitmap,col*dim,m_w,m_h,1.f, 0.5f,m_rightArrowIcon,1.0f);
+    updateBitmap(m_crossHoverBitmap,col*dim,m_w,m_h,0.5f,0.5f,m_crossIcon     ,1.0f);
 }
 
 void PaletteColor::UpdateColor(Color color){
@@ -130,18 +138,21 @@ Int32 PaletteColor::Message(const BaseContainer& msg, BaseContainer& result)
 		if(type == DRAGTYPE_RGB){
 			Vector *color = static_cast<Vector*>(object);
 			if(msg.GetInt32(BFM_DRAG_FINISHED)){
-				switch(m_hoverState){
-					case HOVER_LEFT:
-						Palette::InsertPaletteColor(m_palette, m_colorID, Color(*color).SetSource(COLOR_SOURCE_DISPLAY));
-						break;
-					case HOVER_RIGHT:
-						Palette::InsertPaletteColor(m_palette, m_colorID+1, Color(*color).SetSource(COLOR_SOURCE_DISPLAY));
-						break;
-					case HOVER_CENTER:
-						Palette::SetPaletteColor(m_palette, m_colorID, Color(*color).SetSource(COLOR_SOURCE_DISPLAY));
-						break;
-				}
-				m_hoverState = HOVER_NONE;
+                switch(m_hoverState){
+                    case HOVER_LEFT:
+                        Palette::InsertPaletteColor(m_palette, m_colorID, Color(*color).SetSource(COLOR_SOURCE_DISPLAY));
+                        break;
+                    case HOVER_RIGHT:
+                        Palette::InsertPaletteColor(m_palette, m_colorID+1, Color(*color).SetSource(COLOR_SOURCE_DISPLAY));
+                        break;
+                    case HOVER_CENTER:
+                        Palette::SetPaletteColor(m_palette, m_colorID, Color(*color).SetSource(COLOR_SOURCE_DISPLAY));
+                        break;
+                    case HOVER_DELETE:
+                        Palette::RemovePaletteColor(m_palette, m_colorID);
+                        break;
+                }
+                m_hoverState = HOVER_NONE;
 			}
 			else{
 				if (msg.GetInt32(BFM_DRAG_LOST)){
@@ -149,27 +160,31 @@ Int32 PaletteColor::Message(const BaseContainer& msg, BaseContainer& result)
 					Redraw();
 				}
 				else{
-					BaseContainer state;
-					if(GetInputState(BFM_INPUT_MOUSE, BFM_INPUT_MOUSELEFT, state)){
-						Float sideWidth = 0.2;
-						Int32 x = state.GetInt32(BFM_INPUT_X);
-						Int32 y = state.GetInt32(BFM_INPUT_Y);
-						Global2Local(&x,&y);
-						if(x < m_w*sideWidth){
-							m_hoverState = HOVER_LEFT;
-						}
-						else{
-							if(x > m_w*(1.0-sideWidth)){
-								m_hoverState = HOVER_RIGHT;
-							}
-							else{
-								m_hoverState = HOVER_CENTER;
-							}
-						}
-					}
-					Redraw();
-                    GeUserArea::Message(msg, result);
-					return SetDragDestination(MOUSE_POINT_HAND);
+                    BaseContainer state;
+                    if(GetInputState(BFM_INPUT_MOUSE, BFM_INPUT_MOUSELEFT, state)){
+                        if((*color)[0] <0.f && ((*color)[1] < 0.f && ((*color)[2] < 0.f))){
+                            m_hoverState = HOVER_DELETE;
+                        }else{
+                            Float sideWidth = 0.2;
+                            Int32 x = state.GetInt32(BFM_INPUT_X);
+                            Int32 y = state.GetInt32(BFM_INPUT_Y);
+                            Global2Local(&x,&y);
+                            if(x < m_w*sideWidth){
+                                m_hoverState = HOVER_LEFT;
+                            }
+                            else{
+                                if(x > m_w*(1.0-sideWidth)){
+                                    m_hoverState = HOVER_RIGHT;
+                                }
+                                else{
+                                    m_hoverState = HOVER_CENTER;
+                                }
+                            }
+                        }
+                        Redraw();
+                        GeUserArea::Message(msg, result);
+                        return SetDragDestination(MOUSE_POINT_HAND);
+                    }
 				}
 			}
 		}
@@ -209,6 +224,7 @@ void PaletteColor::LoadIcons(){
 	loadBitmap(m_refreshIcon,"refresh.tif");
 	loadBitmap(m_leftArrowIcon,"leftArrow.tif");
 	loadBitmap(m_rightArrowIcon,"rightArrow.tif");
+    loadBitmap(m_crossIcon, "cross.tif");
 	//GePrint("Loaded icons!" + Int32ToString((Int32)m_refreshIcon) + " " + Int32ToString((Int32)m_leftArrowIcon) + " " + Int32ToString((Int32)m_rightArrowIcon));
 	
 }

@@ -6,6 +6,7 @@
 #define COLORSELECTOR_ID 1018407
 #define PALETTE_ID 1018408
 #define PALETTE_SCENE_HOOK_ID 1018409
+#define COLORPICKER_ENABLE_ID 1018410
 
 
 //////////////////////////////////////////////////////////////////////////

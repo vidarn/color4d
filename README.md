@@ -1,9 +1,7 @@
 ## TODO ##
 * Palette shader
-* Fix pressing enter in color picker
 * Add controls to palette
-* Enable/disable color picker in menu
-* Button for removing palette colors
+* Remember palette mode when opening color picker
 
 ## Done ##
 * Search spot colors
@@ -21,6 +19,9 @@
 * Handle multiple documents and save/load
 * Allow dragging of palette colors
 * Better scheme preview
+* Enable/disable color picker in menu
+* Fix pressing enter in color picker
+* Button for removing palette colors
 
 ## On hold ##
 * Pick colors from screen

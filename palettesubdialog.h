@@ -5,6 +5,7 @@
 #include "palette.h"
 #include "ge_dynamicarray.h"
 #include "c4d_commanddata.h"
+#include "trashcan.h"
 
 class PaletteSubDialog : public SubDialog
 {
@@ -41,8 +42,10 @@ public:
 	Int32 m_paletteID;
 	Palette m_palette;
 	PaletteColor *m_spotColors;
+    TrashCan m_trash;
 	C4DGadget *spotArea;
     C4DGadget *m_actionPopup;
+    C4DGadget *m_trashArea;
 	void (*m_selectCallback)(Color, void *);
 	void *m_selectCallbackData;
 	Bool m_dragable;

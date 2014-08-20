@@ -55,6 +55,8 @@
 		13E787F119A32FC500F55002 /* ase_writer.h in Headers */ = {isa = PBXBuildFile; fileRef = 13E787EF19A32FC500F55002 /* ase_writer.h */; };
 		13E787F719A34F0400F55002 /* PaletteSceneHook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E787F519A34F0400F55002 /* PaletteSceneHook.cpp */; };
 		13E787F819A34F0400F55002 /* paletteSceneHook.h in Headers */ = {isa = PBXBuildFile; fileRef = 13E787F619A34F0400F55002 /* paletteSceneHook.h */; };
+		13E787FB19A49C8A00F55002 /* TrashCan.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E787F919A49C8A00F55002 /* TrashCan.cpp */; };
+		13E787FC19A49C8A00F55002 /* trashcan.h in Headers */ = {isa = PBXBuildFile; fileRef = 13E787FA19A49C8A00F55002 /* trashcan.h */; };
 		65636C1E08E5922100FBAB34 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65636BEF08E5922100FBAB34 /* main.cpp */; };
 /* End PBXBuildFile section */
 
@@ -144,6 +146,8 @@
 		13E787F319A3308600F55002 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		13E787F519A34F0400F55002 /* PaletteSceneHook.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PaletteSceneHook.cpp; sourceTree = "<group>"; };
 		13E787F619A34F0400F55002 /* paletteSceneHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = paletteSceneHook.h; sourceTree = "<group>"; };
+		13E787F919A49C8A00F55002 /* TrashCan.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrashCan.cpp; sourceTree = "<group>"; };
+		13E787FA19A49C8A00F55002 /* trashcan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = trashcan.h; sourceTree = "<group>"; };
 		653A926E0858FEB50017BCBC /* _api.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = _api.xcodeproj; path = ../../resource/_api_lib/_api.xcodeproj; sourceTree = SOURCE_ROOT; };
 		6553A1DA0926F00F0034739A /* _api_debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = _api_debug.xcconfig; path = ../../resource/_api_lib/_api_debug.xcconfig; sourceTree = SOURCE_ROOT; };
 		6553A1DB0926F00F0034739A /* _api_release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = _api_release.xcconfig; path = ../../resource/_api_lib/_api_release.xcconfig; sourceTree = SOURCE_ROOT; };
@@ -215,6 +219,8 @@
 				13C2F8D91996079A0065AE04 /* namedColor.h */,
 				13E787F519A34F0400F55002 /* PaletteSceneHook.cpp */,
 				13E787F619A34F0400F55002 /* paletteSceneHook.h */,
+				13E787F919A49C8A00F55002 /* TrashCan.cpp */,
+				13E787FA19A49C8A00F55002 /* trashcan.h */,
 			);
 			path = source;
 			sourceTree = "<group>";
@@ -291,6 +297,7 @@
 				13C2F8CC19901C300065AE04 /* ase_loader.h in Headers */,
 				131B91A81986B16200E28986 /* palettedialog.h in Headers */,
 				13C2F8D5199283F10065AE04 /* unchecked.h in Headers */,
+				13E787FC19A49C8A00F55002 /* trashcan.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,6 +415,7 @@
 				13C2F8DE1996460E0065AE04 /* ColorWheelSubDialog.cpp in Sources */,
 				13E787F719A34F0400F55002 /* PaletteSceneHook.cpp in Sources */,
 				131B91A71986B16200E28986 /* PaletteDialog.cpp in Sources */,
+				13E787FB19A49C8A00F55002 /* TrashCan.cpp in Sources */,
 				13C2F8DA1996079A0065AE04 /* NamedColor.cpp in Sources */,
 				131B91921986B15A00E28986 /* ColorPicker.cpp in Sources */,
 				131B91B31986B16A00E28986 /* Utils.cpp in Sources */,

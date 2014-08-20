@@ -100,7 +100,7 @@ Bool ColorPickerDialog::Command(Int32 id,const BaseContainer &msg)
     case DLG_CANCEL:
         Close();
         return TRUE;
-    }
+    };
     return GeDialog::Command(id,msg);
 }
 

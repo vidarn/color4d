@@ -329,25 +329,25 @@ Bool ColorWheel::InputEvent(const BaseContainer &msg)
                 }
                 MouseUpdate();    
             }
+            if(!taken){
+                Float x, y;
+                BaseContainer channels;
+                while (MouseDrag(&x, &y, &channels) == MOUSEDRAGRESULT_CONTINUE)
+                {
+                    m_mouseX -= x;
+                    m_mouseY -= y;
+                    MouseUpdate();
+                }
+                BaseContainer res;
+                if(GetInputState(BFM_INPUT_MOUSE,BFM_INPUT_MOUSELEFT,res) && res.GetInt32(BFM_INPUT_VALUE) == 0){
+                    if(m_mouseDown){
+                        MouseDragEnd();
+                        m_mouseDown = FALSE;
+                    }
+                }
+            }
 		}
 	}
-    if(!taken){
-        Float x, y;
-        BaseContainer channels;
-        while (MouseDrag(&x, &y, &channels) == MOUSEDRAGRESULT_CONTINUE)
-        {
-            m_mouseX -= x;
-            m_mouseY -= y;
-            MouseUpdate();
-        }
-        BaseContainer res;
-        if(GetInputState(BFM_INPUT_MOUSE,BFM_INPUT_MOUSELEFT,res) && res.GetInt32(BFM_INPUT_VALUE) == 0){
-            if(m_mouseDown){
-                MouseDragEnd();
-                m_mouseDown = FALSE;
-            }
-        }
-    }
 
 	return FALSE;
 }

@@ -60,6 +60,28 @@ Bool ColorPicker(Vector *color, Int32 flags)
     return FALSE;
 }
 
+class EnableCommand : public CommandData
+{
+private:
+    ColorSelectorDialog dlg;
+public:
+    virtual Bool Execute(BaseDocument *doc);
+    virtual Int32 GetState(BaseDocument *doc);
+};
+
+Int32 EnableCommand::GetState(BaseDocument *doc)
+{
+    Int32 ret = CMD_ENABLED;
+    if(!g_InUse) ret = ret | CMD_VALUE;
+	return ret;
+}
+
+Bool EnableCommand::Execute(BaseDocument *doc)
+{
+    g_InUse = !g_InUse;
+	return TRUE;
+}
+
 //////////////////////////////////////////////////////////////////////////
 
 Bool PluginStart(void)
@@ -75,6 +97,7 @@ Bool PluginStart(void)
 	Bool result = RegisterCommandPlugin(SPOTCOLOR_ID,String("Spot colors"),0,NULL,String(),NewObjClear(SpotColorCommand));
 	result = result && RegisterCommandPlugin(COLORSELECTOR_ID,String("Color wheel"),0,NULL,String(),NewObjClear(ColorSelectorCommand));
 	result = result && RegisterCommandPlugin(PALETTE_ID,String("Palette"),0,NULL,String(),NewObjClear(PaletteCommand));
+    result = result && RegisterCommandPlugin(COLORPICKER_ENABLE_ID, String("Use Color Picker"), 0, NULL, String(), NewObjClear(EnableCommand));
     result = result && Register_PaletteSceneHook();
 	if(result){
 		GePrint("Result!");

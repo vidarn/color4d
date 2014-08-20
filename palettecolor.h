@@ -9,6 +9,7 @@ enum HOVER_STATE
 	HOVER_LEFT,
 	HOVER_CENTER,
 	HOVER_RIGHT,
+    HOVER_DELETE,
 };
 
 class PaletteColor :public SpotColor
@@ -38,10 +39,12 @@ class PaletteColor :public SpotColor
 		static BaseBitmap *m_refreshIcon;
 		static BaseBitmap *m_leftArrowIcon;
 		static BaseBitmap *m_rightArrowIcon;
+        static BaseBitmap *m_crossIcon;
 		BaseBitmap *m_normalBitmap;
 		BaseBitmap *m_hoverBitmap;
 		BaseBitmap *m_leftHoverBitmap;
 		BaseBitmap *m_rightHoverBitmap;
+        BaseBitmap *m_crossHoverBitmap;
 		void (*m_selectCallback)(Color, void *);
 		void *m_selectCallbackData;
 };

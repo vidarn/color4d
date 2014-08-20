@@ -24,6 +24,7 @@ class Palette
 		void SetColor(Int32 index, const Color &color);
         void SetColor(Int32 index, const NamedColor &color);
 		void InsertColor(Int32 index, const Color &color);
+        void RemoveColor(Int32 index);
 		Int32 GetCount() const {return  m_colors.GetCount();}
 		NamedColor & operator[](int i){return m_colors[i];}
         const NamedColor & operator[](int i) const {return m_colors[i];}
@@ -38,6 +39,7 @@ class Palette
 		//static Int32 SetPalette(const Palette &palette);
 		static void SetPaletteColor(Int32 paletteID, Int32 colorID, const Color &col);
 		static void InsertPaletteColor(Int32 paletteID, Int32 colorID, const Color &col);
+        static void RemovePaletteColor(Int32 paletteID, Int32 colorID);
 		static void GetPaletteColor(Int32 paletteID, Int32 colorID, Color &col);
 		static Int32 AddPalette(const Palette &palette);
         static void UpdateAll();
