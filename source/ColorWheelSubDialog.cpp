@@ -1,7 +1,7 @@
 #include "colorwheelsubdialog.h"
 #include "colordialog.h"
 
-ColorWheelSubDialog::ColorWheelSubDialog(ColorDialog *parent):m_colorWheel(parent,this)
+ColorWheelSubDialog::ColorWheelSubDialog(ColorDialog *parent):m_colorWheel(parent,this),m_settings(NULL),m_parent(parent)
 {
 }
 
@@ -49,6 +49,10 @@ void ColorWheelSubDialog::UpdateColorFromParent(Color color)
 
 void ColorWheelSubDialog::SetWheelType(Int32 type)
 {
+    if(m_settings != NULL){
+        GePrint(String::IntToString(m_settings->GetInt32(m_parent->GetSettingsID(), type)));
+        m_settings->SetInt32(m_parent->GetSettingsID(), type);
+    }
     LayoutFlushGroup(2);
     if(type == COLOR_WHEEL_BLENDER){
         m_colorSliderArea = AddUserArea(IDC_SLIDERS,BFH_SCALEFIT|BFV_TOP);
@@ -59,4 +63,13 @@ void ColorWheelSubDialog::SetWheelType(Int32 type)
         }
     }
     LayoutChanged(2);
+}
+
+void ColorWheelSubDialog::ChangeWheelType(Int32 type)
+{
+    m_colorWheel.m_type = type;
+    m_colorWheel.UpdateCircle();
+    m_colorWheel.UpdateTriangle();
+    SetWheelType(type);
+    m_colorWheel.Redraw();
 }

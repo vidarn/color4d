@@ -38,6 +38,7 @@ Bool ColorPickerDialog::CreateLayout(void)
             if(AddSubDialog(IDC_COLORWHEEL, BFH_LEFT)){
                 AttachSubDialog(&m_wheelSubDiag, IDC_COLORWHEEL);
                 m_wheelSubDiag.SetColor(m_pColor);
+                m_wheelSubDiag.m_settings = &m_Settings;
             }
 			if(AddSubDialog(IDC_SLIDERS,BFH_SCALEFIT)){
 				m_sliderSubDiag.SetColor(m_pColor);
@@ -76,6 +77,7 @@ ColorPickerDialog::~ColorPickerDialog()
 
 Bool ColorPickerDialog::InitValues(void)
 {
+    m_wheelSubDiag.ChangeWheelType(m_Settings.GetInt32(GetSettingsID()));
 	UpdateColor(m_oldColor);
     if (!GeDialog::InitValues()) return FALSE;
     return TRUE;

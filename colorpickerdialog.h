@@ -25,6 +25,7 @@ public:
     virtual Bool Command(Int32 id,const BaseContainer &msg);
     virtual Bool CoreMessage(Int32 id,const BaseContainer &msg);
     virtual Int32 Message(const BaseContainer& msg, BaseContainer& result);
+    virtual Int32 GetSettingsID(void){return 8;}
 
 	virtual void UpdateColor(Color color);
 

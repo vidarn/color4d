@@ -9,6 +9,7 @@ public:
 	ColorDialog(){};
 	~ColorDialog(){};
 
+    virtual Int32 GetSettingsID(void) = 0;
     virtual Bool CreateLayout(void) = 0;
     virtual Bool InitValues(void) = 0;
     virtual Bool Command(Int32 id,const BaseContainer &msg) = 0;

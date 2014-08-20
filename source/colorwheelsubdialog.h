@@ -21,11 +21,13 @@ public:
 	void SetColor(Vector *color){m_pColor = color;}
 	void SetParent(ColorDialog *parent){m_parent = parent;}
     void SetWheelType(Int32 type);
+    void ChangeWheelType(Int32 type);
     
 	cmsHPROFILE m_displayProfile;
     ColorWheel m_colorWheel;
     ColorSlider m_colorSlider;
     
+    BaseContainer *m_settings;
     Vector *m_pColor;
 	ColorDialog *m_parent;
     C4DGadget *m_colorWheelArea;

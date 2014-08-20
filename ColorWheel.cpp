@@ -3,11 +3,6 @@
 #include "colorwheelsubdialog.h"
 #include "utils.h"
 
-//const Float PI2			= 6.283185307179586476925286766559;
-//const Float PI2_INV	    = 0.15915494309189533576888376337251;
-
-
-
 ColorWheel::ColorWheel(ColorDialog *parent, ColorWheelSubDialog *subParent):
 m_valueRadius(7.0), m_valuePosition(90), m_scheme(nullptr), m_oldH(-1.f),m_type(COLOR_WHEEL_RECTANGLE)
 {
