@@ -1,6 +1,5 @@
 ## TODO ##
 * Palette shader
-* Add controls to palette
 
 ## Done ##
 * Search spot colors
@@ -22,6 +21,7 @@
 * Fix pressing enter in color picker
 * Button for removing palette colors
 * Remember palette mode when opening color picker
+* Add controls to palette
 
 ## On hold ##
 * Pick colors from screen

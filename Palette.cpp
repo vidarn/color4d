@@ -129,7 +129,7 @@ void Palette::GetPalettes(GeDynamicArray<Palette> &palettes)
 		if(c != nullptr){
 			pal.FromContainer(*c);
 			palettes.Push(pal);
-            palettes[palettes.GetCount()-1].m_name = pal.m_name;
+            palettes[i].m_name = pal.m_name;
 		}
 	}
 }
@@ -200,6 +200,22 @@ void Palette::GetPaletteColor(Int32 paletteID, Int32 colorID, Color &col)
 		Palette pal;
 		pal.FromContainer(*c);
 		col = pal[colorID];
+	}
+}
+
+void Palette::SetPaletteName(Int32 paletteID, String name)
+{
+    BaseContainer *bc = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_ID);
+	BaseContainer *c = GetPaletteContainer(paletteID,bc);
+	if(c!= nullptr){
+		Palette pal;
+		pal.FromContainer(*c);
+		pal.m_name = name;
+		pal.ToContainer(*c);
+		bc->SetContainer(FIRST_PALETTE+paletteID,*c);
+		SetWorldPluginData(PALETTE_ID,*bc,FALSE);
+        UpdatePalette(paletteID);
+        GetActiveDocument()->SetChanged();
 	}
 }
 

@@ -323,9 +323,7 @@ Bool ColorWheel::InputEvent(const BaseContainer &msg)
                         }
                     }
                 }
-                MouseUpdate();    
-            }
-            if(!taken){
+                MouseUpdate();
                 Float x, y;
                 BaseContainer channels;
                 while (MouseDrag(&x, &y, &channels) == MOUSEDRAGRESULT_CONTINUE)

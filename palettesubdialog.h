@@ -26,6 +26,7 @@ public:
 	void LoadPalette(Int32 id);
 	void PaletteLayout();
     void UpdatePopup(Int32 current);
+    void ShowControls(Bool show);
 
 	BaseContainer m_Settings;
     
@@ -40,14 +41,22 @@ public:
 
     Int32 m_id;
 	Int32 m_paletteID;
+    Int32 m_rows;
+    Int32 m_layout;
 	Palette m_palette;
 	PaletteColor *m_spotColors;
     TrashCan m_trash;
 	C4DGadget *spotArea;
     C4DGadget *m_actionPopup;
     C4DGadget *m_trashArea;
+    C4DGadget *m_rowArea;
+    C4DGadget *m_layoutArea;
+    C4DGadget *m_labelCheckArea;
+    C4DGadget *m_nameArea;
 	void (*m_selectCallback)(Color, void *);
 	void *m_selectCallbackData;
 	Bool m_dragable;
     Bool m_showLabel;
+    Bool m_showControls;
+    Bool m_controlsShown;
 };

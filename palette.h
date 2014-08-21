@@ -41,6 +41,7 @@ class Palette
 		static void InsertPaletteColor(Int32 paletteID, Int32 colorID, const Color &col);
         static void RemovePaletteColor(Int32 paletteID, Int32 colorID);
 		static void GetPaletteColor(Int32 paletteID, Int32 colorID, Color &col);
+        static void SetPaletteName(Int32 paletteID, String name);
 		static Int32 AddPalette(const Palette &palette);
         static void UpdateAll();
 		static void UpdatePalette(Int32 id);
