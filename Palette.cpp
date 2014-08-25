@@ -2,6 +2,7 @@
 #define ASE_NO_UTF8
 #include "ase_loader.h"
 #include "ase_writer.h"
+#include "utils.h"
 
 Palette::Palette():
 	m_name("Unnamed"),m_inScene(true)
@@ -284,9 +285,11 @@ void Palette::UpdateColor(Int32 palette, Int32 color)
 Bool Palette::LoadASEFile(String s, Palette &pal)
 {
     ASE_FILE aseFile;
-    Int32 fnLength =  s.GetCStringLen();
+    Int32 fnLength =  s.GetCStringLen(STRINGENCODING_UTF8);
+    GePrint("Len: " + String::IntToString(fnLength));
     char *str = NewMem(char,fnLength+1);
-    s.GetCString(str, fnLength+1);
+    s.GetCString(str, fnLength+1, STRINGENCODING_UTF8);
+    GePrint("Loading " + s);
     ASE_ERRORTYPE error = ase_openAndReadAseFile(&aseFile, str);
     DeleteMem(str);
     if(!error){
@@ -299,17 +302,31 @@ Bool Palette::LoadASEFile(String s, Palette &pal)
                 Int32 a = 0;
                 Vector col;
                 while(color->col[a] != -1.0f && a < 3){
-                    printf("a: %d\n",a);
-                    GePrint(String::FloatToString(color->col[a]));
                     col[a] = color->col[a];
                     a++;
                 }
-                pal.SetColor(ii, NamedColor(Color(col).SetSource(COLOR_SOURCE_DISPLAY),String((UInt16*)color->name)));
+                COLOR_SOURCE colorSource = COLOR_SOURCE_DISPLAY;
+                switch(color->type){
+                    case ASE_COLORTYPE_LAB:
+                        colorSource = COLOR_SOURCE_LAB;
+                        col[0] *= 100.0;
+                        break;
+                    case ASE_COLORTYPE_CMYK:
+                        colorSource = COLOR_SOURCE_CMYK;
+                        break;
+                }
+                Color tmp = Color(col).SetSource(colorSource).Convert(COLOR_SOURCE_DISPLAY);
+                ClampColor(tmp);
+                pal.SetColor(ii, NamedColor(tmp,String((UInt16*)color->name)));
             }
         }
         ase_freeAseFile(&aseFile);
+        if(pal.m_name == String("")){
+            pal.m_name = Filename(s).GetFileString();
+        }
+        GePrint("Success!");
     } else {
-        GePrint("Could not load file " + s);
+        GePrint("Could not load file " + String(str) + " " + String(ase_getErrorString(error)));
     }
     return !error;
 }

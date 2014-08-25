@@ -184,6 +184,18 @@ static ASE_ERRORTYPE ase_openAndReadAseFile(ASE_FILE *ase, const char *filename)
     return error;
 }
 
+static ASE_GROUP *ase_createGroup(ASE_FILE *ase, char *name)
+{
+    ASE_GROUP *group;
+    ase->numGroups++;
+    ase->groups = (ASE_GROUP *)realloc(ase->groups,ase->numGroups*sizeof(ASE_GROUP));
+    group = ase->groups + ase->numGroups - 1;
+    group->name = name;
+    group->numColors = 0;
+    group->colors = NULL;
+    return group;
+}
+
 static ASE_ERRORTYPE ase_readAseFile(ASE_FILE *ase, FILE *f)
 {
     float c[4];
@@ -215,19 +227,18 @@ static ASE_ERRORTYPE ase_readAseFile(ASE_FILE *ase, FILE *f)
         if(error)
         {
             free(name);
-            /*ase_freeAseFile(ase);*/
             return error;
         }
         switch(blockType){
             case ASE_BLOCKTYPE_GROUP_START:
-                ase->numGroups++;
-                ase->groups = (ASE_GROUP *)realloc(ase->groups,ase->numGroups*sizeof(ASE_GROUP));
-                currentGroup = ase->groups + ase->numGroups - 1;
-                currentGroup->name = name;
-                currentGroup->numColors = 0;
-                currentGroup->colors = NULL;
+                currentGroup = ase_createGroup(ase,name);
                 break;
             case ASE_BLOCKTYPE_COLOR:
+                if(currentGroup == NULL){
+                    char *tmp = (char *)malloc(1*sizeof(char));
+                    *tmp = '\0';
+                    currentGroup = ase_createGroup(ase,tmp);
+                }
                 currentGroup->numColors++;
                 currentGroup->colors = (ASE_COLOR *)realloc(currentGroup->colors,currentGroup->numColors*sizeof(ASE_COLOR));
                 col = currentGroup->colors + currentGroup->numColors - 1;

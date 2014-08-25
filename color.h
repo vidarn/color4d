@@ -11,6 +11,7 @@ enum COLOR_SOURCE
 	COLOR_SOURCE_RGB,
 	COLOR_SOURCE_CMYK,
 	COLOR_SOURCE_DISPLAY,
+    COLOR_SOURCE_LAB,
 };
 
 class vnColorProfile
@@ -53,6 +54,7 @@ class Color
 		static void SetRGBProfile(cmsHPROFILE profile, Bool updateTransform=FALSE);
 		static void SetCMYKProfile(cmsHPROFILE profile, Bool updateTransform=FALSE);
 		static void SetDisplayProfile(cmsHPROFILE profile, Bool updateTransform=FALSE);
+        static void SetLABProfile(cmsHPROFILE profile, Bool updateTransform=FALSE);
         static Bool IsRGBProfileOk();
 		static void UpdateTransforms();
 		static void LoadICCProfiles();
@@ -67,16 +69,24 @@ class Color
 		static cmsHTRANSFORM m_wheelToRGB;
 		static cmsHTRANSFORM m_wheelToCMYK;
 		static cmsHTRANSFORM m_wheelToDisplay;
+        static cmsHTRANSFORM m_wheelToLAB;
 		static cmsHTRANSFORM m_RGBToWheel;
 		static cmsHTRANSFORM m_RGBToCMYK;
 		static cmsHTRANSFORM m_RGBToDisplay;
+        static cmsHTRANSFORM m_RGBToLAB;
 		static cmsHTRANSFORM m_CMYKToWheel;
 		static cmsHTRANSFORM m_CMYKToRGB;
 		static cmsHTRANSFORM m_CMYKToDisplay;
+        static cmsHTRANSFORM m_CMYKToLAB;
 		static cmsHTRANSFORM m_displayToWheel;
 		static cmsHTRANSFORM m_displayToRGB;
 		static cmsHTRANSFORM m_displayToCMYK;
-		static cmsHPROFILE m_wheelProfile, m_RGBProfile, m_CMYKProfile, m_displayProfile;
+        static cmsHTRANSFORM m_displayToLAB;
+        static cmsHTRANSFORM m_LABToWheel;
+        static cmsHTRANSFORM m_LABToRGB;
+        static cmsHTRANSFORM m_LABToCMYK;
+        static cmsHTRANSFORM m_LABToDisplay;
+		static cmsHPROFILE m_wheelProfile, m_RGBProfile, m_CMYKProfile, m_displayProfile, m_LABProfile;
 		static String *m_iccSearchPaths;
 		static GeDynamicArray<vnColorProfile> m_RGBProfiles;
 		static GeDynamicArray<vnColorProfile> m_CMYKProfiles;

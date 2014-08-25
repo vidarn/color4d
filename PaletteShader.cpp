@@ -14,8 +14,8 @@ Bool PaletteShaderData::Init(GeListNode* node)
 INITRENDERRESULT PaletteShaderData::InitRender(BaseShader* sh, const InitRenderStruct& irs)
 {
 	BaseContainer* data = sh->GetDataInstance();
-    Int32 paletteId = data->GetInt32(PALETTESHADER_PALETTE_ID);
-    Int32 colorId   = data->GetInt32(PALETTESHADER_COLOR_ID);
+    Int32 paletteId = ClampValue(data->GetInt32(PALETTESHADER_PALETTE_ID),1,99);
+    Int32 colorId   = ClampValue(data->GetInt32(PALETTESHADER_COLOR_ID),1,999999);
     Color col;
 	Palette::GetPaletteColor(paletteId-1, colorId-1, col);
     m_color = TransformColor(col.Convert(COLOR_SOURCE_DISPLAY).AsVector(),COLORSPACETRANSFORMATION_SRGB_TO_LINEAR);

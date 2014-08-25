@@ -9,6 +9,10 @@
 #include "paletteshader.h"
 #include "main.h"
 
+void ErrorHandlerFunction(cmsContext ContextID, cmsUInt32Number ErrorCode, const char *Text){
+    printf("Error %ld %s\n", ErrorCode, Text);
+}
+
 
 Bool IsKeyDown(Int32 key)
 {
@@ -87,6 +91,7 @@ Bool EnableCommand::Execute(BaseDocument *doc)
 
 Bool PluginStart(void)
 {
+    cmsSetLogErrorHandler(&ErrorHandlerFunction);
 	Color::LoadICCProfiles();
 	Color::SetWheelProfile(0);
 	Color::SetRGBProfile(0);
