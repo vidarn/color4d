@@ -43,6 +43,7 @@ public:
 	Int32 m_paletteID;
     Int32 m_rows;
     Int32 m_layout;
+    String m_searchString;
 	Palette m_palette;
 	PaletteColor *m_spotColors;
     TrashCan m_trash;
@@ -53,6 +54,7 @@ public:
     C4DGadget *m_layoutArea;
     C4DGadget *m_labelCheckArea;
     C4DGadget *m_nameArea;
+    C4DGadget *m_searchText;
 	void (*m_selectCallback)(Color, void *);
 	void *m_selectCallbackData;
 	Bool m_dragable;

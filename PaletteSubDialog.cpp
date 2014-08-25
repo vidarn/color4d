@@ -6,7 +6,7 @@
 #include <string>
 
 PaletteSubDialog::PaletteSubDialog(Int32 id):
-m_spotColors(NULL), m_selectCallback(NULL),m_dragable(TRUE),m_showLabel(FALSE),m_id(id),m_showControls(FALSE), m_controlsShown(TRUE), m_rowArea(NULL), m_labelCheckArea(NULL), m_layoutArea(NULL),m_nameArea(NULL),m_rows(1),m_layout(0)
+m_spotColors(NULL), m_selectCallback(NULL),m_dragable(TRUE),m_showLabel(FALSE),m_id(id),m_showControls(FALSE), m_controlsShown(TRUE), m_rowArea(NULL), m_labelCheckArea(NULL), m_layoutArea(NULL),m_nameArea(NULL),m_searchText(NULL),m_rows(1),m_layout(0),m_searchString("")
 {
 }
 
@@ -16,26 +16,28 @@ Bool PaletteSubDialog::CreateLayout(void)
     if (!GeDialog::CreateLayout()) return FALSE;
 
     GroupBegin(0,BFH_SCALEFIT|BFV_SCALEFIT,0,1,String(),0);
-        GroupBegin(1, BFV_SCALEFIT, 0, 1, String(), 0);
-            GroupBegin(3,BFV_SCALEFIT,1,0,String(),0);
+        GroupBegin(1, BFH_LEFT|BFV_TOP, 0, 1, String(), 0);
+            GroupBegin(3,BFH_LEFT|BFV_TOP,1,0,String(),0);
             m_actionPopup = AddPopupButton(3,BFH_LEFT);
             m_trashArea = AddUserArea(4, BFH_CENTER);
             AttachUserArea(m_trash, m_trashArea);
             GroupEnd();
         GroupEnd();
-		ScrollGroupBegin(2,BFH_SCALEFIT|BFV_SCALEFIT,SCROLLGROUP_HORIZ);
-			GroupBegin(6,BFH_SCALEFIT|BFV_SCALEFIT,0,1,String(),0);
-            m_spotColors = new PaletteColor[1];
-            m_spotColors[0].SetColor(Color(0.f,0.f,0.f).SetSource(COLOR_SOURCE_DISPLAY));
-            m_spotColors[0].SetColorID(0);
-            m_spotColors[0].SetSelectCallback(m_selectCallback,m_selectCallbackData);
-            m_spotColors[0].SetDragable(m_dragable);
-            C4DGadget *area = AddUserArea(12,BFV_SCALEFIT);
-            AttachUserArea(m_spotColors[0],area);
-			GroupEnd();
-		GroupEnd();
+        GroupBegin(8,BFH_SCALEFIT|BFV_SCALEFIT,0,1,String(),0);
+            ScrollGroupBegin(2,BFH_SCALEFIT|BFV_SCALEFIT,SCROLLGROUP_VERT|SCROLLGROUP_HORIZ);
+                GroupBegin(6,BFH_SCALEFIT|BFV_SCALEFIT,0,1,String(),0);
+                m_spotColors = new PaletteColor[1];
+                m_spotColors[0].SetColor(Color(0.f,0.f,0.f).SetSource(COLOR_SOURCE_DISPLAY));
+                m_spotColors[0].SetColorID(0);
+                m_spotColors[0].SetSelectCallback(m_selectCallback,m_selectCallbackData);
+                m_spotColors[0].SetDragable(m_dragable);
+                C4DGadget *area = AddUserArea(12,0);
+                AttachUserArea(m_spotColors[0],area);
+                GroupEnd();
+            GroupEnd();
+        GroupEnd();
+ 
     GroupEnd();
-
     return TRUE;
 }
 
@@ -126,7 +128,7 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
             return TRUE;
         case IDC_LAYOUT_DIRECTION:
             m_controlsShown = FALSE;
-            PaletteLayout();
+            LoadPalette(m_paletteID);
             break;
         case IDC_ROWS:
             PaletteLayout();
@@ -144,6 +146,9 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
             break;
         case IDC_HIDE:
             ShowControls(FALSE);
+            break;
+        case IDC_SEARCHTEXT:
+            PaletteLayout();
             break;
 		default:
 			break;
@@ -213,6 +218,9 @@ void PaletteSubDialog::PaletteLayout()
     if(m_labelCheckArea != NULL){
         GetBool(m_labelCheckArea,m_showLabel);
     }
+    if(m_searchText != NULL){
+        GetString(m_searchText, m_searchString);
+    }
     if(m_showControls && !m_controlsShown){
         LayoutFlushGroup(1);
         GroupBegin(51, BFV_SCALEFIT, 1, 0, String(), 0);
@@ -240,6 +248,9 @@ void PaletteSubDialog::PaletteLayout()
             m_labelCheckArea = AddCheckbox(IDC_LABELCHECKBOX,BFH_LEFT,0,0,String("Show Labels"));
             SetBool(m_labelCheckArea, m_showLabel);
         
+            m_searchText = AddEditText(IDC_SEARCHTEXT, BFH_SCALEFIT);
+            SetString(m_searchText, m_searchString);
+        
             m_controlsShown = TRUE;
             
             AddButton(IDC_HIDE, BFH_CENTER, 0, 0, String("Hide Controls"));
@@ -263,6 +274,7 @@ void PaletteSubDialog::PaletteLayout()
         m_rowArea = NULL;
         m_layoutArea = NULL;
         m_labelCheckArea = NULL;
+        m_searchText = NULL;
         m_controlsShown = FALSE;
     }
     
@@ -278,23 +290,26 @@ void PaletteSubDialog::PaletteLayout()
 	}
 	m_spotColors = new PaletteColor[m_palette.GetCount()];
     GroupBegin(30, BFH_SCALEFIT|BFV_SCALEFIT, cols, rows, String(), 0);
+    GroupSpace(0,0);
 	for(int i=0;i<m_palette.GetCount();i++){
-		m_spotColors[i].SetColor(m_palette[i]);
-		m_spotColors[i].SetColorID(i);
-		m_spotColors[i].SetSelectCallback(m_selectCallback,m_selectCallbackData);
-		m_spotColors[i].SetDragable(m_dragable);
-        m_spotColors[i].SetPaletteID(m_paletteID);
-        
-        if(m_showLabel){
-            GroupBegin(40 + i*3,BFV_FIT,1,0,"",FALSE);
-            AddStaticText(40 + i*3+1,BFV_FIT,0,0,m_palette[i].m_name,BORDER_NONE);
+        Int32 pos;
+        if(m_searchString == "" || m_palette[i].m_name.ToLower().FindFirst(m_searchString.ToLower(), &pos)){
+            m_spotColors[i].SetColor(m_palette[i]);
+            m_spotColors[i].SetColorID(i);
+            m_spotColors[i].SetSelectCallback(m_selectCallback,m_selectCallbackData);
+            m_spotColors[i].SetDragable(m_dragable);
+            m_spotColors[i].SetPaletteID(m_paletteID);
+            
+            if(m_showLabel){
+                GroupBegin(40 + i*3,0,1,0,"",FALSE);
+                AddStaticText(40 + i*3+1,0,0,0,m_palette[i].m_name,BORDER_NONE);
+            }
+            C4DGadget *area = AddUserArea(40 + i*3+2,0);
+            AttachUserArea(m_spotColors[i],area);
+            if(m_showLabel){
+                GroupEnd();
+            }
         }
-        C4DGadget *area = AddUserArea(40 + i*3+2,0);
-        AttachUserArea(m_spotColors[i],area);
-        if(m_showLabel){
-            GroupEnd();
-        }
-
 	}
     GroupEnd();
 	LayoutChanged(6);

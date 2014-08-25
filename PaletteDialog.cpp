@@ -12,7 +12,7 @@ Bool PaletteDialog::CreateLayout(void)
     if (!GeDialog::CreateLayout()) return FALSE;
 	SetTitle(GeLoadString(IDS_COLORPICKER));
 	GroupBegin(0,BFH_SCALEFIT|BFV_SCALEFIT,0,1,String(),0);
-	if(AddSubDialog(IDC_PALETTE,BFH_SCALEFIT)){
+	if(AddSubDialog(IDC_PALETTE,BFH_SCALEFIT|BFV_SCALEFIT)){
 		AttachSubDialog(&m_paletteSubDiag,IDC_PALETTE);
 	}
     GroupEnd();

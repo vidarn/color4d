@@ -19,14 +19,6 @@ INITRENDERRESULT PaletteShaderData::InitRender(BaseShader* sh, const InitRenderS
     Color col;
 	Palette::GetPaletteColor(paletteId-1, colorId-1, col);
     m_color = TransformColor(col.Convert(COLOR_SOURCE_DISPLAY).AsVector(),COLORSPACETRANSFORMATION_SRGB_TO_LINEAR);
-    
-    GePrint("Color management is....");
-    if(sh->IsColorManagementOff(GetActiveDocument())){
-        GePrint("Off");
-    } else {
-        GePrint("On");
-    }
-    
 	return INITRENDERRESULT_OK;
 }
 

@@ -1,12 +1,10 @@
 ## TODO ##
-* Search palette colors
 * Remove spot colors
 * L*A*B* color picker
 * L*A*B* and hsl sliders
 * Remember palette settings in color picker
-* Vertical scrolling in palette subdialog
-* Support LAB ase files
 * Keep labels after editing colors
+* Save palette filter settings etc. in file
 
 ## Done ##
 * Search spot colors
@@ -30,6 +28,9 @@
 * Remember palette mode when opening color picker
 * Add controls to palette
 * Palette shader
+* Vertical scrolling in palette subdialog
+* Support LAB ase files
+* Search palette colors
 
 ## On hold ##
 * Pick colors from screen
