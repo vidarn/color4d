@@ -7,6 +7,7 @@
 #define PALETTE_ID 1018408
 #define PALETTE_SCENE_HOOK_ID 1018409
 #define COLORPICKER_ENABLE_ID 1018410
+#define PALETTE_SHADER_ID 1018411
 
 
 //////////////////////////////////////////////////////////////////////////

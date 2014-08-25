@@ -6,6 +6,7 @@
 #include "spotcolordialog.h"
 #include "palettedialog.h"
 #include "paletteSceneHook.h"
+#include "paletteshader.h"
 #include "main.h"
 
 
@@ -98,6 +99,7 @@ Bool PluginStart(void)
 	result = result && RegisterCommandPlugin(COLORSELECTOR_ID,String("Color wheel"),0,NULL,String(),NewObjClear(ColorSelectorCommand));
 	result = result && RegisterCommandPlugin(PALETTE_ID,String("Palette"),0,NULL,String(),NewObjClear(PaletteCommand));
     result = result && RegisterCommandPlugin(COLORPICKER_ENABLE_ID, String("Use Color Picker"), 0, NULL, String(), NewObjClear(EnableCommand));
+    result = result && RegisterPaletteShader();
     result = result && Register_PaletteSceneHook();
 	if(result){
 		GePrint("Result!");

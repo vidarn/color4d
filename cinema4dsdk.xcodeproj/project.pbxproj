@@ -57,6 +57,8 @@
 		13E787F819A34F0400F55002 /* paletteSceneHook.h in Headers */ = {isa = PBXBuildFile; fileRef = 13E787F619A34F0400F55002 /* paletteSceneHook.h */; };
 		13E787FB19A49C8A00F55002 /* TrashCan.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E787F919A49C8A00F55002 /* TrashCan.cpp */; };
 		13E787FC19A49C8A00F55002 /* trashcan.h in Headers */ = {isa = PBXBuildFile; fileRef = 13E787FA19A49C8A00F55002 /* trashcan.h */; };
+		13EECE9C19AB13D70034D0F2 /* PaletteShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13EECE9A19AB13D70034D0F2 /* PaletteShader.cpp */; };
+		13EECE9D19AB13D70034D0F2 /* paletteshader.h in Headers */ = {isa = PBXBuildFile; fileRef = 13EECE9B19AB13D70034D0F2 /* paletteshader.h */; };
 		65636C1E08E5922100FBAB34 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65636BEF08E5922100FBAB34 /* main.cpp */; };
 /* End PBXBuildFile section */
 
@@ -148,6 +150,8 @@
 		13E787F619A34F0400F55002 /* paletteSceneHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = paletteSceneHook.h; sourceTree = "<group>"; };
 		13E787F919A49C8A00F55002 /* TrashCan.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrashCan.cpp; sourceTree = "<group>"; };
 		13E787FA19A49C8A00F55002 /* trashcan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = trashcan.h; sourceTree = "<group>"; };
+		13EECE9A19AB13D70034D0F2 /* PaletteShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PaletteShader.cpp; sourceTree = SOURCE_ROOT; };
+		13EECE9B19AB13D70034D0F2 /* paletteshader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = paletteshader.h; sourceTree = SOURCE_ROOT; };
 		653A926E0858FEB50017BCBC /* _api.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = _api.xcodeproj; path = ../../resource/_api_lib/_api.xcodeproj; sourceTree = SOURCE_ROOT; };
 		6553A1DA0926F00F0034739A /* _api_debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = _api_debug.xcconfig; path = ../../resource/_api_lib/_api_debug.xcconfig; sourceTree = SOURCE_ROOT; };
 		6553A1DB0926F00F0034739A /* _api_release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = _api_release.xcconfig; path = ../../resource/_api_lib/_api_release.xcconfig; sourceTree = SOURCE_ROOT; };
@@ -172,30 +176,9 @@
 			isa = PBXGroup;
 			children = (
 				13E787EE19A32FC500F55002 /* ase_common.h */,
+				13C2F8CB19901C300065AE04 /* ase_loader.h */,
 				13E787EF19A32FC500F55002 /* ase_writer.h */,
 				13C2F8D0199283F10065AE04 /* checked.h */,
-				13C2F8CB19901C300065AE04 /* ase_loader.h */,
-				13C2F8D1199283F10065AE04 /* core.h */,
-				13C2F8D2199283F10065AE04 /* unchecked.h */,
-				13C2F8CE199283E70065AE04 /* utf8.h */,
-				136DACB619895D25002BDC1D /* ColorScheme.cpp */,
-				136DACB719895D25002BDC1D /* PaletteSubDialog.cpp */,
-				136DACB819895D25002BDC1D /* palettesubdialog.h */,
-				136DACB919895D25002BDC1D /* SliderSubDialog.cpp */,
-				136DACBA19895D25002BDC1D /* slidersubdialog.h */,
-				131B91A91986B16A00E28986 /* SpotColor.cpp */,
-				131B91AA1986B16A00E28986 /* spotcolor.h */,
-				131B91AB1986B16A00E28986 /* SpotColorDialog.cpp */,
-				131B91AC1986B16A00E28986 /* spotcolordialog.h */,
-				131B91AD1986B16A00E28986 /* Utils.cpp */,
-				131B91AE1986B16A00E28986 /* utils.h */,
-				131B919B1986B16200E28986 /* main.h */,
-				131B919C1986B16200E28986 /* Palette.cpp */,
-				131B919D1986B16200E28986 /* palette.h */,
-				131B919E1986B16200E28986 /* PaletteColor.cpp */,
-				131B919F1986B16200E28986 /* palettecolor.h */,
-				131B91A01986B16200E28986 /* PaletteDialog.cpp */,
-				131B91A11986B16200E28986 /* palettedialog.h */,
 				131B917D1986B15900E28986 /* Color.cpp */,
 				131B917E1986B15900E28986 /* color.h */,
 				131B917F1986B15900E28986 /* ColorBox.cpp */,
@@ -205,22 +188,45 @@
 				131B91831986B15A00E28986 /* ColorPicker.cpp */,
 				131B91841986B15A00E28986 /* ColorPickerDialog.cpp */,
 				131B91851986B15A00E28986 /* colorpickerdialog.h */,
+				136DACB619895D25002BDC1D /* ColorScheme.cpp */,
+				136DACC019895DE4002BDC1D /* colorscheme.h */,
 				131B91861986B15A00E28986 /* ColorSelectorDialog.cpp */,
 				131B91871986B15A00E28986 /* colorselectordialog.h */,
 				131B91881986B15A00E28986 /* ColorSlider.cpp */,
 				131B91891986B15A00E28986 /* colorslider.h */,
-				13C2F8DC1996460E0065AE04 /* ColorWheelSubDialog.cpp */,
-				13C2F8DD1996460E0065AE04 /* colorwheelsubdialog.h */,
 				131B918A1986B15A00E28986 /* ColorWheel.cpp */,
 				131B918B1986B15A00E28986 /* colorwheel.h */,
+				13C2F8DC1996460E0065AE04 /* ColorWheelSubDialog.cpp */,
+				13C2F8DD1996460E0065AE04 /* colorwheelsubdialog.h */,
+				13C2F8D1199283F10065AE04 /* core.h */,
 				65636BEF08E5922100FBAB34 /* main.cpp */,
-				136DACC019895DE4002BDC1D /* colorscheme.h */,
+				131B919B1986B16200E28986 /* main.h */,
 				13C2F8D81996079A0065AE04 /* NamedColor.cpp */,
 				13C2F8D91996079A0065AE04 /* namedColor.h */,
+				131B919C1986B16200E28986 /* Palette.cpp */,
+				131B919D1986B16200E28986 /* palette.h */,
+				131B919E1986B16200E28986 /* PaletteColor.cpp */,
+				131B919F1986B16200E28986 /* palettecolor.h */,
+				131B91A01986B16200E28986 /* PaletteDialog.cpp */,
+				131B91A11986B16200E28986 /* palettedialog.h */,
 				13E787F519A34F0400F55002 /* PaletteSceneHook.cpp */,
 				13E787F619A34F0400F55002 /* paletteSceneHook.h */,
+				13EECE9A19AB13D70034D0F2 /* PaletteShader.cpp */,
+				13EECE9B19AB13D70034D0F2 /* paletteshader.h */,
+				136DACB719895D25002BDC1D /* PaletteSubDialog.cpp */,
+				136DACB819895D25002BDC1D /* palettesubdialog.h */,
+				136DACB919895D25002BDC1D /* SliderSubDialog.cpp */,
+				136DACBA19895D25002BDC1D /* slidersubdialog.h */,
+				131B91A91986B16A00E28986 /* SpotColor.cpp */,
+				131B91AA1986B16A00E28986 /* spotcolor.h */,
+				131B91AB1986B16A00E28986 /* SpotColorDialog.cpp */,
+				131B91AC1986B16A00E28986 /* spotcolordialog.h */,
 				13E787F919A49C8A00F55002 /* TrashCan.cpp */,
 				13E787FA19A49C8A00F55002 /* trashcan.h */,
+				13C2F8D2199283F10065AE04 /* unchecked.h */,
+				13C2F8CE199283E70065AE04 /* utf8.h */,
+				131B91AD1986B16A00E28986 /* Utils.cpp */,
+				131B91AE1986B16A00E28986 /* utils.h */,
 			);
 			path = source;
 			sourceTree = "<group>";
@@ -294,6 +300,7 @@
 				131B91941986B15A00E28986 /* colorpickerdialog.h in Headers */,
 				131B918D1986B15A00E28986 /* color.h in Headers */,
 				13E787F119A32FC500F55002 /* ase_writer.h in Headers */,
+				13EECE9D19AB13D70034D0F2 /* paletteshader.h in Headers */,
 				13C2F8CC19901C300065AE04 /* ase_loader.h in Headers */,
 				131B91A81986B16200E28986 /* palettedialog.h in Headers */,
 				13C2F8D5199283F10065AE04 /* unchecked.h in Headers */,
@@ -399,6 +406,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				131B91951986B15A00E28986 /* ColorSelectorDialog.cpp in Sources */,
+				13EECE9C19AB13D70034D0F2 /* PaletteShader.cpp in Sources */,
 				131B91991986B15A00E28986 /* ColorWheel.cpp in Sources */,
 				65636C1E08E5922100FBAB34 /* main.cpp in Sources */,
 				131B91AF1986B16A00E28986 /* SpotColor.cpp in Sources */,

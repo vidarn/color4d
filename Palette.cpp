@@ -164,13 +164,23 @@ void Palette::InsertPaletteColor(Int32 paletteID, Int32 colorID, const Color &co
 	BaseContainer *bc = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_ID);
 	BaseContainer *c = GetPaletteContainer(paletteID,bc);
 	if(c!= nullptr){
+        GeDynamicArray<Int32> newIds;
 		Palette pal;
 		pal.FromContainer(*c);
+        for(Int32 i=0;i<pal.m_colors.GetCount();i++){
+            if(i<colorID){
+                newIds.Push(i);
+            } else {
+                newIds.Push(i+1);
+            }
+        }
+        GePrint("A " + String::IntToString(newIds.GetCount()));
 		pal.InsertColor(colorID,col);
 		pal.ToContainer(*c);
 		bc->SetContainer(FIRST_PALETTE+paletteID,*c);
 		SetWorldPluginData(PALETTE_ID,*bc,FALSE);
 		UpdatePalette(paletteID);
+        ReorderPalette(paletteID, &newIds);
         GetActiveDocument()->SetChanged();
 	}
 }
@@ -181,13 +191,24 @@ void Palette::RemovePaletteColor(Int32 paletteID, Int32 colorID)
     BaseContainer *bc = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_ID);
 	BaseContainer *c = GetPaletteContainer(paletteID,bc);
 	if(c!= nullptr){
+        GeDynamicArray<Int32> newIds;
 		Palette pal;
 		pal.FromContainer(*c);
+        for(Int32 i=0;i<pal.m_colors.GetCount();i++){
+            if(i<colorID){
+                newIds.Push(i);
+            } else if(i == colorID){
+                newIds.Push(-1);
+            } else {
+                newIds.Push(i-1);
+            }
+        }
 		pal.RemoveColor(colorID);
 		pal.ToContainer(*c);
 		bc->SetContainer(FIRST_PALETTE+paletteID,*c);
 		SetWorldPluginData(PALETTE_ID,*bc,FALSE);
 		UpdatePalette(paletteID);
+        ReorderPalette(paletteID, &newIds);
         GetActiveDocument()->SetChanged();
 	}
 }
@@ -199,7 +220,9 @@ void Palette::GetPaletteColor(Int32 paletteID, Int32 colorID, Color &col)
 	if(c!= nullptr){
 		Palette pal;
 		pal.FromContainer(*c);
-		col = pal[colorID];
+        if(pal.m_colors.GetCount() > colorID){
+            col = pal[colorID];
+        }
 	}
 }
 
@@ -240,6 +263,17 @@ void Palette::UpdateAll()
 void Palette::UpdatePalette(Int32 id)
 {
 	SpecialEventAdd(PALETTE_ID,-1,(Int64)id);
+}
+
+void Palette::ReorderPalette(Int32 id, GeDynamicArray<Int32> *newIDs)
+{
+    GePrint("B " + String::IntToString(newIDs->GetCount()));
+    BaseDocument *doc = GetActiveDocument();
+    BaseMaterial *mat = doc->GetFirstMaterial();
+    while(mat != nullptr){
+        mat->MultiMessage(MULTIMSG_ROUTE_BROADCAST, PALETTE_ID, newIDs);
+        mat = mat->GetNext();
+    }
 }
 
 void Palette::UpdateColor(Int32 palette, Int32 color)
