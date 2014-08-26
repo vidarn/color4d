@@ -20,6 +20,7 @@ ColorSlider::ColorSlider()
 	m_index = 0;
 	m_bitmap = BaseBitmap::Alloc();
 	m_valueMax = 1.0;
+    m_valueMin = 0.0;
 }
 
 ColorSlider::~ColorSlider(void)
@@ -43,10 +44,10 @@ void ColorSlider::UpdateCircle()
 		for(Int32 y=0;y<m_h;y++){
 			for(Int32 x=0;x<m_w;x++){
 				Color tmp = m_color;
-				UpdateColorWithValue(x/Float(m_w)*m_valueMax,tmp);
+				UpdateColorWithValue(m_valueMin + x/Float(m_w)*(m_valueMax-m_valueMin),tmp);
 				Vector col = tmp.Convert(COLOR_SOURCE_DISPLAY).AsVector();
 				ClampColor(col);
-				Int32 currX =  m_value*m_w/m_valueMax;
+				Int32 currX =  (m_value - m_valueMin)*m_w/(m_valueMax-m_valueMin) ;
 				Int32 currY = m_h/2;
 				Float dx = x - currX;
 				Float dy = y - currY;
@@ -106,7 +107,7 @@ void ColorSlider::UpdateColorWithValue(Float value, Color &color){
 }
 
 void ColorSlider::MouseUpdate(){
-	m_value = ClampValue(m_mouseX/Float(m_w),0.0,1.0)*m_valueMax;
+	m_value = m_valueMin + ClampValue(m_mouseX/Float(m_w),0.0,1.0)*(m_valueMax-m_valueMin);
 	UpdateColorWithValue(m_value,m_color);
 	if(m_parent != NULL){
 		m_parent->UpdateColor(m_color);
@@ -147,7 +148,7 @@ Bool ColorSlider::InputEvent(const BaseContainer &msg)
 
 void ColorSlider::SetColor(Color color){
 	m_color = color;
-	m_value = color[m_index];
+	m_value = ClampValue(color[m_index],m_valueMin,m_valueMax);
 }
 
 void ColorSlider::SetParent(ColorDialog *parent)

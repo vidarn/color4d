@@ -34,10 +34,16 @@ public:
 
 	ColorSlider m_RGBSlider[3];
 	ColorSlider m_CMYKSlider[4];
+    ColorSlider m_HSVSlider[3];
+    ColorSlider m_LABSlider[3];
 	C4DGadget *RGBeditNumber[3];
 	C4DGadget *CMYKeditNumber[4];
+    C4DGadget *HSVeditNumber[3];
+    C4DGadget *LABeditNumber[3];
 	C4DGadget *RGBsliderArea[3];
 	C4DGadget *CMYKsliderArea[4];
+    C4DGadget *HSVsliderArea[3];
+    C4DGadget *LABsliderArea[3];
 	C4DGadget *iccRGBCombo;
 	C4DGadget *iccCMYKCombo;
 	C4DGadget *m_hexText;

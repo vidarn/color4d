@@ -3,14 +3,13 @@
 #include "colorWheel.h"
 #include "colorbox.h"
 #include "c4d_symbols.h"
-#include "spotcolordialog.h"
 #include "palettedialog.h"
 #include "paletteSceneHook.h"
 #include "paletteshader.h"
 #include "main.h"
 
 void ErrorHandlerFunction(cmsContext ContextID, cmsUInt32Number ErrorCode, const char *Text){
-    printf("Error %ld %s\n", ErrorCode, Text);
+    printf("Error %u %s\n", ErrorCode, Text);
 }
 
 
@@ -100,8 +99,7 @@ Bool PluginStart(void)
 	Color::UpdateTransforms();
 	ColorScheme::Init();
 	PaletteColor::LoadIcons();
-	Bool result = RegisterCommandPlugin(SPOTCOLOR_ID,String("Spot colors"),0,NULL,String(),NewObjClear(SpotColorCommand));
-	result = result && RegisterCommandPlugin(COLORSELECTOR_ID,String("Color wheel"),0,NULL,String(),NewObjClear(ColorSelectorCommand));
+	Bool result = RegisterCommandPlugin(COLORSELECTOR_ID,String("Color wheel"),0,NULL,String(),NewObjClear(ColorSelectorCommand));
 	result = result && RegisterCommandPlugin(PALETTE_ID,String("Palette"),0,NULL,String(),NewObjClear(PaletteCommand));
     result = result && RegisterCommandPlugin(COLORPICKER_ENABLE_ID, String("Use Color Picker"), 0, NULL, String(), NewObjClear(EnableCommand));
     result = result && RegisterPaletteShader();
@@ -129,10 +127,6 @@ Bool PluginMessage(Int32 id, void *data)
     case C4DPL_INIT_SYS:
         {
             if(!resource.Init()) return FALSE;
-            
-            //if (!RegisterDescription(PALETTE_SCENE_HOOK_ID, "Dscenehooksettings"))
-               // return false;
-
 
             OperatingSystem *os=(OperatingSystem*)data;
 

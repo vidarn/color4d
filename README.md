@@ -1,10 +1,10 @@
 ## TODO ##
-* Remove spot colors
-* L*A*B* color picker
-* L*A*B* and hsl sliders
+* More palette windows
 * Remember palette settings in color picker
 * Keep labels after editing colors
 * Save palette filter settings etc. in file
+* L*A*B* color picker
+* Get unique plugin ID's
 
 ## Done ##
 * Search spot colors
@@ -31,6 +31,8 @@
 * Vertical scrolling in palette subdialog
 * Support LAB ase files
 * Search palette colors
+* Remove spot colors
+* L*A*B* and hsl sliders
 
 ## On hold ##
 * Pick colors from screen

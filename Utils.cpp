@@ -34,7 +34,7 @@ void ClampColor(Vector &col)
 
 void ClampColor(Color &col)
 {
-    for(int i=0;i<3;i++){
+    for(int i=0;i<4;i++){
         col[i] = ClampValue(col[i], 0.0, 1.0);
     }
 }

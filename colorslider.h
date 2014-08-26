@@ -38,6 +38,7 @@ class ColorSlider : public GeUserArea
 		Int32 m_index;
 		Float m_value;
 		Float m_valueMax;
+        Float m_valueMin;
 		Color m_color;
 		Int32 m_w;
 		Int32 m_h;

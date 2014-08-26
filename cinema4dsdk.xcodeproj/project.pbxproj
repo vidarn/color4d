@@ -31,8 +31,6 @@
 		131B91A81986B16200E28986 /* palettedialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 131B91A11986B16200E28986 /* palettedialog.h */; };
 		131B91AF1986B16A00E28986 /* SpotColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 131B91A91986B16A00E28986 /* SpotColor.cpp */; };
 		131B91B01986B16A00E28986 /* spotcolor.h in Headers */ = {isa = PBXBuildFile; fileRef = 131B91AA1986B16A00E28986 /* spotcolor.h */; };
-		131B91B11986B16A00E28986 /* SpotColorDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 131B91AB1986B16A00E28986 /* SpotColorDialog.cpp */; };
-		131B91B21986B16A00E28986 /* spotcolordialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 131B91AC1986B16A00E28986 /* spotcolordialog.h */; };
 		131B91B31986B16A00E28986 /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 131B91AD1986B16A00E28986 /* Utils.cpp */; };
 		131B91B41986B16A00E28986 /* utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 131B91AE1986B16A00E28986 /* utils.h */; };
 		136DACB519895C67002BDC1D /* LittleCMS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 136DACB419895C67002BDC1D /* LittleCMS.framework */; };
@@ -122,8 +120,6 @@
 		131B91A11986B16200E28986 /* palettedialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = palettedialog.h; path = ../palettedialog.h; sourceTree = "<group>"; };
 		131B91A91986B16A00E28986 /* SpotColor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpotColor.cpp; path = ../SpotColor.cpp; sourceTree = "<group>"; };
 		131B91AA1986B16A00E28986 /* spotcolor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = spotcolor.h; path = ../spotcolor.h; sourceTree = "<group>"; };
-		131B91AB1986B16A00E28986 /* SpotColorDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpotColorDialog.cpp; path = ../SpotColorDialog.cpp; sourceTree = "<group>"; };
-		131B91AC1986B16A00E28986 /* spotcolordialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = spotcolordialog.h; path = ../spotcolordialog.h; sourceTree = "<group>"; };
 		131B91AD1986B16A00E28986 /* Utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Utils.cpp; path = ../Utils.cpp; sourceTree = "<group>"; };
 		131B91AE1986B16A00E28986 /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = utils.h; path = ../utils.h; sourceTree = "<group>"; };
 		136DACB419895C67002BDC1D /* LittleCMS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LittleCMS.framework; path = ../../../../../Users/vidarn/Library/Frameworks/LittleCMS.framework; sourceTree = "<group>"; };
@@ -219,8 +215,6 @@
 				136DACBA19895D25002BDC1D /* slidersubdialog.h */,
 				131B91A91986B16A00E28986 /* SpotColor.cpp */,
 				131B91AA1986B16A00E28986 /* spotcolor.h */,
-				131B91AB1986B16A00E28986 /* SpotColorDialog.cpp */,
-				131B91AC1986B16A00E28986 /* spotcolordialog.h */,
 				13E787F919A49C8A00F55002 /* TrashCan.cpp */,
 				13E787FA19A49C8A00F55002 /* trashcan.h */,
 				13C2F8D2199283F10065AE04 /* unchecked.h */,
@@ -291,7 +285,6 @@
 				13C2F8CF199283E70065AE04 /* utf8.h in Headers */,
 				131B91911986B15A00E28986 /* colordialog.h in Headers */,
 				13C2F8DB1996079A0065AE04 /* namedColor.h in Headers */,
-				131B91B21986B16A00E28986 /* spotcolordialog.h in Headers */,
 				13C2F8D3199283F10065AE04 /* checked.h in Headers */,
 				131B91A61986B16200E28986 /* palettecolor.h in Headers */,
 				131B918F1986B15A00E28986 /* colorbox.h in Headers */,
@@ -412,7 +405,6 @@
 				131B91AF1986B16A00E28986 /* SpotColor.cpp in Sources */,
 				136DACBB19895D25002BDC1D /* ColorScheme.cpp in Sources */,
 				131B91971986B15A00E28986 /* ColorSlider.cpp in Sources */,
-				131B91B11986B16A00E28986 /* SpotColorDialog.cpp in Sources */,
 				131B918C1986B15A00E28986 /* Color.cpp in Sources */,
 				131B91A31986B16200E28986 /* Palette.cpp in Sources */,
 				131B918E1986B15A00E28986 /* ColorBox.cpp in Sources */,
