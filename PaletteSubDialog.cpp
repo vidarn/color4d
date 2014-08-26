@@ -307,10 +307,10 @@ void PaletteSubDialog::LayoutPalette()
             m_spotColors[i].SetPaletteID(m_paletteID);
             
             if(m_showLabel){
-                GroupBegin(40 + i*3,0,1,0,"",FALSE);
-                AddStaticText(40 + i*3+1,0,0,0,m_palette[i].m_name,BORDER_NONE);
+                GroupBegin(400 + i*3,0,1,0,"",FALSE);
+                AddStaticText(400 + i*3+1,0,0,0,m_palette[i].m_name,BORDER_NONE);
             }
-            C4DGadget *area = AddUserArea(40 + i*3+2,0);
+            C4DGadget *area = AddUserArea(400 + i*3+2,0);
             AttachUserArea(m_spotColors[i],area);
             if(m_showLabel){
                 GroupEnd();

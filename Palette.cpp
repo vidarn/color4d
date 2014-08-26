@@ -52,7 +52,11 @@ void Palette::SetColor(Int32 index, const Vector &color, COLOR_SOURCE source)
 
 void Palette::SetColor(Int32 index, const Color &color)
 {
-	SetColor(index, NamedColor(color,""));
+    String name = "";
+    if(index < m_colors.GetCount()){
+        name = m_colors[index].m_name;
+    }
+	SetColor(index, NamedColor(color,name));
 }
 
 void Palette::SetColor(Int32 index, const NamedColor &color)
@@ -61,6 +65,7 @@ void Palette::SetColor(Int32 index, const NamedColor &color)
 		m_colors.Push(NamedColor());
 	}
 	m_colors[index] = color;
+    m_colors[index].m_name = color.m_name;
 }
 
 void Palette::InsertColor(Int32 index, const Color &color)

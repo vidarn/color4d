@@ -1,5 +1,4 @@
 ## TODO ##
-* Keep labels after editing colors
 * L*A*B* color picker
 * Get unique plugin ID's
 
@@ -33,6 +32,7 @@
 * More palette windows
 * Remember palette settings in color picker
 * Save palette filter settings etc. in file
+* Keep labels after editing colors
 
 ## On hold ##
 * Pick colors from screen
