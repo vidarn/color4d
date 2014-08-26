@@ -102,7 +102,7 @@ const Palette &Palette::operator=(const Palette &pal)
 void Palette::InitPalettes()
 {
     BaseDocument *doc = GetActiveDocument();
-    if(doc->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_ID) == nullptr){
+    if(doc->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_SCENE_HOOK_ID) == nullptr){
         GePrint("Added default palette");
         BaseContainer bc;
         bc.SetInt32(NUM_PALETTES,1);
@@ -115,13 +115,13 @@ void Palette::InitPalettes()
         }
         stdPal.ToContainer(palC);
         bc.SetContainer(FIRST_PALETTE,palC);
-        doc->BaseList2D::GetDataInstance()->SetContainer(PALETTE_ID, bc);
+        doc->BaseList2D::GetDataInstance()->SetContainer(PALETTE_SCENE_HOOK_ID, bc);
     }
 }
 
 void Palette::GetPalettes(GeDynamicArray<Palette> &palettes)
 {
-	BaseContainer *bc = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_ID);
+	BaseContainer *bc = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_SCENE_HOOK_ID);
 	Int32 count = bc->GetInt32(NUM_PALETTES);
 	palettes.SetCount(0);
 	Palette pal;
@@ -146,7 +146,7 @@ BaseContainer *Palette::GetPaletteContainer(Int32 paletteID, BaseContainer *bc)
 
 void Palette::SetPaletteColor(Int32 paletteID, Int32 colorID, const Color &col)
 {
-	BaseContainer *bc = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_ID);
+	BaseContainer *bc = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_SCENE_HOOK_ID);
 	BaseContainer *c = GetPaletteContainer(paletteID,bc);
 	if(c!= nullptr){
 		Palette pal;
@@ -154,7 +154,6 @@ void Palette::SetPaletteColor(Int32 paletteID, Int32 colorID, const Color &col)
 		pal.SetColor(colorID,col);
 		pal.ToContainer(*c);
 		bc->SetContainer(FIRST_PALETTE+paletteID,*c);
-		SetWorldPluginData(PALETTE_ID,*bc,FALSE);
         UpdatePalette(paletteID);
         GetActiveDocument()->SetChanged();
 	}
@@ -162,7 +161,7 @@ void Palette::SetPaletteColor(Int32 paletteID, Int32 colorID, const Color &col)
 
 void Palette::InsertPaletteColor(Int32 paletteID, Int32 colorID, const Color &col)
 {
-	BaseContainer *bc = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_ID);
+	BaseContainer *bc = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_SCENE_HOOK_ID);
 	BaseContainer *c = GetPaletteContainer(paletteID,bc);
 	if(c!= nullptr){
         GeDynamicArray<Int32> newIds;
@@ -179,7 +178,6 @@ void Palette::InsertPaletteColor(Int32 paletteID, Int32 colorID, const Color &co
 		pal.InsertColor(colorID,col);
 		pal.ToContainer(*c);
 		bc->SetContainer(FIRST_PALETTE+paletteID,*c);
-		SetWorldPluginData(PALETTE_ID,*bc,FALSE);
 		UpdatePalette(paletteID);
         ReorderPalette(paletteID, &newIds);
         GetActiveDocument()->SetChanged();
@@ -189,7 +187,7 @@ void Palette::InsertPaletteColor(Int32 paletteID, Int32 colorID, const Color &co
 
 void Palette::RemovePaletteColor(Int32 paletteID, Int32 colorID)
 {
-    BaseContainer *bc = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_ID);
+    BaseContainer *bc = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_SCENE_HOOK_ID);
 	BaseContainer *c = GetPaletteContainer(paletteID,bc);
 	if(c!= nullptr){
         GeDynamicArray<Int32> newIds;
@@ -207,7 +205,6 @@ void Palette::RemovePaletteColor(Int32 paletteID, Int32 colorID)
 		pal.RemoveColor(colorID);
 		pal.ToContainer(*c);
 		bc->SetContainer(FIRST_PALETTE+paletteID,*c);
-		SetWorldPluginData(PALETTE_ID,*bc,FALSE);
 		UpdatePalette(paletteID);
         ReorderPalette(paletteID, &newIds);
         GetActiveDocument()->SetChanged();
@@ -216,7 +213,7 @@ void Palette::RemovePaletteColor(Int32 paletteID, Int32 colorID)
 
 void Palette::GetPaletteColor(Int32 paletteID, Int32 colorID, Color &col)
 {
-	BaseContainer *bc = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_ID);
+	BaseContainer *bc = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_SCENE_HOOK_ID);
 	BaseContainer *c = GetPaletteContainer(paletteID,bc);
 	if(c!= nullptr){
 		Palette pal;
@@ -229,7 +226,7 @@ void Palette::GetPaletteColor(Int32 paletteID, Int32 colorID, Color &col)
 
 void Palette::SetPaletteName(Int32 paletteID, String name)
 {
-    BaseContainer *bc = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_ID);
+    BaseContainer *bc = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_SCENE_HOOK_ID);
 	BaseContainer *c = GetPaletteContainer(paletteID,bc);
 	if(c!= nullptr){
 		Palette pal;
@@ -237,7 +234,6 @@ void Palette::SetPaletteName(Int32 paletteID, String name)
 		pal.m_name = name;
 		pal.ToContainer(*c);
 		bc->SetContainer(FIRST_PALETTE+paletteID,*c);
-		SetWorldPluginData(PALETTE_ID,*bc,FALSE);
         UpdatePalette(paletteID);
         GetActiveDocument()->SetChanged();
 	}
@@ -246,7 +242,7 @@ void Palette::SetPaletteName(Int32 paletteID, String name)
 
 Int32 Palette::AddPalette(const Palette &palette)
 {
-    BaseContainer *bc = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_ID);
+    BaseContainer *bc = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_SCENE_HOOK_ID);
 	Int32 count = bc->GetInt32(NUM_PALETTES);
 	BaseContainer pal;
 	palette.ToContainer(pal);

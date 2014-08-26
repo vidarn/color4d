@@ -24,9 +24,13 @@ public:
 	void SetSelectCallback(void (*selectCallback)(Color, void *), void *data);
 	void SetDragable(Bool state);
 	void LoadPalette(Int32 id);
+    void LayoutPalette();
 	void PaletteLayout();
     void UpdatePopup(Int32 current);
     void ShowControls(Bool show);
+    void ToContainer(BaseContainer &bc);
+    void FromContainer(const BaseContainer &bc);
+    void SaveSettings();
 
 	BaseContainer m_Settings;
     

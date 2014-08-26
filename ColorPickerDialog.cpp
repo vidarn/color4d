@@ -85,6 +85,7 @@ Bool ColorPickerDialog::InitValues(void)
 Bool ColorPickerDialog::Command(Int32 id,const BaseContainer &msg)
 {
 	String str;
+    BaseContainer tmp;
 	Color col;
     switch (id)
     {

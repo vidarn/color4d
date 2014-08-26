@@ -13,7 +13,6 @@
 		131B918F1986B15A00E28986 /* colorbox.h in Headers */ = {isa = PBXBuildFile; fileRef = 131B91801986B15900E28986 /* colorbox.h */; };
 		131B91901986B15A00E28986 /* ColorDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 131B91811986B15A00E28986 /* ColorDialog.cpp */; };
 		131B91911986B15A00E28986 /* colordialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 131B91821986B15A00E28986 /* colordialog.h */; };
-		131B91921986B15A00E28986 /* ColorPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 131B91831986B15A00E28986 /* ColorPicker.cpp */; };
 		131B91931986B15A00E28986 /* ColorPickerDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 131B91841986B15A00E28986 /* ColorPickerDialog.cpp */; };
 		131B91941986B15A00E28986 /* colorpickerdialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 131B91851986B15A00E28986 /* colorpickerdialog.h */; };
 		131B91951986B15A00E28986 /* ColorSelectorDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 131B91861986B15A00E28986 /* ColorSelectorDialog.cpp */; };
@@ -102,7 +101,6 @@
 		131B91801986B15900E28986 /* colorbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = colorbox.h; path = ../colorbox.h; sourceTree = "<group>"; };
 		131B91811986B15A00E28986 /* ColorDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColorDialog.cpp; path = ../ColorDialog.cpp; sourceTree = "<group>"; };
 		131B91821986B15A00E28986 /* colordialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = colordialog.h; path = ../colordialog.h; sourceTree = "<group>"; };
-		131B91831986B15A00E28986 /* ColorPicker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColorPicker.cpp; path = ../ColorPicker.cpp; sourceTree = "<group>"; };
 		131B91841986B15A00E28986 /* ColorPickerDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColorPickerDialog.cpp; path = ../ColorPickerDialog.cpp; sourceTree = "<group>"; };
 		131B91851986B15A00E28986 /* colorpickerdialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = colorpickerdialog.h; path = ../colorpickerdialog.h; sourceTree = "<group>"; };
 		131B91861986B15A00E28986 /* ColorSelectorDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColorSelectorDialog.cpp; path = ../ColorSelectorDialog.cpp; sourceTree = "<group>"; };
@@ -181,7 +179,6 @@
 				131B91801986B15900E28986 /* colorbox.h */,
 				131B91811986B15A00E28986 /* ColorDialog.cpp */,
 				131B91821986B15A00E28986 /* colordialog.h */,
-				131B91831986B15A00E28986 /* ColorPicker.cpp */,
 				131B91841986B15A00E28986 /* ColorPickerDialog.cpp */,
 				131B91851986B15A00E28986 /* colorpickerdialog.h */,
 				136DACB619895D25002BDC1D /* ColorScheme.cpp */,
@@ -417,7 +414,6 @@
 				131B91A71986B16200E28986 /* PaletteDialog.cpp in Sources */,
 				13E787FB19A49C8A00F55002 /* TrashCan.cpp in Sources */,
 				13C2F8DA1996079A0065AE04 /* NamedColor.cpp in Sources */,
-				131B91921986B15A00E28986 /* ColorPicker.cpp in Sources */,
 				131B91B31986B16A00E28986 /* Utils.cpp in Sources */,
 				131B91A51986B16200E28986 /* PaletteColor.cpp in Sources */,
 			);

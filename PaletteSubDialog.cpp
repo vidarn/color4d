@@ -6,7 +6,7 @@
 #include <string>
 
 PaletteSubDialog::PaletteSubDialog(Int32 id):
-m_spotColors(NULL), m_selectCallback(NULL),m_dragable(TRUE),m_showLabel(FALSE),m_id(id),m_showControls(FALSE), m_controlsShown(TRUE), m_rowArea(NULL), m_labelCheckArea(NULL), m_layoutArea(NULL),m_nameArea(NULL),m_searchText(NULL),m_rows(1),m_layout(0),m_searchString("")
+m_spotColors(NULL), m_selectCallback(NULL),m_dragable(TRUE),m_showLabel(FALSE),m_id(id),m_showControls(FALSE), m_controlsShown(TRUE), m_rowArea(NULL), m_labelCheckArea(NULL), m_layoutArea(NULL),m_nameArea(NULL),m_searchText(NULL),m_rows(1),m_layout(0),m_searchString(""),m_paletteID(0)
 {
 }
 
@@ -14,6 +14,18 @@ m_spotColors(NULL), m_selectCallback(NULL),m_dragable(TRUE),m_showLabel(FALSE),m
 Bool PaletteSubDialog::CreateLayout(void)
 {
     if (!GeDialog::CreateLayout()) return FALSE;
+    
+    BaseContainer *bc = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_SCENE_HOOK_ID)->GetContainerInstance(m_id);
+    if(bc != nullptr){
+        FromContainer(*bc);
+    }else{
+        m_paletteID = 0;
+    }
+    
+    Int32 numRows = 1;
+    if(m_layout == 0){
+        numRows = m_rows;
+    }
 
     GroupBegin(0,BFH_SCALEFIT|BFV_SCALEFIT,0,1,String(),0);
         GroupBegin(1, BFH_LEFT|BFV_TOP, 0, 1, String(), 0);
@@ -24,7 +36,7 @@ Bool PaletteSubDialog::CreateLayout(void)
             GroupEnd();
         GroupEnd();
         GroupBegin(8,BFH_SCALEFIT|BFV_SCALEFIT,0,1,String(),0);
-            ScrollGroupBegin(2,BFH_SCALEFIT|BFV_SCALEFIT,SCROLLGROUP_VERT|SCROLLGROUP_HORIZ);
+            ScrollGroupBegin(2,BFH_SCALEFIT|BFV_SCALEFIT,SCROLLGROUP_VERT|SCROLLGROUP_HORIZ,SizePix(40*5),SizePix(40*numRows));
                 GroupBegin(6,BFH_SCALEFIT|BFV_SCALEFIT,0,1,String(),0);
                 m_spotColors = new PaletteColor[1];
                 m_spotColors[0].SetColor(Color(0.f,0.f,0.f).SetSource(COLOR_SOURCE_DISPLAY));
@@ -47,7 +59,7 @@ PaletteSubDialog::~PaletteSubDialog()
 
 Bool PaletteSubDialog::InitValues(void)
 {
-    LoadPalette(0);
+    LoadPalette(m_paletteID);
     return TRUE;
 }
 
@@ -83,6 +95,52 @@ void PaletteSubDialog::ShowControls(Bool show)
     LoadPalette(m_paletteID);
 }
 
+void PaletteSubDialog::ToContainer(BaseContainer &bc)
+{
+    Int32 i=0;
+    bc.SetBool(++i, m_showLabel);
+    bc.SetInt32(++i, m_rows);
+    bc.SetInt32(++i, m_layout);
+    bc.SetString(++i, m_searchString);
+    bc.SetInt32(++i, m_paletteID);
+    GePrint("Saving " + String::IntToString(m_paletteID));
+}
+
+void PaletteSubDialog::FromContainer(const BaseContainer &bc)
+{
+    Int32 i=0;
+    m_showLabel    = bc.GetBool(++i);
+    m_rows         = bc.GetInt32(++i);
+    m_layout       = bc.GetInt32(++i);
+    m_searchString = bc.GetString(++i);
+    m_paletteID    = bc.GetInt32(++i);
+    
+    GePrint("Loading " + String::IntToString(m_paletteID));
+    
+    if(m_rowArea != NULL){
+        SetInt32(m_rowArea, m_rows);
+    }
+    if(m_layoutArea != NULL){
+        SetInt32(m_layoutArea, m_layout);
+    }
+    if(m_labelCheckArea != NULL){
+        SetBool(m_labelCheckArea,m_showLabel);
+    }
+    if(m_searchText != NULL){
+        SetString(m_searchText, m_searchString);
+    }
+    
+    m_controlsShown = !m_showControls;
+}
+
+void PaletteSubDialog::SaveSettings()
+{
+    BaseContainer bc;
+    ToContainer(bc);
+    GePrint("Set container!");
+    GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_SCENE_HOOK_ID)->SetContainer(m_id, bc);
+}
+
 Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
 {
 	GeDynamicArray<Palette> pals;
@@ -97,6 +155,7 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
                     id = Palette::AddPalette(pal);
                     m_controlsShown = FALSE;
                     LoadPalette(id);
+                    SaveSettings();
                     Palette::UpdateAll();
                     return TRUE;
                 case ACTION_LOAD:
@@ -106,6 +165,7 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
                             id = Palette::AddPalette(pal);
                             m_controlsShown = FALSE;
                             LoadPalette(id);
+                            SaveSettings();
                             Palette::UpdateAll();
                         }
                     }
@@ -124,18 +184,22 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
             if(msg.GetInt32(BFM_ACTION_VALUE) >= ACTION_COUNT){
                 m_controlsShown = FALSE;
                 LoadPalette(msg.GetInt32(BFM_ACTION_VALUE)-ACTION_COUNT);
+                SaveSettings();
             }
             return TRUE;
         case IDC_LAYOUT_DIRECTION:
             m_controlsShown = FALSE;
             LoadPalette(m_paletteID);
+            SaveSettings();
             break;
         case IDC_ROWS:
             PaletteLayout();
+            SaveSettings();
             break;
         case IDC_LABELCHECKBOX:
             GetBool(m_labelCheckArea, m_showLabel);
             LoadPalette(m_paletteID);
+            SaveSettings();
             break;
         case IDC_NAME:
             if(m_nameArea != NULL){
@@ -149,7 +213,8 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
             break;
         case IDC_SEARCHTEXT:
             PaletteLayout();
-            break;
+            SaveSettings();
+            break; 
 		default:
 			break;
     }
@@ -164,7 +229,20 @@ Bool PaletteSubDialog::CoreMessage(Int32 id, const BaseContainer& msg)
 			Int64 color =  (Int64) msg.GetVoid( BFM_CORE_PAR1 );
 			Int64 palette = (Int64) msg.GetVoid( BFM_CORE_PAR2 );
             if( palette == -1){
-                m_paletteID = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_ID)->GetInt32(m_id);
+                BaseContainer *bc = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_SCENE_HOOK_ID)->GetContainerInstance(m_id);
+                if(bc != nullptr){
+                    FromContainer(*bc);
+                } else {
+                    BaseContainer tmp;
+                    m_paletteID = 0;
+                    m_rows = 1;
+                    m_layout = 0;
+                    m_searchString = "";
+                    m_showLabel = FALSE;
+                    ToContainer(tmp);
+                    GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_SCENE_HOOK_ID)->SetContainer(m_id,tmp);
+                    FromContainer(tmp);
+                }
             }
 			if((palette == m_paletteID || palette == -1) && color == -1){
 				LoadPalette(m_paletteID);
@@ -198,17 +276,52 @@ void PaletteSubDialog::LoadPalette(Int32 id)
 	m_palette = pals[id];
     m_palette.m_name = pals[id].m_name;
 	m_paletteID = id;
-    GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_ID)->SetInt32(m_id, m_paletteID);
 	PaletteLayout();
     UpdatePopup(id);
 }
 
-void PaletteSubDialog::PaletteLayout()
+void PaletteSubDialog::LayoutPalette()
 {
     Int32 rows = 0;
     Int32 cols = 0;
     Int32 tmp = 0;
-    
+    rows = m_rows;
+    if(m_layout == 1){
+        tmp = rows;
+        rows = cols;
+        cols = tmp;
+    }
+    if(m_spotColors != NULL){
+        delete[] m_spotColors;
+    }
+    m_spotColors = new PaletteColor[m_palette.GetCount()];
+    GroupBegin(30, BFH_SCALEFIT|BFV_SCALEFIT, cols, rows, String(), 0);
+    GroupSpace(0,0);
+    for(int i=0;i<m_palette.GetCount();i++){
+        Int32 pos;
+        if(m_searchString == "" || m_palette[i].m_name.ToLower().FindFirst(m_searchString.ToLower(), &pos)){
+            m_spotColors[i].SetColor(m_palette[i]);
+            m_spotColors[i].SetColorID(i);
+            m_spotColors[i].SetSelectCallback(m_selectCallback,m_selectCallbackData);
+            m_spotColors[i].SetDragable(m_dragable);
+            m_spotColors[i].SetPaletteID(m_paletteID);
+            
+            if(m_showLabel){
+                GroupBegin(40 + i*3,0,1,0,"",FALSE);
+                AddStaticText(40 + i*3+1,0,0,0,m_palette[i].m_name,BORDER_NONE);
+            }
+            C4DGadget *area = AddUserArea(40 + i*3+2,0);
+            AttachUserArea(m_spotColors[i],area);
+            if(m_showLabel){
+                GroupEnd();
+            }
+        }
+    }
+    GroupEnd();
+}
+
+void PaletteSubDialog::PaletteLayout()
+{
     if(m_rowArea != NULL){
         GetInt32(m_rowArea, m_rows);
     }
@@ -278,39 +391,7 @@ void PaletteSubDialog::PaletteLayout()
         m_controlsShown = FALSE;
     }
     
-    rows = m_rows;
-    if(m_layout == 1){
-        tmp = rows;
-        rows = cols;
-        cols = tmp;
-    }
 	LayoutFlushGroup(6);
-	if(m_spotColors != NULL){
-		delete[] m_spotColors;
-	}
-	m_spotColors = new PaletteColor[m_palette.GetCount()];
-    GroupBegin(30, BFH_SCALEFIT|BFV_SCALEFIT, cols, rows, String(), 0);
-    GroupSpace(0,0);
-	for(int i=0;i<m_palette.GetCount();i++){
-        Int32 pos;
-        if(m_searchString == "" || m_palette[i].m_name.ToLower().FindFirst(m_searchString.ToLower(), &pos)){
-            m_spotColors[i].SetColor(m_palette[i]);
-            m_spotColors[i].SetColorID(i);
-            m_spotColors[i].SetSelectCallback(m_selectCallback,m_selectCallbackData);
-            m_spotColors[i].SetDragable(m_dragable);
-            m_spotColors[i].SetPaletteID(m_paletteID);
-            
-            if(m_showLabel){
-                GroupBegin(40 + i*3,0,1,0,"",FALSE);
-                AddStaticText(40 + i*3+1,0,0,0,m_palette[i].m_name,BORDER_NONE);
-            }
-            C4DGadget *area = AddUserArea(40 + i*3+2,0);
-            AttachUserArea(m_spotColors[i],area);
-            if(m_showLabel){
-                GroupEnd();
-            }
-        }
-	}
-    GroupEnd();
+    LayoutPalette();
 	LayoutChanged(6);
 }

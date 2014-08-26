@@ -1,8 +1,5 @@
 ## TODO ##
-* More palette windows
-* Remember palette settings in color picker
 * Keep labels after editing colors
-* Save palette filter settings etc. in file
 * L*A*B* color picker
 * Get unique plugin ID's
 
@@ -33,6 +30,9 @@
 * Search palette colors
 * Remove spot colors
 * L*A*B* and hsl sliders
+* More palette windows
+* Remember palette settings in color picker
+* Save palette filter settings etc. in file
 
 ## On hold ##
 * Pick colors from screen
