@@ -17,4 +17,5 @@ public:
     virtual Int32 Message(const BaseContainer& msg, BaseContainer& result) = 0;
 
 	virtual void UpdateColor(Color color) = 0;
+    virtual void UpdateWheel() = 0;
 };

@@ -58,11 +58,17 @@ void ColorWheel::UpdateCircle()
             Float dist = Sqrt(Float(dx*dx + dy*dy));
             if(dist > m_innerRadius+innerSeparator || m_type == COLOR_WHEEL_BLENDER){
                 if(dist < m_outerRadius){
-                    Float hue, saturation;
+                    Float hue, saturation, brightness = 1.0;
                     Float posX = dx/dist;
                     Float posY = dy/dist;
                     Float angle = ACos(posX);
                     Float val = 1.0 - Smoothstep(m_outerRadius-aaBuffer,m_outerRadius,dist);
+                    if(Color::m_wheelType == WHEEL_TYPE_HSB){
+                        brightness = 0.5;
+                    }
+                    if( Color::m_wheelType == WHEEL_TYPE_LCH){
+                        brightness = m_color[2];
+                    }
                     switch(m_type){
                     case COLOR_WHEEL_RECTANGLE:
                         saturation = 1.0;
@@ -80,9 +86,10 @@ void ColorWheel::UpdateCircle()
                         saturation = Pow(dist/m_outerRadius,2.0);
                         break;
                     }
-                    col = Color(hue,saturation,1.0).SetSource(COLOR_SOURCE_WHEEL).Convert(COLOR_SOURCE_DISPLAY).AsVector()*val + col*(1.0-val);
+                    col = Color(hue,saturation,brightness).SetSource(COLOR_SOURCE_WHEEL).Convert(COLOR_SOURCE_DISPLAY).AsVector()*val + col*(1.0-val);
                 }
             }
+            ClampColor(col);
             m_wheelClipMap->SetPixelRGBA(x,y,col[0]*255,col[1]*255,col[2]*255);
         }
     }
@@ -97,6 +104,7 @@ void ColorWheel::UpdateTriangle()
         for(Int32 y=0;y<m_triangleW;y++){
             for(Int32 x=0;x<m_triangleW;x++){
                 Vector col = Color(m_color[0],x/Float(m_triangleW),y/Float(m_triangleW)).SetSource(COLOR_SOURCE_WHEEL).Convert(COLOR_SOURCE_DISPLAY).AsVector();
+                ClampColor(col);
                 m_triangleClipMap->SetPixelRGBA(x,y,255*col.x,255*col.y,255*col.z);
             }
         }
@@ -214,12 +222,20 @@ void ColorWheel::DrawMsg(Int32 x1,Int32 y1,Int32 x2,Int32 y2, const BaseContaine
 
 void ColorWheel::UpdateColor(Color color){
     ClampColor(color);
-    Float newH = color.Convert(COLOR_SOURCE_WHEEL)[0];
+    Color tmp = color.Convert(COLOR_SOURCE_WHEEL);
+    Float newH = tmp[0];
+    Float newS = tmp[1];
+    Float newV = tmp[2];
     m_color = color;
     if(m_oldH != newH){
         UpdateTriangle();
     }
+    if(Color::m_wheelType == WHEEL_TYPE_LCH && newV != m_oldV){
+        UpdateCircle();
+    }
     m_oldH = newH;
+    m_oldS = newS;
+    m_oldV = newV;
 	Redraw();
 }
 
@@ -310,7 +326,7 @@ Bool ColorWheel::InputEvent(const BaseContainer &msg)
                 m_selectedMarker = 0;
                 float radius = m_valuePosition;
                 if(m_type == COLOR_WHEEL_BLENDER){
-                    radius = m_color[1]*m_outerRadius;
+                    radius = Pow(m_color[1],1.0/2.0)*m_outerRadius;
                 }
                 if(!m_mouseDragTriangle){
                     for(int i=0;i<m_offsets.GetCount();i++){

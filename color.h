@@ -14,6 +14,13 @@ enum COLOR_SOURCE
     COLOR_SOURCE_LAB,
 };
 
+enum WHEEL_TYPE
+{
+    WHEEL_TYPE_HSV,
+    WHEEL_TYPE_HSB,
+    WHEEL_TYPE_LCH,
+};
+
 class vnColorProfile
 {
 	public:
@@ -63,7 +70,7 @@ class Color
 		static const GeDynamicArray<vnColorProfile> &getCMYKProfiles(){return m_CMYKProfiles;}
 		static const GeDynamicArray<vnColorProfile> &getSpotProfiles(){return m_spotProfiles;}
 		static cmsHPROFILE getDisplayProfile(){return m_displayProfile;}
-	private:
+
 		Float m_val[4];
 		COLOR_SOURCE m_source;
 		static cmsHTRANSFORM m_wheelToRGB;
@@ -91,4 +98,6 @@ class Color
 		static GeDynamicArray<vnColorProfile> m_RGBProfiles;
 		static GeDynamicArray<vnColorProfile> m_CMYKProfiles;
 		static GeDynamicArray<vnColorProfile> m_spotProfiles;
+        static Int32 m_wheelType;
+        static cmsUInt32Number m_wheelDataType;
 };

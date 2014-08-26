@@ -2,6 +2,7 @@
 #include "colordialog.h"
 #include "colorbox.h"
 #include "colorwheelsubdialog.h"
+#include "slidersubdialog.h"
 #include "colorslider.h"
 #include "color.h"
 #include "spotcolor.h"
@@ -25,18 +26,18 @@ public:
     virtual Int32 GetSettingsID(void){return 9;}
 
 	virtual void UpdateColor(Color color);
+    virtual void UpdateWheel();
 
 	void SetColorScheme(ColorScheme *colorScheme);
 
     ColorWheelSubDialog m_wheelSubDiag;
-	//ColorWheel m_colorWheel;
-	//ColorBox m_colorBox;
+    SliderSubDialog m_sliderSubDiag;
 	SpotColor m_previewColors[4];
 	ColorScheme *m_colorScheme;
-	//C4DGadget *wheelArea;
 	C4DGadget *boxArea;
 	C4DGadget *spotArea;
 	C4DGadget *m_schemeCombo;
+    Vector m_color;
 };
 
 class ColorSelectorCommand : public CommandData

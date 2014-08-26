@@ -8,16 +8,25 @@ Bool ColorSelectorDialog::CreateLayout(void)
     if (!GeDialog::CreateLayout()) return FALSE;
 
     SetTitle(GeLoadString(IDS_COLORPICKER));
+    
+    m_color = Vector(0.5f,0.261f,0.375f);
 
-    GroupBegin(0,BFH_SCALEFIT|BFV_SCALEFIT,1,0,String(),0);
-		GroupBegin(1,BFH_SCALEFIT,3,1,String(),0);
-        if(AddSubDialog(IDC_COLORWHEEL, BFH_SCALEFIT)){
-            AttachSubDialog(&m_wheelSubDiag, IDC_COLORWHEEL);
+    GroupBegin(10,BFH_SCALEFIT|BFV_SCALEFIT,0,1,String(),0);
+        GroupBegin(0,BFH_SCALEFIT|BFV_SCALEFIT,1,0,String(),0);
+            GroupBegin(1,BFH_SCALEFIT,3,1,String(),0);
+            if(AddSubDialog(IDC_COLORWHEEL, BFH_SCALEFIT)){
+                AttachSubDialog(&m_wheelSubDiag, IDC_COLORWHEEL);
+            }
+            GroupEnd();
+            GroupBegin(8,BFH_SCALEFIT,0,1,String(),0);
+            GroupEnd();
+            m_schemeCombo = AddComboBox(IDC_SCHEMECOMBO,BFH_SCALEFIT,10,10);
+        GroupEnd();
+        if(AddSubDialog(IDC_SLIDERS,BFH_SCALEFIT)){
+            m_sliderSubDiag.SetColor(&m_color);
+            m_sliderSubDiag.SetParent(this);
+            AttachSubDialog(&m_sliderSubDiag,IDC_SLIDERS);
         }
-		GroupEnd();
-		GroupBegin(8,BFH_SCALEFIT,0,1,String(),0);
-		GroupEnd();
-		m_schemeCombo = AddComboBox(IDC_SCHEMECOMBO,BFH_SCALEFIT,10,10);
     GroupEnd();
     return TRUE;
 }
@@ -28,7 +37,7 @@ ColorSelectorDialog::~ColorSelectorDialog()
 
 Bool ColorSelectorDialog::InitValues(void)
 {
-	BaseContainer schemebc;
+	BaseContainer schemebc, HSVbc;
 	Int32 numSchemes = ColorScheme::GetNumSchemes();
 	for(Int32 i=0;i<numSchemes;i++){
 		ColorScheme *scheme = ColorScheme::GetColorScheme(i);
@@ -70,6 +79,13 @@ void ColorSelectorDialog::UpdateColor(Color color){
 	for(Int32 i=0;i<offsetColors.GetCount();i++){
 		m_previewColors[i].UpdateColor(offsetColors[i].Convert(COLOR_SOURCE_DISPLAY));
 	}
+    m_sliderSubDiag.UpdateColorFromParent(color);
+}
+
+void ColorSelectorDialog::UpdateWheel()
+{
+    m_wheelSubDiag.m_colorWheel.UpdateCircle();
+    m_wheelSubDiag.m_colorWheel.UpdateTriangle();
 }
 
 void ColorSelectorDialog::SetColorScheme(ColorScheme *colorScheme)

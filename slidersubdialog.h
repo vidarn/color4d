@@ -21,6 +21,7 @@ public:
 	virtual void UpdateColorFromParent(Color color);
 	void ChangeRGBSliderProfile(Int32 index);
 	void ChangeCMYKSliderProfile(Int32 index);
+    void ChangeHSVProfile(Int32 index);
 	void SetColor(Vector *color){m_pColor = color;}
 	void SetParent(ColorDialog *parent){m_parent = parent;}
 	void FindICCProfiles();
@@ -46,5 +47,6 @@ public:
     C4DGadget *LABsliderArea[3];
 	C4DGadget *iccRGBCombo;
 	C4DGadget *iccCMYKCombo;
+    C4DGadget *iccHSVCombo;
 	C4DGadget *m_hexText;
 };

@@ -92,7 +92,7 @@ Bool PluginStart(void)
 {
     cmsSetLogErrorHandler(&ErrorHandlerFunction);
 	Color::LoadICCProfiles();
-	Color::SetWheelProfile(0);
+	Color::SetWheelProfile(WHEEL_TYPE_HSV);
 	Color::SetRGBProfile(0);
 	Color::SetCMYKProfile(0);
 	Color::SetDisplayProfile(0);

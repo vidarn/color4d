@@ -56,6 +56,9 @@ Bool SliderSubDialog::CreateLayout(void)
         GroupEnd();
         GroupBegin(6,BFH_SCALEFIT|BFV_BOTTOM,1,0,String("HSV"),BFV_BORDERGROUP_FOLD_OPEN);
             GroupBorder(BORDER_WITH_TITLE|BORDER_THIN_IN);
+            GroupBegin(4,BFH_SCALEFIT,1,2,String(),0);
+                iccHSVCombo  = AddComboBox(IDC_HSVICC,BFH_SCALEFIT,10,10);
+            GroupEnd();
             GroupBegin(7,BFH_SCALEFIT,2,0,String(),0);
                 for(Int32 i=0;i<3;i++){
                     HSVeditNumber[i] = AddEditNumberArrows(IDC_H+i,BFH_LEFT);
@@ -128,15 +131,17 @@ Bool SliderSubDialog::Command(Int32 id,const BaseContainer &msg)
             UpdateColor(Color(rVal[0],rVal[1],rVal[2],rVal[3]).SetSource(COLOR_SOURCE_CMYK));
             break;
 	case IDC_RGBICC:
-		val;
 		GetInt32(iccRGBCombo,val);
 		ChangeRGBSliderProfile(val);
 		break;
 	case IDC_CMYKICC:
-		val;
 		GetInt32(iccCMYKCombo,val);
 		ChangeCMYKSliderProfile(val);
 		break;
+    case IDC_HSVICC:
+        GetInt32(iccHSVCombo, val);
+        ChangeHSVProfile(val);
+        break;
 	case IDC_HEXTEXT:
 		GetString(m_hexText,str);
 		col.SetSource(COLOR_SOURCE_DISPLAY);
@@ -153,7 +158,7 @@ void SliderSubDialog::FindICCProfiles(){
 	const GeDynamicArray<vnColorProfile> &CMYKProfiles = Color::getCMYKProfiles();
 	const GeDynamicArray<vnColorProfile> &spotProfiles = Color::getSpotProfiles();
 
-	BaseContainer RGBbc, CMYKbc, spotbc;
+	BaseContainer RGBbc, CMYKbc, HSVbc;
 
 	for(int i=0;i<RGBProfiles.GetCount();i++){
 		RGBbc.SetString(i,RGBProfiles[i].m_name);
@@ -161,9 +166,11 @@ void SliderSubDialog::FindICCProfiles(){
 	for(int i=0;i<CMYKProfiles.GetCount();i++){
 		CMYKbc.SetString(i,CMYKProfiles[i].m_name);
 	}
-	for(int i=0;i<spotProfiles.GetCount();i++){
-		spotbc.SetString(i,spotProfiles[i].m_name);
-	}
+    
+    HSVbc.SetString(WHEEL_TYPE_HSV,"HSV");
+    HSVbc.SetString(WHEEL_TYPE_HSB,"HSL");
+    HSVbc.SetString(WHEEL_TYPE_LCH,"LCH");
+    
 	AddChildren(iccRGBCombo,RGBbc);
 	SetInt32(iccRGBCombo,0);
 	Enable(iccRGBCombo,TRUE);
@@ -171,6 +178,10 @@ void SliderSubDialog::FindICCProfiles(){
 	AddChildren(iccCMYKCombo,CMYKbc);
 	SetInt32(iccCMYKCombo,0);
 	Enable(iccCMYKCombo,TRUE);
+    
+    AddChildren(iccHSVCombo, HSVbc);
+    SetInt32(iccHSVCombo, Color::m_wheelType);
+    Enable(iccHSVCombo, TRUE);
 
 	ChangeRGBSliderProfile(0);
 }
@@ -227,6 +238,19 @@ void SliderSubDialog::ChangeRGBSliderProfile(Int32 index)
 void SliderSubDialog::ChangeCMYKSliderProfile(Int32 index)
 {
     Color::SetCMYKProfile(index,TRUE);
+    Color col;
+    String str;
+    GetString(m_hexText,str);
+    col.SetSource(COLOR_SOURCE_DISPLAY);
+    if(col.FromString(str)){
+        UpdateColor(col);
+    }
+}
+
+void SliderSubDialog::ChangeHSVProfile(Int32 index)
+{
+    Color::SetWheelProfile(index,TRUE);
+    m_parent->UpdateWheel();
     Color col;
     String str;
     GetString(m_hexText,str);

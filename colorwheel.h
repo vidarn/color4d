@@ -60,6 +60,8 @@ public:
     Float m_innerRadius;
     Float m_outerRadius;
     Float m_oldH;
+    Float m_oldS;
+    Float m_oldV;
     Bool  m_mouseDragTriangle;
     Float m_triangleW;
     Int32 m_type;

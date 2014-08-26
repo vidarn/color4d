@@ -28,6 +28,7 @@ public:
     virtual Int32 GetSettingsID(void){return 8;}
 
 	virtual void UpdateColor(Color color);
+    virtual void UpdateWheel();
 
 	void LoadSpotColors(Int32 index);
 

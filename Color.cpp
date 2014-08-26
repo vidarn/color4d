@@ -29,6 +29,8 @@ String *Color::m_iccSearchPaths       = 0;
 GeDynamicArray<vnColorProfile> Color::m_RGBProfiles  = GeDynamicArray<vnColorProfile>();
 GeDynamicArray<vnColorProfile> Color::m_CMYKProfiles = GeDynamicArray<vnColorProfile>();
 GeDynamicArray<vnColorProfile> Color::m_spotProfiles = GeDynamicArray<vnColorProfile>();
+Int32 Color::m_wheelType = WHEEL_TYPE_LCH;
+cmsUInt32Number Color::m_wheelDataType = TYPE_Lab_DBL;
 
 Color::Color()
 {
@@ -86,8 +88,29 @@ Color Color::Convert(COLOR_SOURCE target)
 			out[i] = 0.0;
 		}
 	if(m_source == COLOR_SOURCE_WHEEL){
-		Vector tmp = HSVToRGB(Vector(in[0],in[1],in[2]));
-		in[0] = tmp.x; in[1] = tmp.y; in[2] = tmp.z;
+        switch (m_wheelType) {
+            case WHEEL_TYPE_HSV:
+            {
+                Vector tmp = HSVToRGB(Vector(in[0],in[1],in[2]));
+                in[0] = tmp.x; in[1] = tmp.y; in[2] = tmp.z;
+            }
+            break;
+            case WHEEL_TYPE_HSB:
+            {
+                Vector tmp = HSLtoRGB(Vector(in[0],in[1],in[2]));
+                in[0] = tmp.x; in[1] = tmp.y; in[2] = tmp.z;
+            }
+                break;
+            case WHEEL_TYPE_LCH:
+            {
+                double tmp[] = {in[0],in[1],in[2]};
+                in[0] = tmp[2]*100.0;
+                in[1] = tmp[1]*cos(tmp[0]*M_PI_2*4.0)*128.0;
+                in[2] = tmp[1]*sin(tmp[0]*M_PI_2*4.0)*128.0;
+            }
+            break;
+                
+        }
 		if(target == COLOR_SOURCE_RGB)     cmsDoTransform(m_wheelToRGB,     in, out, 1);
 		if(target == COLOR_SOURCE_CMYK)    cmsDoTransform(m_wheelToCMYK,    in, out, 1);
 		if(target == COLOR_SOURCE_DISPLAY) cmsDoTransform(m_wheelToDisplay, in, out, 1);
@@ -118,8 +141,37 @@ Color Color::Convert(COLOR_SOURCE target)
 		if(target == COLOR_SOURCE_CMYK)    cmsDoTransform(m_LABToCMYK,      in, out, 1);
 	}
 	if(target == COLOR_SOURCE_WHEEL){
-		Vector tmp = RGBToHSV(Vector(out[0],out[1],out[2]));
-		out[0] = tmp.x;out[1] = tmp.y;out[2] = tmp.z;
+        switch (m_wheelType) {
+            case WHEEL_TYPE_HSV:
+                {
+                    Vector tmp = RGBToHSV(Vector(out[0],out[1],out[2]));
+                    out[0] = tmp.x;out[1] = tmp.y;out[2] = tmp.z;
+                }
+                break;
+            case WHEEL_TYPE_HSB:
+            {
+                Vector tmp = RGBToHSL(Vector(out[0],out[1],out[2]));
+                out[0] = tmp.x;out[1] = tmp.y;out[2] = tmp.z;
+            }
+                break;
+            case WHEEL_TYPE_LCH:
+                {
+                    double tmp[] = {out[0],out[1],out[2]};
+                    out[1] = Sqrt(tmp[1]*tmp[1] + tmp[2]*tmp[2])/128.0;
+                    out[0] = ATan2(tmp[2], tmp[1])/M_PI_2/4.0;
+                    while(out[0] < 0.0){
+                        out[0] += 1.0;
+                    }
+                    while(out[0] > 1.0){
+                        out[0] -= 1.0;
+                    }
+                    GePrint(String::FloatToString(out[0]));
+                    out[2] = tmp[0]/100.0;
+                }
+                break;
+                
+        }
+		
 	}
 	return Color(out[0], out[1], out[2], out[3]).SetSource(target);
 }
@@ -187,9 +239,21 @@ void Color::ToString(String &str)
 	}
 }
 
-void Color::SetWheelProfile(int profile, Bool updateTransform)
+void Color::SetWheelProfile(int type, Bool updateTransform)
 {
-	SetWheelProfile(m_RGBProfiles[profile].m_profile,updateTransform);
+    m_wheelType = type;
+    switch (m_wheelType) {
+        case WHEEL_TYPE_HSV:
+        case WHEEL_TYPE_HSB:
+            m_wheelDataType = TYPE_RGB_DBL;
+            SetWheelProfile(m_RGBProfiles[0].m_profile,updateTransform);
+            break;
+        case WHEEL_TYPE_LCH:
+            m_wheelDataType = TYPE_Lab_DBL;
+            SetWheelProfile(m_LABProfile,updateTransform);
+            break;
+    }
+	
 }
 
 void Color::SetRGBProfile(int profile, Bool updateTransform)
@@ -219,14 +283,14 @@ void Color::SetWheelProfile(cmsHPROFILE profile, Bool updateTransform)
 {
 	m_wheelProfile = profile;
 	if(updateTransform){
-		createAndFreeTransform(m_wheelToRGB,     m_wheelProfile,  TYPE_RGB_DBL,  m_RGBProfile,    TYPE_RGB_DBL);
-		createAndFreeTransform(m_wheelToCMYK,    m_wheelProfile,  TYPE_RGB_DBL,  m_CMYKProfile,   TYPE_CMYK_DBL);
-		createAndFreeTransform(m_wheelToDisplay, m_wheelProfile,  TYPE_RGB_DBL,  m_displayProfile,TYPE_RGB_DBL);
-		createAndFreeTransform(m_wheelToLAB,     m_wheelProfile,  TYPE_RGB_DBL,  m_LABProfile,    TYPE_Lab_DBL);
-		createAndFreeTransform(m_RGBToWheel,     m_RGBProfile,    TYPE_RGB_DBL,  m_wheelProfile,  TYPE_RGB_DBL);
-		createAndFreeTransform(m_CMYKToWheel,    m_CMYKProfile,   TYPE_CMYK_DBL, m_wheelProfile,  TYPE_RGB_DBL);
-		createAndFreeTransform(m_displayToWheel, m_displayProfile,TYPE_RGB_DBL,  m_wheelProfile,  TYPE_RGB_DBL);
-		createAndFreeTransform(m_LABToWheel,     m_LABProfile,    TYPE_Lab_DBL,  m_wheelProfile,  TYPE_RGB_DBL);
+		createAndFreeTransform(m_wheelToRGB,     m_wheelProfile,  m_wheelDataType,  m_RGBProfile,    TYPE_RGB_DBL);
+		createAndFreeTransform(m_wheelToCMYK,    m_wheelProfile,  m_wheelDataType,  m_CMYKProfile,   TYPE_CMYK_DBL);
+		createAndFreeTransform(m_wheelToDisplay, m_wheelProfile,  m_wheelDataType,  m_displayProfile,TYPE_RGB_DBL);
+		createAndFreeTransform(m_wheelToLAB,     m_wheelProfile,  m_wheelDataType,  m_LABProfile,    TYPE_Lab_DBL);
+		createAndFreeTransform(m_RGBToWheel,     m_RGBProfile,    TYPE_RGB_DBL,     m_wheelProfile,  m_wheelDataType);
+		createAndFreeTransform(m_CMYKToWheel,    m_CMYKProfile,   TYPE_CMYK_DBL,    m_wheelProfile,  m_wheelDataType);
+		createAndFreeTransform(m_displayToWheel, m_displayProfile,TYPE_RGB_DBL,     m_wheelProfile,  m_wheelDataType);
+		createAndFreeTransform(m_LABToWheel,     m_LABProfile,    TYPE_Lab_DBL,     m_wheelProfile,  m_wheelDataType);
 	}
 }
 
@@ -234,14 +298,14 @@ void Color::SetRGBProfile(cmsHPROFILE profile, Bool updateTransform)
 {
 	m_RGBProfile = profile;
 	if(updateTransform){
-		createAndFreeTransform(m_RGBToWheel,   m_RGBProfile,    TYPE_RGB_DBL,  m_wheelProfile,  TYPE_RGB_DBL);
-		createAndFreeTransform(m_RGBToCMYK,    m_RGBProfile,    TYPE_RGB_DBL,  m_CMYKProfile,   TYPE_CMYK_DBL);
-		createAndFreeTransform(m_RGBToDisplay, m_RGBProfile,    TYPE_RGB_DBL,  m_displayProfile,TYPE_RGB_DBL);
-		createAndFreeTransform(m_RGBToLAB,     m_RGBProfile,    TYPE_RGB_DBL,  m_LABProfile,    TYPE_Lab_DBL);
-		createAndFreeTransform(m_wheelToRGB,   m_wheelProfile,  TYPE_RGB_DBL,  m_RGBProfile,    TYPE_RGB_DBL);
-		createAndFreeTransform(m_CMYKToRGB,    m_CMYKProfile,   TYPE_CMYK_DBL, m_RGBProfile,    TYPE_RGB_DBL);
-		createAndFreeTransform(m_displayToRGB, m_displayProfile,TYPE_RGB_DBL,  m_RGBProfile,    TYPE_RGB_DBL);
-		createAndFreeTransform(m_LABToRGB,     m_LABProfile,    TYPE_Lab_DBL,  m_RGBProfile,    TYPE_RGB_DBL);
+		createAndFreeTransform(m_RGBToWheel,   m_RGBProfile,    TYPE_RGB_DBL,     m_wheelProfile,  m_wheelDataType);
+		createAndFreeTransform(m_RGBToCMYK,    m_RGBProfile,    TYPE_RGB_DBL,     m_CMYKProfile,   TYPE_CMYK_DBL);
+		createAndFreeTransform(m_RGBToDisplay, m_RGBProfile,    TYPE_RGB_DBL,     m_displayProfile,TYPE_RGB_DBL);
+		createAndFreeTransform(m_RGBToLAB,     m_RGBProfile,    TYPE_RGB_DBL,     m_LABProfile,    TYPE_Lab_DBL);
+		createAndFreeTransform(m_wheelToRGB,   m_wheelProfile,  m_wheelDataType,  m_RGBProfile,    TYPE_RGB_DBL);
+		createAndFreeTransform(m_CMYKToRGB,    m_CMYKProfile,   TYPE_CMYK_DBL,    m_RGBProfile,    TYPE_RGB_DBL);
+		createAndFreeTransform(m_displayToRGB, m_displayProfile,TYPE_RGB_DBL,     m_RGBProfile,    TYPE_RGB_DBL);
+		createAndFreeTransform(m_LABToRGB,     m_LABProfile,    TYPE_Lab_DBL,     m_RGBProfile,    TYPE_RGB_DBL);
 	}
 }
 
@@ -249,14 +313,14 @@ void Color::SetCMYKProfile(cmsHPROFILE profile, Bool updateTransform)
 {
 	m_CMYKProfile = profile;
 	if(updateTransform){
-		createAndFreeTransform(m_CMYKToWheel,   m_CMYKProfile,   TYPE_CMYK_DBL, m_wheelProfile,  TYPE_RGB_DBL);
-		createAndFreeTransform(m_CMYKToRGB,     m_CMYKProfile,   TYPE_CMYK_DBL, m_RGBProfile,    TYPE_RGB_DBL);
-		createAndFreeTransform(m_CMYKToDisplay, m_CMYKProfile,   TYPE_CMYK_DBL, m_displayProfile,TYPE_RGB_DBL);
-		createAndFreeTransform(m_CMYKToLAB,     m_CMYKProfile,   TYPE_CMYK_DBL, m_LABProfile,    TYPE_Lab_DBL);
-		createAndFreeTransform(m_wheelToCMYK,   m_wheelProfile,  TYPE_RGB_DBL,  m_CMYKProfile,   TYPE_CMYK_DBL);
-		createAndFreeTransform(m_RGBToCMYK,     m_RGBProfile,    TYPE_RGB_DBL,  m_CMYKProfile,   TYPE_CMYK_DBL);
-		createAndFreeTransform(m_displayToCMYK, m_displayProfile,TYPE_RGB_DBL,  m_CMYKProfile,   TYPE_CMYK_DBL);
-		createAndFreeTransform(m_LABToCMYK,     m_LABProfile,    TYPE_Lab_DBL,  m_CMYKProfile,   TYPE_CMYK_DBL);
+		createAndFreeTransform(m_CMYKToWheel,   m_CMYKProfile,   TYPE_CMYK_DBL,    m_wheelProfile,  m_wheelDataType);
+		createAndFreeTransform(m_CMYKToRGB,     m_CMYKProfile,   TYPE_CMYK_DBL,    m_RGBProfile,    TYPE_RGB_DBL);
+		createAndFreeTransform(m_CMYKToDisplay, m_CMYKProfile,   TYPE_CMYK_DBL,    m_displayProfile,TYPE_RGB_DBL);
+		createAndFreeTransform(m_CMYKToLAB,     m_CMYKProfile,   TYPE_CMYK_DBL,    m_LABProfile,    TYPE_Lab_DBL);
+		createAndFreeTransform(m_wheelToCMYK,   m_wheelProfile,  m_wheelDataType,  m_CMYKProfile,   TYPE_CMYK_DBL);
+		createAndFreeTransform(m_RGBToCMYK,     m_RGBProfile,    TYPE_RGB_DBL,     m_CMYKProfile,   TYPE_CMYK_DBL);
+		createAndFreeTransform(m_displayToCMYK, m_displayProfile,TYPE_RGB_DBL,     m_CMYKProfile,   TYPE_CMYK_DBL);
+		createAndFreeTransform(m_LABToCMYK,     m_LABProfile,    TYPE_Lab_DBL,     m_CMYKProfile,   TYPE_CMYK_DBL);
 	}
 }
 
@@ -264,14 +328,14 @@ void Color::SetDisplayProfile(cmsHPROFILE profile, Bool updateTransform)
 {
 	m_displayProfile = profile;
 	if(updateTransform){
-		createAndFreeTransform(m_displayToWheel, m_displayProfile, TYPE_RGB_DBL,  m_wheelProfile,   TYPE_RGB_DBL);
-		createAndFreeTransform(m_displayToRGB,   m_displayProfile, TYPE_RGB_DBL,  m_RGBProfile,     TYPE_RGB_DBL);
-		createAndFreeTransform(m_displayToCMYK,  m_displayProfile, TYPE_RGB_DBL,  m_CMYKProfile,    TYPE_CMYK_DBL);
-		createAndFreeTransform(m_displayToLAB,   m_displayProfile, TYPE_RGB_DBL,  m_LABProfile,     TYPE_Lab_DBL);
-		createAndFreeTransform(m_wheelToDisplay, m_wheelProfile,   TYPE_RGB_DBL,  m_displayProfile, TYPE_RGB_DBL);
-		createAndFreeTransform(m_RGBToDisplay,   m_RGBProfile,     TYPE_RGB_DBL,  m_displayProfile, TYPE_RGB_DBL);
-		createAndFreeTransform(m_CMYKToDisplay,  m_CMYKProfile,    TYPE_CMYK_DBL, m_displayProfile, TYPE_RGB_DBL);
-		createAndFreeTransform(m_LABToDisplay,   m_LABProfile,     TYPE_Lab_DBL,  m_displayProfile, TYPE_RGB_DBL);
+		createAndFreeTransform(m_displayToWheel, m_displayProfile, TYPE_RGB_DBL,     m_wheelProfile,   m_wheelDataType);
+		createAndFreeTransform(m_displayToRGB,   m_displayProfile, TYPE_RGB_DBL,     m_RGBProfile,     TYPE_RGB_DBL);
+		createAndFreeTransform(m_displayToCMYK,  m_displayProfile, TYPE_RGB_DBL,     m_CMYKProfile,    TYPE_CMYK_DBL);
+		createAndFreeTransform(m_displayToLAB,   m_displayProfile, TYPE_RGB_DBL,     m_LABProfile,     TYPE_Lab_DBL);
+		createAndFreeTransform(m_wheelToDisplay, m_wheelProfile,   m_wheelDataType,  m_displayProfile, TYPE_RGB_DBL);
+		createAndFreeTransform(m_RGBToDisplay,   m_RGBProfile,     TYPE_RGB_DBL,     m_displayProfile, TYPE_RGB_DBL);
+		createAndFreeTransform(m_CMYKToDisplay,  m_CMYKProfile,    TYPE_CMYK_DBL,    m_displayProfile, TYPE_RGB_DBL);
+		createAndFreeTransform(m_LABToDisplay,   m_LABProfile,     TYPE_Lab_DBL,     m_displayProfile, TYPE_RGB_DBL);
 	}
 }
 
@@ -279,39 +343,39 @@ void Color::SetLABProfile(cmsHPROFILE profile, Bool updateTransform)
 {
 	m_LABProfile = profile;
 	if(updateTransform){
-		createAndFreeTransform(m_LABToWheel,     m_LABProfile,     TYPE_Lab_DBL,  m_wheelProfile,   TYPE_RGB_DBL);
-		createAndFreeTransform(m_LABToRGB,       m_LABProfile,     TYPE_Lab_DBL,  m_RGBProfile,     TYPE_RGB_DBL);
-		createAndFreeTransform(m_LABToCMYK,      m_LABProfile,     TYPE_Lab_DBL,  m_CMYKProfile,    TYPE_CMYK_DBL);
-		createAndFreeTransform(m_LABToDisplay,   m_LABProfile,     TYPE_Lab_DBL,  m_displayProfile, TYPE_RGB_DBL);
-		createAndFreeTransform(m_wheelToLAB,     m_wheelProfile,   TYPE_RGB_DBL,  m_LABProfile,     TYPE_Lab_DBL);
-		createAndFreeTransform(m_RGBToLAB,       m_RGBProfile,     TYPE_RGB_DBL,  m_LABProfile,     TYPE_Lab_DBL);
-		createAndFreeTransform(m_CMYKToLAB,      m_CMYKProfile,    TYPE_CMYK_DBL, m_LABProfile,     TYPE_Lab_DBL);
-		createAndFreeTransform(m_displayToLAB,   m_displayProfile, TYPE_RGB_DBL,  m_LABProfile,     TYPE_Lab_DBL);
+		createAndFreeTransform(m_LABToWheel,     m_LABProfile,     TYPE_Lab_DBL,     m_wheelProfile,   m_wheelDataType);
+		createAndFreeTransform(m_LABToRGB,       m_LABProfile,     TYPE_Lab_DBL,     m_RGBProfile,     TYPE_RGB_DBL);
+		createAndFreeTransform(m_LABToCMYK,      m_LABProfile,     TYPE_Lab_DBL,     m_CMYKProfile,    TYPE_CMYK_DBL);
+		createAndFreeTransform(m_LABToDisplay,   m_LABProfile,     TYPE_Lab_DBL,     m_displayProfile, TYPE_RGB_DBL);
+		createAndFreeTransform(m_wheelToLAB,     m_wheelProfile,   m_wheelDataType,  m_LABProfile,     TYPE_Lab_DBL);
+		createAndFreeTransform(m_RGBToLAB,       m_RGBProfile,     TYPE_RGB_DBL,     m_LABProfile,     TYPE_Lab_DBL);
+		createAndFreeTransform(m_CMYKToLAB,      m_CMYKProfile,    TYPE_CMYK_DBL,    m_LABProfile,     TYPE_Lab_DBL);
+		createAndFreeTransform(m_displayToLAB,   m_displayProfile, TYPE_RGB_DBL,     m_LABProfile,     TYPE_Lab_DBL);
 	}
 }
 
 void Color::UpdateTransforms()
 {
-	createAndFreeTransform(m_wheelToRGB,     m_wheelProfile,   TYPE_RGB_DBL,  m_RGBProfile,     TYPE_RGB_DBL);
-	createAndFreeTransform(m_wheelToCMYK,    m_wheelProfile,   TYPE_RGB_DBL,  m_CMYKProfile,    TYPE_CMYK_DBL);
-	createAndFreeTransform(m_wheelToDisplay, m_wheelProfile,   TYPE_RGB_DBL,  m_displayProfile, TYPE_RGB_DBL);
-	createAndFreeTransform(m_wheelToLAB,     m_wheelProfile,   TYPE_RGB_DBL,  m_LABProfile,     TYPE_Lab_DBL);
-	createAndFreeTransform(m_RGBToWheel,     m_RGBProfile,     TYPE_RGB_DBL,  m_wheelProfile,   TYPE_RGB_DBL);
-	createAndFreeTransform(m_RGBToCMYK,      m_RGBProfile,     TYPE_RGB_DBL,  m_CMYKProfile,    TYPE_CMYK_DBL);
-	createAndFreeTransform(m_RGBToDisplay,   m_RGBProfile,     TYPE_RGB_DBL,  m_displayProfile, TYPE_RGB_DBL);
-	createAndFreeTransform(m_RGBToLAB,       m_RGBProfile,     TYPE_RGB_DBL,  m_LABProfile,    TYPE_Lab_DBL);
-	createAndFreeTransform(m_CMYKToWheel,    m_CMYKProfile,    TYPE_CMYK_DBL, m_wheelProfile,   TYPE_RGB_DBL);
-	createAndFreeTransform(m_CMYKToRGB,      m_CMYKProfile,    TYPE_CMYK_DBL, m_RGBProfile,     TYPE_RGB_DBL);
-	createAndFreeTransform(m_CMYKToDisplay,  m_CMYKProfile,    TYPE_CMYK_DBL, m_displayProfile, TYPE_RGB_DBL);
-	createAndFreeTransform(m_CMYKToLAB,      m_CMYKProfile,    TYPE_CMYK_DBL, m_LABProfile,     TYPE_Lab_DBL);
-	createAndFreeTransform(m_displayToWheel, m_displayProfile, TYPE_RGB_DBL,  m_wheelProfile,   TYPE_RGB_DBL);
-	createAndFreeTransform(m_displayToRGB,   m_displayProfile, TYPE_RGB_DBL,  m_RGBProfile,     TYPE_RGB_DBL);
-	createAndFreeTransform(m_displayToCMYK,  m_displayProfile, TYPE_RGB_DBL,  m_CMYKProfile,    TYPE_CMYK_DBL);
-	createAndFreeTransform(m_displayToLAB,   m_displayProfile, TYPE_RGB_DBL,  m_LABProfile,     TYPE_Lab_DBL);
-	createAndFreeTransform(m_LABToWheel,     m_LABProfile,     TYPE_Lab_DBL,  m_wheelProfile,   TYPE_RGB_DBL);
-	createAndFreeTransform(m_LABToRGB,       m_LABProfile,     TYPE_Lab_DBL,  m_RGBProfile,     TYPE_RGB_DBL);
-	createAndFreeTransform(m_LABToCMYK,      m_LABProfile,     TYPE_Lab_DBL,  m_CMYKProfile,    TYPE_CMYK_DBL);
-	createAndFreeTransform(m_LABToDisplay,   m_LABProfile,     TYPE_Lab_DBL,  m_displayProfile, TYPE_RGB_DBL);
+	createAndFreeTransform(m_wheelToRGB,     m_wheelProfile,   m_wheelDataType,  m_RGBProfile,     TYPE_RGB_DBL);
+	createAndFreeTransform(m_wheelToCMYK,    m_wheelProfile,   m_wheelDataType,  m_CMYKProfile,    TYPE_CMYK_DBL);
+	createAndFreeTransform(m_wheelToDisplay, m_wheelProfile,   m_wheelDataType,  m_displayProfile, TYPE_RGB_DBL);
+	createAndFreeTransform(m_wheelToLAB,     m_wheelProfile,   m_wheelDataType,  m_LABProfile,     TYPE_Lab_DBL);
+	createAndFreeTransform(m_RGBToWheel,     m_RGBProfile,     TYPE_RGB_DBL,     m_wheelProfile,   m_wheelDataType);
+	createAndFreeTransform(m_RGBToCMYK,      m_RGBProfile,     TYPE_RGB_DBL,     m_CMYKProfile,    TYPE_CMYK_DBL);
+	createAndFreeTransform(m_RGBToDisplay,   m_RGBProfile,     TYPE_RGB_DBL,     m_displayProfile, TYPE_RGB_DBL);
+	createAndFreeTransform(m_RGBToLAB,       m_RGBProfile,     TYPE_RGB_DBL,     m_LABProfile,    TYPE_Lab_DBL);
+	createAndFreeTransform(m_CMYKToWheel,    m_CMYKProfile,    TYPE_CMYK_DBL,    m_wheelProfile,   m_wheelDataType);
+	createAndFreeTransform(m_CMYKToRGB,      m_CMYKProfile,    TYPE_CMYK_DBL,    m_RGBProfile,     TYPE_RGB_DBL);
+	createAndFreeTransform(m_CMYKToDisplay,  m_CMYKProfile,    TYPE_CMYK_DBL,    m_displayProfile, TYPE_RGB_DBL);
+	createAndFreeTransform(m_CMYKToLAB,      m_CMYKProfile,    TYPE_CMYK_DBL,    m_LABProfile,     TYPE_Lab_DBL);
+	createAndFreeTransform(m_displayToWheel, m_displayProfile, TYPE_RGB_DBL,     m_wheelProfile,   m_wheelDataType);
+	createAndFreeTransform(m_displayToRGB,   m_displayProfile, TYPE_RGB_DBL,     m_RGBProfile,     TYPE_RGB_DBL);
+	createAndFreeTransform(m_displayToCMYK,  m_displayProfile, TYPE_RGB_DBL,     m_CMYKProfile,    TYPE_CMYK_DBL);
+	createAndFreeTransform(m_displayToLAB,   m_displayProfile, TYPE_RGB_DBL,     m_LABProfile,     TYPE_Lab_DBL);
+	createAndFreeTransform(m_LABToWheel,     m_LABProfile,     TYPE_Lab_DBL,     m_wheelProfile,   m_wheelDataType);
+	createAndFreeTransform(m_LABToRGB,       m_LABProfile,     TYPE_Lab_DBL,     m_RGBProfile,     TYPE_RGB_DBL);
+	createAndFreeTransform(m_LABToCMYK,      m_LABProfile,     TYPE_Lab_DBL,     m_CMYKProfile,    TYPE_CMYK_DBL);
+	createAndFreeTransform(m_LABToDisplay,   m_LABProfile,     TYPE_Lab_DBL,     m_displayProfile, TYPE_RGB_DBL);
 }
 
 Bool Color::IsRGBProfileOk()

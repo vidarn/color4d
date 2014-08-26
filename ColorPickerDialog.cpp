@@ -135,3 +135,9 @@ void ColorPickerDialog::UpdateColor(Color color){
 	}
 	m_sliderSubDiag.UpdateColorFromParent(color);
 }
+
+void ColorPickerDialog::UpdateWheel()
+{
+    m_wheelSubDiag.m_colorWheel.UpdateCircle();
+    m_wheelSubDiag.m_colorWheel.UpdateTriangle();
+}
