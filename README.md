@@ -1,7 +1,5 @@
 ## TODO ##
-* Sync update of color wheels
 * Remember selection of HSV, HSL or LCH in file
-* Fix titles of dialogs
 * Create materials from palette
 * Get unique plugin ID's
 
@@ -37,6 +35,8 @@
 * Save palette filter settings etc. in file
 * Keep labels after editing colors
 * L*A*B* color picker
+* Sync update of color wheels
+* Fix titles of dialogs
 
 ## On hold ##
 * Pick colors from screen

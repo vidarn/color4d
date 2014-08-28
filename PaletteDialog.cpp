@@ -2,7 +2,7 @@
 #include "main.h"
 #include "c4d_symbols.h"
 #include "c4d_file.h"
-PaletteDialog::PaletteDialog(Int32 id):m_paletteSubDiag(id)
+PaletteDialog::PaletteDialog(Int32 id):m_id(id),m_paletteSubDiag(id)
 {
 }
 
@@ -10,7 +10,19 @@ PaletteDialog::PaletteDialog(Int32 id):m_paletteSubDiag(id)
 Bool PaletteDialog::CreateLayout(void)
 {
     if (!GeDialog::CreateLayout()) return FALSE;
-	SetTitle(GeLoadString(IDS_COLORPICKER));
+    String title("Palette");
+    switch(m_id){
+        case 4:
+            title += " 1";
+            break;
+        case 5:
+            title += " 2";
+            break;
+        case 6:
+            title += " 3";
+            break;
+    }
+	SetTitle(title);
 	GroupBegin(0,BFH_SCALEFIT|BFV_SCALEFIT,0,1,String(),0);
 	if(AddSubDialog(IDC_PALETTE,BFH_SCALEFIT|BFV_SCALEFIT)){
 		AttachSubDialog(&m_paletteSubDiag,IDC_PALETTE);

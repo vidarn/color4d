@@ -11,6 +11,7 @@ class PaletteDialog : public GeDialog
 {
 private:
 	PaletteSubDialog m_paletteSubDiag;
+    Int32 m_id;
 public:
 
 	PaletteDialog(Int32 id);

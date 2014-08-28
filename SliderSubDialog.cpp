@@ -140,7 +140,8 @@ Bool SliderSubDialog::Command(Int32 id,const BaseContainer &msg)
 		break;
     case IDC_HSVICC:
         GetInt32(iccHSVCombo, val);
-        ChangeHSVProfile(val);
+        Color::SetWheelProfile(val,TRUE);
+        SpecialEventAdd(COLORPICKER_ID,-1,-1);
         break;
 	case IDC_HEXTEXT:
 		GetString(m_hexText,str);
@@ -151,6 +152,19 @@ Bool SliderSubDialog::Command(Int32 id,const BaseContainer &msg)
 		break;
     }
     return GeDialog::Command(id,msg);
+}
+
+Bool SliderSubDialog::CoreMessage(Int32 id,const BaseContainer &msg)
+{
+    switch (id) {
+        case COLORPICKER_ID:
+            // HSV mode has been changed
+            ChangeHSVProfile();
+            break;
+        default:
+            break;
+    }
+    return GeDialog::CoreMessage(id,msg);
 }
 
 void SliderSubDialog::FindICCProfiles(){
@@ -247,9 +261,9 @@ void SliderSubDialog::ChangeCMYKSliderProfile(Int32 index)
     }
 }
 
-void SliderSubDialog::ChangeHSVProfile(Int32 index)
+void SliderSubDialog::ChangeHSVProfile()
 {
-    Color::SetWheelProfile(index,TRUE);
+    SetInt32(iccHSVCombo, Color::m_wheelType);
     m_parent->UpdateWheel();
     Color col;
     String str;
