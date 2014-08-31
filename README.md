@@ -1,5 +1,4 @@
 ## TODO ##
-* Remember selection of HSV, HSL or LCH in file
 * Create materials from palette
 * Get unique plugin ID's
 

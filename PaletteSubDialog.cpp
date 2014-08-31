@@ -1,7 +1,9 @@
 #include "PaletteSubDialog.h"
+#include "paletteshader.h"
 #include "main.h"
 #include "c4d_symbols.h"
 #include "c4d_file.h"
+#include "xpalette.h"
 #include <iconv.h>
 #include <string>
 
@@ -214,7 +216,34 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
         case IDC_SEARCHTEXT:
             PaletteLayout();
             SaveSettings();
-            break; 
+            break;
+        case IDC_CREATEMATERIAL:
+            {
+                GePrint("Palette ID: " + String::IntToString(m_paletteID));
+                for(Int32 i=m_palette.m_colors.GetCount()-1;i>=0;--i){
+                    BaseMaterial *mat = BaseMaterial::Alloc(Mmaterial);
+                    String name = "PaletteMaterial";
+                    if(m_palette[i].m_name != ""){
+                        name = m_palette[i].m_name;
+                    }
+                    mat->SetName(name);
+                    if(mat != nullptr){
+                        BaseChannel *chan = mat->GetChannel(CHANNEL_COLOR);
+                        if(chan != nullptr){
+                            BaseContainer bc;
+                            bc.SetInt32(BASECHANNEL_SHADERID, PALETTE_SHADER_ID);
+                            chan->SetData(bc);
+                            BaseShader *bs = chan->GetShader();
+                            BaseContainer* data = bs->GetDataInstance();
+                            data->SetInt32(PALETTESHADER_PALETTE_ID, 1+m_paletteID);
+                            data->SetInt32(PALETTESHADER_COLOR_ID, 1+i);
+                            GetActiveDocument()->InsertMaterial(mat);
+                            EventAdd();
+                        }
+                    }
+                }
+            }
+            break;
 		default:
 			break;
     }
@@ -361,11 +390,14 @@ void PaletteSubDialog::PaletteLayout()
             m_labelCheckArea = AddCheckbox(IDC_LABELCHECKBOX,BFH_LEFT,0,0,String("Show Labels"));
             SetBool(m_labelCheckArea, m_showLabel);
         
+            AddStaticText(IDC_FILTERLABEL, BFH_CENTER, 0, 0, String("Filter:"), 0);
             m_searchText = AddEditText(IDC_SEARCHTEXT, BFH_SCALEFIT);
             SetString(m_searchText, m_searchString);
         
             m_controlsShown = TRUE;
-            
+        
+            AddButton(IDC_CREATEMATERIAL, BFH_CENTER, 0, 0, String("Create Materials"));
+        
             AddButton(IDC_HIDE, BFH_CENTER, 0, 0, String("Hide Controls"));
         GroupEnd();
         

@@ -12,6 +12,13 @@ enum {
 	FIRST_PALETTE
 };
 
+struct ReorderPaletteData
+{
+    Int32 paletteID, colorID;
+    GeDynamicArray<Int32> *newIDs;
+    BaseMaterial *mat;
+};
+
 class Palette
 {
 	public:
@@ -50,7 +57,5 @@ class Palette
         static Bool LoadASEFile(String filename, Palette &palette);
         static Bool SaveASEFile(String filename, const Palette &palette);
     
-    
-	private:
 		GeDynamicArray<NamedColor> m_colors;
 };

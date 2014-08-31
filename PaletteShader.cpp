@@ -36,10 +36,21 @@ Bool PaletteShaderData::Message(GeListNode* node, Int32 type, void* data)
     if(type == PALETTE_ID){
         BaseContainer* bc = ((BaseShader*)node)->GetDataInstance();
         GePrint("Message to palette shader!");
-        GeDynamicArray<Int32> *newIds = static_cast<GeDynamicArray<Int32> *>(data);
-        Int32 colorId = bc->GetInt32(PALETTESHADER_COLOR_ID);
-        colorId = (*newIds)[colorId];
-        bc->SetInt32(PALETTESHADER_COLOR_ID, colorId);
+        Int32 colorId = bc->GetInt32(PALETTESHADER_COLOR_ID)-1;
+        Int32 paletteId = bc->GetInt32(PALETTESHADER_PALETTE_ID) - 1;
+        ReorderPaletteData *rData = static_cast<ReorderPaletteData *>(data);
+        if(rData->newIDs == nullptr){
+            if(rData->colorID == colorId && rData->paletteID == paletteId){
+                GePrint("Update! " + String::IntToString(colorId) + " " + String::IntToString(paletteId));
+                rData->mat->Update(TRUE, TRUE);
+            }
+        } else {
+            if(rData->paletteID == paletteId){
+                colorId = ClampValue((Int32)colorId, (Int32)0, (Int32)rData->newIDs->GetCount());
+                colorId = (*(rData->newIDs))[colorId] + 1;
+                bc->SetInt32(PALETTESHADER_COLOR_ID, colorId);
+            }
+        }
     }
     return ShaderData::Message(node, type, data);
 }

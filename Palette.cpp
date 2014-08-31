@@ -160,6 +160,7 @@ void Palette::SetPaletteColor(Int32 paletteID, Int32 colorID, const Color &col)
 		pal.ToContainer(*c);
 		bc->SetContainer(FIRST_PALETTE+paletteID,*c);
         UpdatePalette(paletteID);
+        UpdateColor(paletteID,colorID);
         GetActiveDocument()->SetChanged();
 	}
 }
@@ -202,7 +203,7 @@ void Palette::RemovePaletteColor(Int32 paletteID, Int32 colorID)
             if(i<colorID){
                 newIds.Push(i);
             } else if(i == colorID){
-                newIds.Push(-1);
+                newIds.Push(0);
             } else {
                 newIds.Push(i-1);
             }
@@ -269,18 +270,32 @@ void Palette::UpdatePalette(Int32 id)
 
 void Palette::ReorderPalette(Int32 id, GeDynamicArray<Int32> *newIDs)
 {
-    GePrint("B " + String::IntToString(newIDs->GetCount()));
     BaseDocument *doc = GetActiveDocument();
     BaseMaterial *mat = doc->GetFirstMaterial();
     while(mat != nullptr){
-        mat->MultiMessage(MULTIMSG_ROUTE_BROADCAST, PALETTE_ID, newIDs);
+        ReorderPaletteData data;
+        data.newIDs = newIDs;
+        data.mat = mat;
+        data.paletteID = id;
+        mat->MultiMessage(MULTIMSG_ROUTE_BROADCAST, PALETTE_ID, &data);
         mat = mat->GetNext();
     }
 }
 
 void Palette::UpdateColor(Int32 palette, Int32 color)
 {
-	SpecialEventAdd(PALETTE_ID,color,(Int64)palette);
+    //SpecialEventAdd(PALETTE_ID,color,(Int64)palette);
+    BaseDocument *doc = GetActiveDocument();
+    BaseMaterial *mat = doc->GetFirstMaterial();
+    while(mat != nullptr){
+        ReorderPaletteData data;
+        data.newIDs = nullptr;
+        data.mat = mat;
+        data.colorID = color;
+        data.paletteID = palette;
+        mat->MultiMessage(MULTIMSG_ROUTE_BROADCAST, PALETTE_ID, &data);
+        mat = mat->GetNext();
+    }
 }
 
 Bool Palette::LoadASEFile(String s, Palette &pal)
