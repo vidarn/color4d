@@ -1,14 +1,14 @@
 #pragma once
 
-#pragma message("TODO: get unique plugin ids")
-#define COLORPICKER_ID    1018404
-#define COLORSELECTOR_ID 1018407
-#define PALETTE_ID 1018408
-#define PALETTE2_ID 1018409
-#define PALETTE3_ID 1018410
-#define PALETTE_SCENE_HOOK_ID 1018411
-#define COLORPICKER_ENABLE_ID 1018412
-#define PALETTE_SHADER_ID 1018413
+#define COLORPICKER_ID    1033578
+#define COLORSELECTOR_ID 1033579
+#define PALETTE_ID 1033580
+#define PALETTE2_ID 1033581
+#define PALETTE3_ID 1033582
+#define PALETTE_SCENE_HOOK_ID 1033583
+#define COLORPICKER_ENABLE_ID 1033584
+#define PALETTE_SHADER_ID 1033585
+
 
 
 //////////////////////////////////////////////////////////////////////////

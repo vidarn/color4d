@@ -1,5 +1,4 @@
 ## TODO ##
-* Create materials from palette
 * Get unique plugin ID's
 
 ## Done ##
@@ -36,6 +35,7 @@
 * L*A*B* color picker
 * Sync update of color wheels
 * Fix titles of dialogs
+* Create materials from palette
 
 ## On hold ##
 * Pick colors from screen

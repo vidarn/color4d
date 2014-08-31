@@ -50,7 +50,6 @@ void ColorWheelSubDialog::UpdateColorFromParent(Color color)
 void ColorWheelSubDialog::SetWheelType(Int32 type)
 {
     if(m_settings != NULL){
-        GePrint(String::IntToString(m_settings->GetInt32(m_parent->GetSettingsID(), type)));
         m_settings->SetInt32(m_parent->GetSettingsID(), type);
     }
     LayoutFlushGroup(2);

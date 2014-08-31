@@ -165,7 +165,6 @@ Color Color::Convert(COLOR_SOURCE target)
                     while(out[0] > 1.0){
                         out[0] -= 1.0;
                     }
-                    GePrint(String::FloatToString(out[0]));
                     out[2] = tmp[0]/100.0;
                 }
                 break;
@@ -385,75 +384,74 @@ Bool Color::IsRGBProfileOk()
 
 void Color::LoadICCProfiles()
 {
-#pragma message("TODO: allow more icc search paths")
-    
 	if(m_iccSearchPaths!= NULL){
 		delete m_iccSearchPaths;
 	}
-	m_iccSearchPaths = new String[2];
+    
+    const Int32 NUMSEARCHPATHS = 3;
+    
+	m_iccSearchPaths = new String[NUMSEARCHPATHS];
 	m_iccSearchPaths[0] = "C:\\Windows\\System32\\Spool\\Drivers\\Color\\";
     m_iccSearchPaths[1] = "/Library/ColorSync/Profiles/";
-    //m_iccSearchPaths[1] = "/Users/vidarn/Library/ColorSync";
+    m_iccSearchPaths[2] = "/Users/vidarn/Library/ColorSync";
 
 	m_LABProfile = cmsCreateLab4Profile(NULL);
 
 	m_displayProfile = cmsCreate_sRGBProfile();
 	m_RGBProfiles.Insert(vnColorProfile("sRGB",m_displayProfile),0);
 
-	BrowseFiles* bf = BrowseFiles::Alloc();
+    for(Int32 i=0;i<NUMSEARCHPATHS;++i){
+        BrowseFiles* bf = BrowseFiles::Alloc();
 
-	Filename dir(m_iccSearchPaths[1]);
-	bf->Init(dir,FALSE);
-	int RGBPos  = m_RGBProfiles.GetCount();
-	int CMYKPos = m_CMYKProfiles.GetCount();
-	int spotPos = m_spotProfiles.GetCount();
+        Filename dir(m_iccSearchPaths[i]);
+        bf->Init(dir,FALSE);
+        int RGBPos  = m_RGBProfiles.GetCount();
+        int CMYKPos = m_CMYKProfiles.GetCount();
+        int spotPos = m_spotProfiles.GetCount();
 
-	if (bf)
-	{
-		while (bf->GetNext())
-		{
-			Filename fileName = bf->GetFilename();
-			fileName.SetDirectory(dir);
-			String str = fileName.GetString();
-			Char *buffer = new Char[str.GetCStringLen()+1];
-			str.GetCString(buffer,str.GetCStringLen()+1);
-            GePrint(buffer);
-			cmsHPROFILE profile = cmsOpenProfileFromFile(buffer, "r");
-			if(profile != NULL){
-				cmsColorSpaceSignature sig = cmsGetColorSpace(profile);
-				Int32 length = cmsGetProfileInfoASCII(profile,cmsInfoDescription,"en","US",NULL,0);
-				Char *buffer2 = new Char[length];
-				cmsGetProfileInfoASCII(profile,cmsInfoDescription,"en","US",buffer2,length);
-				String info(buffer2);
-				int pt = _cmsLCMScolorSpace(sig);
-				if(PT_RGB == pt){
-					m_RGBProfiles.Insert(vnColorProfile(info,profile),RGBPos);
-					RGBPos++;
-				}
-				if(PT_CMYK == pt){
-					cmsHTRANSFORM xform = cmsCreateTransform(profile,TYPE_NAMED_COLOR_INDEX,m_displayProfile,TYPE_RGB_DBL,INTENT_PERCEPTUAL,0);
-					if(xform != NULL){
-						cmsNAMEDCOLORLIST* colorList = cmsGetNamedColorList(xform);
-						if(colorList != NULL){
-							m_spotProfiles.Insert(vnColorProfile(info,profile),spotPos);
-							spotPos++;
-						}
-						else{
-							m_CMYKProfiles.Insert(vnColorProfile(info,profile),CMYKPos);
-							CMYKPos++;
-						}
-					}
-					cmsDeleteTransform(xform);
-				}
-				delete buffer2;
-			}
-            else{
-                GePrint("Could not load ^");
+        if (bf)
+        {
+            while (bf->GetNext())
+            {
+                Filename fileName = bf->GetFilename();
+                fileName.SetDirectory(dir);
+                String str = fileName.GetString();
+                Char *buffer = new Char[str.GetCStringLen()+1];
+                str.GetCString(buffer,str.GetCStringLen()+1);
+                cmsHPROFILE profile = cmsOpenProfileFromFile(buffer, "r");
+                if(profile != NULL){
+                    cmsColorSpaceSignature sig = cmsGetColorSpace(profile);
+                    Int32 length = cmsGetProfileInfoASCII(profile,cmsInfoDescription,"en","US",NULL,0);
+                    Char *buffer2 = new Char[length];
+                    cmsGetProfileInfoASCII(profile,cmsInfoDescription,"en","US",buffer2,length);
+                    String info(buffer2);
+                    int pt = _cmsLCMScolorSpace(sig);
+                    if(PT_RGB == pt){
+                        m_RGBProfiles.Insert(vnColorProfile(info,profile),RGBPos);
+                        RGBPos++;
+                    }
+                    if(PT_CMYK == pt){
+                        cmsHTRANSFORM xform = cmsCreateTransform(profile,TYPE_NAMED_COLOR_INDEX,m_displayProfile,TYPE_RGB_DBL,INTENT_PERCEPTUAL,0);
+                        if(xform != NULL){
+                            cmsNAMEDCOLORLIST* colorList = cmsGetNamedColorList(xform);
+                            if(colorList != NULL){
+                                m_spotProfiles.Insert(vnColorProfile(info,profile),spotPos);
+                                spotPos++;
+                            }
+                            else{
+                                m_CMYKProfiles.Insert(vnColorProfile(info,profile),CMYKPos);
+                                CMYKPos++;
+                            }
+                        }
+                        cmsDeleteTransform(xform);
+                    }
+                    delete buffer2;
+                }
+                delete buffer;
             }
-			delete buffer;
-		}
-	}
-	BrowseFiles::Free(bf);
+        }
+        BrowseFiles::Free(bf);
+    }
 }
 
 static void deleteTransform(cmsHTRANSFORM transform){

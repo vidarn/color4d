@@ -107,12 +107,6 @@ Bool PluginStart(void)
     result = result && RegisterCommandPlugin(COLORPICKER_ENABLE_ID, String("Use Color Picker"), 0, NULL, String(), NewObjClear(EnableCommand));
     result = result && RegisterPaletteShader();
     result = result && Register_PaletteSceneHook();
-	if(result){
-		GePrint("Result!");
-	}
-	else{
-		GePrint("Not result!");
-	}
 	return result;
 }
 

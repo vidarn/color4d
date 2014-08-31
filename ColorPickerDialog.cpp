@@ -4,13 +4,6 @@
 #include "c4d_file.h"
 #include "utils.h"
 
-// TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO
-//
-// Make sure icc profiles and transforms are correctly destroyed!
-//
-// TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO
-
-
 static void SelectColorCallback(Color color, void *data)
 {
 	if(data != NULL){

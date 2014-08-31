@@ -105,7 +105,6 @@ void PaletteSubDialog::ToContainer(BaseContainer &bc)
     bc.SetInt32(++i, m_layout);
     bc.SetString(++i, m_searchString);
     bc.SetInt32(++i, m_paletteID);
-    GePrint("Saving " + String::IntToString(m_paletteID));
 }
 
 void PaletteSubDialog::FromContainer(const BaseContainer &bc)
@@ -116,8 +115,6 @@ void PaletteSubDialog::FromContainer(const BaseContainer &bc)
     m_layout       = bc.GetInt32(++i);
     m_searchString = bc.GetString(++i);
     m_paletteID    = bc.GetInt32(++i);
-    
-    GePrint("Loading " + String::IntToString(m_paletteID));
     
     if(m_rowArea != NULL){
         SetInt32(m_rowArea, m_rows);
@@ -139,7 +136,6 @@ void PaletteSubDialog::SaveSettings()
 {
     BaseContainer bc;
     ToContainer(bc);
-    GePrint("Set container!");
     GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_SCENE_HOOK_ID)->SetContainer(m_id, bc);
 }
 
@@ -219,7 +215,6 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
             break;
         case IDC_CREATEMATERIAL:
             {
-                GePrint("Palette ID: " + String::IntToString(m_paletteID));
                 for(Int32 i=m_palette.m_colors.GetCount()-1;i>=0;--i){
                     BaseMaterial *mat = BaseMaterial::Alloc(Mmaterial);
                     String name = "PaletteMaterial";
@@ -372,10 +367,8 @@ void PaletteSubDialog::PaletteLayout()
             GroupBegin(123,BFH_SCALEFIT,0,1,String(),0);
             String rowText("Rows");
             if(m_layout == 1){
-                GePrint("Columns");
                 rowText = String("Columns");
             }
-            GePrint(rowText);
             AddStaticText(9, BFH_LEFT, 0, 0, rowText, 0);
             
             m_rowArea = AddEditNumberArrows(IDC_ROWS, BFH_RIGHT);

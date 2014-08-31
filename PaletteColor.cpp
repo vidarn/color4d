@@ -119,7 +119,6 @@ void PaletteColor::UpdateColor(Color color){
 
 void PaletteColor::HandleClick()
 {
-    GePrint("Hejsan");
     if(m_selectCallback != NULL){
         m_selectCallback(m_color,m_selectCallbackData);
     }else{
@@ -225,13 +224,10 @@ void PaletteColor::LoadIcons(){
 	loadBitmap(m_leftArrowIcon,"leftArrow.tif");
 	loadBitmap(m_rightArrowIcon,"rightArrow.tif");
     loadBitmap(m_crossIcon, "cross.tif");
-	//GePrint("Loaded icons!" + Int32ToString((Int32)m_refreshIcon) + " " + Int32ToString((Int32)m_leftArrowIcon) + " " + Int32ToString((Int32)m_rightArrowIcon));
-	
 }
 
 void PaletteColor::UnloadIcons(){
 	BaseBitmap::Free(m_refreshIcon);
 	BaseBitmap::Free(m_leftArrowIcon);
 	BaseBitmap::Free(m_rightArrowIcon);
-	GePrint("Unloaded icons!");
 }

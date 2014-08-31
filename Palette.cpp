@@ -108,7 +108,6 @@ void Palette::InitPalettes()
 {
     BaseDocument *doc = GetActiveDocument();
     if(doc->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_SCENE_HOOK_ID) == nullptr){
-        GePrint("Added default palette");
         BaseContainer bc;
         bc.SetInt32(NUM_PALETTES,1);
         BaseContainer palC;
@@ -180,7 +179,6 @@ void Palette::InsertPaletteColor(Int32 paletteID, Int32 colorID, const Color &co
                 newIds.Push(i+1);
             }
         }
-        GePrint("A " + String::IntToString(newIds.GetCount()));
 		pal.InsertColor(colorID,col);
 		pal.ToContainer(*c);
 		bc->SetContainer(FIRST_PALETTE+paletteID,*c);
@@ -302,10 +300,8 @@ Bool Palette::LoadASEFile(String s, Palette &pal)
 {
     ASE_FILE aseFile;
     Int32 fnLength =  s.GetCStringLen(STRINGENCODING_UTF8);
-    GePrint("Len: " + String::IntToString(fnLength));
     char *str = NewMem(char,fnLength+1);
     s.GetCString(str, fnLength+1, STRINGENCODING_UTF8);
-    GePrint("Loading " + s);
     ASE_ERRORTYPE error = ase_openAndReadAseFile(&aseFile, str);
     DeleteMem(str);
     if(!error){
@@ -340,7 +336,6 @@ Bool Palette::LoadASEFile(String s, Palette &pal)
         if(pal.m_name == String("")){
             pal.m_name = Filename(s).GetFileString();
         }
-        GePrint("Success!");
     } else {
         GePrint("Could not load file " + String(str) + " " + String(ase_getErrorString(error)));
     }
@@ -377,9 +372,6 @@ Bool Palette::SaveASEFile(String s, const Palette &pal)
         col->type = ASE_COLORTYPE_RGB;
     }
     ASE_ERRORTYPE error = ase_openAndWriteAseFile(&aseFile, str);
-    if(error){
-        GePrint(ase_getErrorString(error));
-    }
     for(UInt16 i=0;i<numColors;++i){
         DeleteMem(group->colors[i].name);
     }
@@ -387,5 +379,4 @@ Bool Palette::SaveASEFile(String s, const Palette &pal)
     DeleteMem(aseFile.groups);
     DeleteMem(buffer);
     DeleteMem(str);
-    GePrint("Saved file " + s);
 }
