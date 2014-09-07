@@ -130,6 +130,22 @@ Bool SliderSubDialog::Command(Int32 id,const BaseContainer &msg)
             }
             UpdateColor(Color(rVal[0],rVal[1],rVal[2],rVal[3]).SetSource(COLOR_SOURCE_CMYK));
             break;
+    case IDC_H:
+    case IDC_S:
+    case IDC_V:
+        for(int i=0;i<3;i++){
+            GetFloat(HSVeditNumber[i],rVal[i]);
+        }
+        UpdateColor(Color(rVal[0],rVal[1],rVal[2],rVal[3]).SetSource(COLOR_SOURCE_WHEEL));
+        break;
+    case IDC_L:
+    case IDC_A:
+    case IDC_BB:
+        for(int i=0;i<3;i++){
+            GetFloat(LABeditNumber[i],rVal[i]);
+        }
+        UpdateColor(Color(rVal[0],rVal[1],rVal[2],rVal[3]).SetSource(COLOR_SOURCE_LAB));
+        break;
 	case IDC_RGBICC:
 		GetInt32(iccRGBCombo,val);
 		ChangeRGBSliderProfile(val);

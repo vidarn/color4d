@@ -1,7 +1,7 @@
 ## TODO ##
-* Get unique plugin ID's
 
 ## Done ##
+* Get unique plugin ID's
 * Search spot colors
 * Spot color label settings
 * Unify slider interface
