@@ -3,6 +3,12 @@
 #include "c4d_symbols.h"
 #include "colorpickerdialog.h"
 #include "utils.h"
+#ifdef _WINDOWS
+#include "Windows.h"
+static SliderSubDialog *gColorPickDialog = NULL;
+static HHOOK g_hook = 0;
+static bool g_hookActive = false;
+#endif
 
 SliderSubDialog::SliderSubDialog()
 {
@@ -93,6 +99,7 @@ Bool SliderSubDialog::CreateLayout(void)
             GroupEnd();
         GroupEnd();
         m_hexText = AddEditText(IDC_HEXTEXT,BFH_SCALEFIT);
+		AddButton(IDC_SCREEN_PICK_BUTTTON,BFH_RIGHT,0,0,String("Pick color from screen"));
 	GroupEnd();
     return TRUE;
 }
@@ -104,6 +111,27 @@ Bool SliderSubDialog::InitValues(void)
     if (!GeDialog::InitValues()) return FALSE;
     return TRUE;
 }
+
+#ifdef _WINDOWS
+static LRESULT CALLBACK MouseHookCallback(
+  _In_  int nCode,
+  _In_  WPARAM wParam,
+  _In_  LPARAM lParam
+){
+	if(nCode >= 0){
+		if(wParam == WM_LBUTTONDOWN && g_hookActive){
+			return 1;
+		}
+		if(wParam == WM_LBUTTONUP && g_hookActive){
+			gColorPickDialog->StartColorPickerTimer();
+			UnhookWindowsHookEx(g_hook);
+			g_hookActive = false;
+			return 1;
+		}
+	}
+	return CallNextHookEx(NULL,nCode,wParam,lParam);
+}
+#endif
 
 Bool SliderSubDialog::Command(Int32 id,const BaseContainer &msg)
 {
@@ -166,7 +194,17 @@ Bool SliderSubDialog::Command(Int32 id,const BaseContainer &msg)
 			UpdateColor(col);
 		}
 		break;
-    }
+	case IDC_SCREEN_PICK_BUTTTON:
+		{
+			GePrint("Pick color!");
+#ifdef _WINDOWS
+			g_hookActive = true;
+			gColorPickDialog = this; 
+			g_hook = SetWindowsHookEx(WH_MOUSE_LL,MouseHookCallback,NULL,0);
+#endif
+			break;
+		}
+	}
     return GeDialog::Command(id,msg);
 }
 
@@ -181,6 +219,29 @@ Bool SliderSubDialog::CoreMessage(Int32 id,const BaseContainer &msg)
             break;
     }
     return GeDialog::CoreMessage(id,msg);
+}
+
+void SliderSubDialog::Timer(const BaseContainer &msg)
+{
+#ifdef _WINDOWS
+	// Abuse timer to handle picking of colors from screen
+		POINT p;
+		COLORREF color;
+		HDC hDC;
+		Bool b;
+		hDC = GetDC(NULL);
+		if(hDC != NULL){
+			b = GetCursorPos(&p);
+			if(b){
+				color = GetPixel(hDC,p.x,p.y);
+				if(color != CLR_INVALID){
+					ReleaseDC(GetDesktopWindow(),hDC);
+					UpdateColor(Color(GetRValue(color)/255.0,GetGValue(color)/255.0,GetBValue(color)/255.0).SetSource(COLOR_SOURCE_DISPLAY));
+				}
+			}
+		}
+#endif
+	StopColorPickerTimer();
 }
 
 void SliderSubDialog::FindICCProfiles(){

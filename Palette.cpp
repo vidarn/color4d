@@ -342,7 +342,7 @@ Bool Palette::LoadASEFile(String s, Palette &pal)
     return !error;
 }
 
-Bool Palette::SaveASEFile(String s, const Palette &pal)
+void Palette::SaveASEFile(String s, const Palette &pal)
 {
     ASE_FILE aseFile;
     Int32 fnLength =  s.GetCStringLen();

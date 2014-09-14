@@ -4,6 +4,7 @@
 #include "color.h"
 #include "ge_dynamicarray.h"
 
+
 class SliderSubDialog : public SubDialog
 {
 private:
@@ -17,6 +18,7 @@ public:
     virtual Bool InitValues(void);
     virtual Bool Command(Int32 id,const BaseContainer &msg);
     virtual Bool CoreMessage(Int32 id,const BaseContainer &msg);
+	virtual void Timer(const BaseContainer &msg);
 
 	virtual void UpdateColor(Color color);
 	virtual void UpdateColorFromParent(Color color);
@@ -26,6 +28,8 @@ public:
 	void SetColor(Vector *color){m_pColor = color;}
 	void SetParent(ColorDialog *parent){m_parent = parent;}
 	void FindICCProfiles();
+	void StartColorPickerTimer(){SetTimer(100);}
+	void StopColorPickerTimer(){SetTimer(0);}
 
 	cmsHPROFILE m_displayProfile;
 

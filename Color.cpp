@@ -32,6 +32,8 @@ GeDynamicArray<vnColorProfile> Color::m_spotProfiles = GeDynamicArray<vnColorPro
 Int32 Color::m_wheelType = WHEEL_TYPE_LCH;
 cmsUInt32Number Color::m_wheelDataType = TYPE_Lab_DBL;
 
+#define M_PI_2 6.28318530718
+
 Color::Color()
 {
 	for(int i=0;i<4;i++){
@@ -105,8 +107,13 @@ Color Color::Convert(COLOR_SOURCE target)
             {
                 double tmp[] = {in[0],in[1],in[2]};
                 in[0] = tmp[2]*100.0;
-                in[1] = tmp[1]*cos(tmp[0]*M_PI_2*4.0)*128.0;
+#ifdef _WINDOWS
+                in[1] = tmp[1]*cos(tmp[0]*M_PI_2)*128.0;
+                in[2] = tmp[1]*sin(tmp[0]*M_PI_2)*128.0;
+#else
+				in[1] = tmp[1]*cos(tmp[0]*M_PI_2*4.0)*128.0;
                 in[2] = tmp[1]*sin(tmp[0]*M_PI_2*4.0)*128.0;
+#endif
             }
             break;
                 
@@ -158,7 +165,11 @@ Color Color::Convert(COLOR_SOURCE target)
                 {
                     double tmp[] = {out[0],out[1],out[2]};
                     out[1] = Sqrt(tmp[1]*tmp[1] + tmp[2]*tmp[2])/128.0;
+#ifdef _WINDOWS
+                    out[0] = ATan2(tmp[2], tmp[1])/M_PI_2;
+#else
                     out[0] = ATan2(tmp[2], tmp[1])/M_PI_2/4.0;
+#endif
                     while(out[0] < 0.0){
                         out[0] += 1.0;
                     }

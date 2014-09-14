@@ -1,6 +1,8 @@
 ## TODO ##
+* Pick colors from screen (Mac)
 
 ## Done ##
+* Pick colors from screen (Windows)
 * Get unique plugin ID's
 * Search spot colors
 * Spot color label settings
@@ -38,5 +40,3 @@
 * Create materials from palette
 
 ## On hold ##
-* Pick colors from screen
-* Support undo

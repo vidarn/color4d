@@ -4,7 +4,7 @@
 #include "c4d_symbols.h"
 #include "c4d_file.h"
 #include "xpalette.h"
-#include <iconv.h>
+//#include <iconv.h>
 #include <string>
 
 PaletteSubDialog::PaletteSubDialog(Int32 id):

@@ -55,7 +55,7 @@ class Palette
         static void ReorderPalette(Int32 id, GeDynamicArray<Int32> *newIDs);
 		static void UpdateColor(Int32 palette, Int32 color);
         static Bool LoadASEFile(String filename, Palette &palette);
-        static Bool SaveASEFile(String filename, const Palette &palette);
+        static void SaveASEFile(String filename, const Palette &palette);
     
 		GeDynamicArray<NamedColor> m_colors;
 };

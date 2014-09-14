@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Code">
+      <UniqueIdentifier>{06c862f4-686b-42b3-8065-07f800a3f9c3}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ase_common.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="ase_loader.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="ase_writer.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="color.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="colorbox.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="colordialog.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="colorpickerdialog.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="colorselectordialog.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="colorslider.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="colorwheel.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="palette.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="palettecolor.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="palettedialog.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="paletteshader.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="palettesubdialog.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="slidersubdialog.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="spotcolor.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="utf8.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="source\colorscheme.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="source\colorwheelsubdialog.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="source\namedColor.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="source\paletteSceneHook.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="source\trashcan.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Color.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorBox.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorDialog.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorPickerDialog.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorScheme.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorSelectorDialog.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorSlider.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorWheel.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Palette.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="PaletteColor.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="PaletteDialog.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="PaletteShader.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="PaletteSubDialog.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="SliderSubDialog.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="SpotColor.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ColorWheelSubDialog.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="source\main.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="source\NamedColor.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PaletteSceneHook.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TrashCan.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
