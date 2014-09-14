@@ -1,7 +1,12 @@
 ## TODO ##
 * Pick colors from screen (Mac)
+* Create promo video
+* Write documentation
+* Create tutorial video?
 
 ## Done ##
+* Fork ase libray
+* Add default palette
 * Pick colors from screen (Windows)
 * Get unique plugin ID's
 * Search spot colors

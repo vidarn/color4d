@@ -38,14 +38,14 @@ Bool PaletteSubDialog::CreateLayout(void)
             GroupEnd();
         GroupEnd();
         GroupBegin(8,BFH_SCALEFIT|BFV_SCALEFIT,0,1,String(),0);
-            ScrollGroupBegin(2,BFH_SCALEFIT|BFV_SCALEFIT,SCROLLGROUP_VERT|SCROLLGROUP_HORIZ,SizePix(40*5),SizePix(40*numRows));
+            ScrollGroupBegin(2,BFH_SCALEFIT|BFV_SCALEFIT,SCROLLGROUP_VERT|SCROLLGROUP_HORIZ,SizePix(40),SizePix(40*numRows));
                 GroupBegin(6,BFH_SCALEFIT|BFV_SCALEFIT,0,1,String(),0);
                 m_spotColors = new PaletteColor[1];
                 m_spotColors[0].SetColor(Color(0.f,0.f,0.f).SetSource(COLOR_SOURCE_DISPLAY));
                 m_spotColors[0].SetColorID(0);
                 m_spotColors[0].SetSelectCallback(m_selectCallback,m_selectCallbackData);
                 m_spotColors[0].SetDragable(m_dragable);
-                C4DGadget *area = AddUserArea(12,0);
+                C4DGadget *area = AddUserArea(0,0);
                 AttachUserArea(m_spotColors[0],area);
                 GroupEnd();
             GroupEnd();

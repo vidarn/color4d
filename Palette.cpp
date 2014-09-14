@@ -109,16 +109,33 @@ void Palette::InitPalettes()
     BaseDocument *doc = GetActiveDocument();
     if(doc->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_SCENE_HOOK_ID) == nullptr){
         BaseContainer bc;
-        bc.SetInt32(NUM_PALETTES,1);
         BaseContainer palC;
         Palette stdPal;
-        Filename fName = GeGetPluginPath() + Filename("default.ase");
-        if(!Palette::LoadASEFile(fName.GetString(), stdPal)){
-            stdPal = Palette(String("Default"),1);
-            stdPal.SetColor(0,Color(0.0f,0.f,0.f));
-        }
-        stdPal.ToContainer(palC);
-        bc.SetContainer(FIRST_PALETTE,palC);
+		Filename dir = GeGetPluginPath();
+		dir += Filename(String("default_palettes"));
+		GePrint(dir.GetString());
+		BrowseFiles *bf = BrowseFiles::Alloc();
+		bf->Init(dir,FALSE);
+		int i=0;
+		GePrint("Eeeeeh?\n");
+		while(bf && bf->GetNext()){
+			Filename fName = bf->GetFilename();
+			fName.SetDirectory(dir);
+			GePrint(fName.GetString());
+			if(Palette::LoadASEFile(fName.GetString(), stdPal)){
+				stdPal.ToContainer(palC);
+				bc.SetContainer(FIRST_PALETTE+i,palC);
+				i++;
+			}
+		}
+		if(i==0){
+			stdPal = Palette(String("Default"),1);
+			stdPal.SetColor(0,Color(0.0f,0.f,0.f));
+			stdPal.ToContainer(palC);
+			bc.SetContainer(FIRST_PALETTE,palC);
+			i = 1;
+		}
+		bc.SetInt32(NUM_PALETTES,i);
         doc->BaseList2D::GetDataInstance()->SetContainer(PALETTE_SCENE_HOOK_ID, bc);
     }
 }
@@ -282,7 +299,6 @@ void Palette::ReorderPalette(Int32 id, GeDynamicArray<Int32> *newIDs)
 
 void Palette::UpdateColor(Int32 palette, Int32 color)
 {
-    //SpecialEventAdd(PALETTE_ID,color,(Int64)palette);
     BaseDocument *doc = GetActiveDocument();
     BaseMaterial *mat = doc->GetFirstMaterial();
     while(mat != nullptr){
@@ -299,9 +315,16 @@ void Palette::UpdateColor(Int32 palette, Int32 color)
 Bool Palette::LoadASEFile(String s, Palette &pal)
 {
     ASE_FILE aseFile;
-    Int32 fnLength =  s.GetCStringLen(STRINGENCODING_UTF8);
-    char *str = NewMem(char,fnLength+1);
-    s.GetCString(str, fnLength+1, STRINGENCODING_UTF8);
+#ifdef _WINDOWS
+	Int32 fnLength =  s.GetCStringLen(STRINGENCODING_XBIT);
+	char *str = NewMem(char,fnLength+1);
+	s.GetCString(str, fnLength+1, STRINGENCODING_XBIT);
+#else
+	Int32 fnLength =  s.GetCStringLen(STRINGENCODING_UTF8);
+	char *str = NewMem(char,fnLength+1);
+	s.GetCString(str, fnLength+1, STRINGENCODING_UTF8);
+#endif
+
     ASE_ERRORTYPE error = ase_openAndReadAseFile(&aseFile, str);
     DeleteMem(str);
     if(!error){

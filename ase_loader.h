@@ -173,7 +173,7 @@ static ASE_ERRORTYPE ase_readBlock(ASE_BLOCKTYPE *blockType, float color[4],ASE_
 static ASE_ERRORTYPE ase_openAndReadAseFile(ASE_FILE *ase, const char *filename)
 {
     ASE_ERRORTYPE error;
-    FILE *f = fopen(filename,"r");
+	FILE *f = fopen(filename,"rb");
     if(f){
         error = ase_readAseFile(ase,f);
         fclose(f);
@@ -226,7 +226,6 @@ static ASE_ERRORTYPE ase_readAseFile(ASE_FILE *ase, FILE *f)
         error = ase_readBlock(&blockType, c,&colorType,&name,f);
         if(error)
         {
-            free(name);
             return error;
         }
         switch(blockType){
@@ -235,9 +234,9 @@ static ASE_ERRORTYPE ase_readAseFile(ASE_FILE *ase, FILE *f)
                 break;
             case ASE_BLOCKTYPE_COLOR:
                 if(currentGroup == NULL){
-                    char *tmp = (char *)malloc(1*sizeof(char));
-                    *tmp = '\0';
-                    currentGroup = ase_createGroup(ase,tmp);
+					UInt16 *tmp = (UInt16 *)malloc(1*sizeof(UInt16));
+                    *tmp = 0;
+                    currentGroup = ase_createGroup(ase,(char*)tmp);
                 }
                 currentGroup->numColors++;
                 currentGroup->colors = (ASE_COLOR *)realloc(currentGroup->colors,currentGroup->numColors*sizeof(ASE_COLOR));
