@@ -4,6 +4,7 @@
 #include "c4d_symbols.h"
 #include "c4d_file.h"
 #include "xpalette.h"
+#include "xcolor.h"
 //#include <iconv.h>
 #include <string>
 
@@ -215,6 +216,8 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
             break;
         case IDC_CREATEMATERIAL:
             {
+				Bool linkColors;
+				GetBool(m_linkColor,linkColors);
                 for(Int32 i=m_palette.m_colors.GetCount()-1;i>=0;--i){
                     BaseMaterial *mat = BaseMaterial::Alloc(Mmaterial);
                     String name = "PaletteMaterial";
@@ -226,12 +229,22 @@ Bool PaletteSubDialog::Command(Int32 id,const BaseContainer &msg)
                         BaseChannel *chan = mat->GetChannel(CHANNEL_COLOR);
                         if(chan != nullptr){
                             BaseContainer bc;
-                            bc.SetInt32(BASECHANNEL_SHADERID, PALETTE_SHADER_ID);
-                            chan->SetData(bc);
-                            BaseShader *bs = chan->GetShader();
-                            BaseContainer* data = bs->GetDataInstance();
-                            data->SetInt32(PALETTESHADER_PALETTE_ID, 1+m_paletteID);
-                            data->SetInt32(PALETTESHADER_COLOR_ID, 1+i);
+							if(linkColors){
+								bc.SetInt32(BASECHANNEL_SHADERID, PALETTE_SHADER_ID);
+								chan->SetData(bc);
+								BaseShader *bs = chan->GetShader();
+								BaseContainer* data = bs->GetDataInstance();
+								data->SetInt32(PALETTESHADER_PALETTE_ID, 1+m_paletteID);
+								data->SetInt32(PALETTESHADER_COLOR_ID, 1+i);
+							} else {
+								// Color Shader ID: 5832
+								bc.SetInt32(BASECHANNEL_SHADERID, 5832);
+								chan->SetData(bc);
+								BaseShader *bs = chan->GetShader();
+								BaseContainer* data = bs->GetDataInstance();
+								
+								data->SetVector(COLORSHADER_COLOR , m_palette.m_colors[i].AsVector());
+							}
                             GetActiveDocument()->InsertMaterial(mat);
                             EventAdd();
                         }
@@ -389,7 +402,11 @@ void PaletteSubDialog::PaletteLayout()
         
             m_controlsShown = TRUE;
         
-            AddButton(IDC_CREATEMATERIAL, BFH_CENTER, 0, 0, String("Create Materials"));
+			GroupBegin(142,BFV_SCALEFIT,1,0,String(),0);
+				GroupBorderNoTitle(BORDER_THIN_IN);
+				AddButton(IDC_CREATEMATERIAL, BFH_CENTER, 0, 0, String("Create Materials"));
+				m_linkColor = AddCheckbox(IDC_LINKMATERIALS,BFH_LEFT,0,0,String("Link colors"));
+			GroupEnd();
         
             AddButton(IDC_HIDE, BFH_CENTER, 0, 0, String("Hide Controls"));
         GroupEnd();

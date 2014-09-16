@@ -21,6 +21,8 @@ public:
 	virtual void Timer(const BaseContainer &msg);
 
 	virtual void UpdateColor(Color color);
+	Float ReadNumber(ColorSlider *slider, C4DGadget *gadget, int type);
+	void UpdateNumber(ColorSlider *slider, C4DGadget *gadget, float value,int type);
 	virtual void UpdateColorFromParent(Color color);
 	void ChangeRGBSliderProfile(Int32 index);
 	void ChangeCMYKSliderProfile(Int32 index);
@@ -54,4 +56,5 @@ public:
 	C4DGadget *iccCMYKCombo;
     C4DGadget *iccHSVCombo;
 	C4DGadget *m_hexText;
+	C4DGadget *m_numberRangeCombo;
 };

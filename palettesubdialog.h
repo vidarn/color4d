@@ -59,6 +59,7 @@ public:
     C4DGadget *m_labelCheckArea;
     C4DGadget *m_nameArea;
     C4DGadget *m_searchText;
+	C4DGadget *m_linkColor;
 	void (*m_selectCallback)(Color, void *);
 	void *m_selectCallbackData;
 	Bool m_dragable;

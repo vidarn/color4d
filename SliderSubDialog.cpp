@@ -98,7 +98,8 @@ Bool SliderSubDialog::CreateLayout(void)
                 m_LABSlider[2].m_valueMin = -128.0;
             GroupEnd();
         GroupEnd();
-        m_hexText = AddEditText(IDC_HEXTEXT,BFH_SCALEFIT);
+		m_numberRangeCombo = AddComboBox(IDC_NUMBERRANGE,BFH_SCALEFIT,10,10);
+		m_hexText = AddEditText(IDC_HEXTEXT,BFH_SCALEFIT);
 		AddButton(IDC_SCREEN_PICK_BUTTTON,BFH_RIGHT,0,0,String("Pick color from screen"));
 	GroupEnd();
     return TRUE;
@@ -107,6 +108,13 @@ Bool SliderSubDialog::CreateLayout(void)
 Bool SliderSubDialog::InitValues(void)
 {
 	FindICCProfiles();
+	BaseContainer numberRangeBC;
+	numberRangeBC.SetString(0,"0 - 255");
+	numberRangeBC.SetString(1,"0 - 1.0");
+	numberRangeBC.SetString(2,"0 - 100.0");
+	AddChildren(m_numberRangeCombo,numberRangeBC);
+	SetInt32(m_numberRangeCombo,0);
+	Enable(m_numberRangeCombo,TRUE);
 	UpdateColor(Color(*m_pColor).SetSource(COLOR_SOURCE_DISPLAY));
     if (!GeDialog::InitValues()) return FALSE;
     return TRUE;
@@ -139,13 +147,16 @@ Bool SliderSubDialog::Command(Int32 id,const BaseContainer &msg)
 	String str;
 	Float rVal[4];
 	Color col;
+	int numberType;
+	GetInt32(m_numberRangeCombo,numberType);
     switch (id)
     {
 	case IDC_R:
 	case IDC_G:
 	case IDC_B:
 		for(int i=0;i<3;i++){
-			GetFloat(RGBeditNumber[i],rVal[i]);
+			//GetFloat(RGBeditNumber[i],rVal[i]);
+			rVal[i] = ReadNumber(m_RGBSlider + i,RGBeditNumber[i], numberType); 
 		}
 		UpdateColor(Color(rVal[0],rVal[1],rVal[2]).SetSource(COLOR_SOURCE_RGB));
 		break;
@@ -154,7 +165,8 @@ Bool SliderSubDialog::Command(Int32 id,const BaseContainer &msg)
     case IDC_Y:
     case IDC_K:
             for(int i=0;i<4;i++){
-                GetFloat(CMYKeditNumber[i],rVal[i]);
+                //GetFloat(CMYKeditNumber[i],rVal[i]);
+				rVal[i] = ReadNumber(m_CMYKSlider + i,CMYKeditNumber[i], numberType);
             }
             UpdateColor(Color(rVal[0],rVal[1],rVal[2],rVal[3]).SetSource(COLOR_SOURCE_CMYK));
             break;
@@ -188,6 +200,13 @@ Bool SliderSubDialog::Command(Int32 id,const BaseContainer &msg)
         SpecialEventAdd(COLORPICKER_ID,-1,-1);
         break;
 	case IDC_HEXTEXT:
+		GetString(m_hexText,str);
+		col.SetSource(COLOR_SOURCE_DISPLAY);
+		if(col.FromString(str)){
+			UpdateColor(col);
+		}
+		break;
+	case IDC_NUMBERRANGE:
 		GetString(m_hexText,str);
 		col.SetSource(COLOR_SOURCE_DISPLAY);
 		if(col.FromString(str)){
@@ -281,6 +300,48 @@ void SliderSubDialog::UpdateColor(Color color){
 	m_parent->UpdateColor(color);
 }
 
+Float SliderSubDialog::ReadNumber(ColorSlider *slider, C4DGadget *gadget, int type){
+	Float val;
+	Float maximum;
+	switch(type){
+	case 0:
+		maximum = 255.0;
+		break;
+	case 1:
+		maximum = 1.0;
+		break;
+	case 2:
+		maximum = 100.0;
+		break;
+	}
+	GetFloat(gadget,val);
+	return (val/maximum)*(slider->m_valueMax - slider->m_valueMin) + slider->m_valueMin;
+}
+
+void SliderSubDialog::UpdateNumber(ColorSlider *slider, C4DGadget *gadget, float value, int type)
+{
+	float maximum, step;
+	switch(type){
+	case 0:
+		maximum = 255.0;
+		step = 1.0;
+		break;
+	case 1:
+		maximum = 1.0;
+		step = 0.1;
+		break;
+	case 2:
+		maximum = 100.0;
+		step = 0.1;
+		break;
+	}
+	float val = (value - slider->m_valueMin)/(slider->m_valueMax - slider->m_valueMin)*maximum;
+	if(step == 1.0){
+		val = (float)((int)(val + 0.5));
+	}
+	SetFloat(gadget,val,0.0,maximum,step,FORMAT_FLOAT);
+}
+
 void SliderSubDialog::UpdateColorFromParent(Color color){
     Color display = color.Convert(COLOR_SOURCE_DISPLAY);
 	Color wheel = color.Convert(COLOR_SOURCE_WHEEL);
@@ -290,17 +351,19 @@ void SliderSubDialog::UpdateColorFromParent(Color color){
     ClampColor(display);
     ClampColor(wheel);
     ClampColor(RGB);
+	int numberType;
+	GetInt32(m_numberRangeCombo,numberType);
 	for(Int32 i=0;i<3;i++){
 		m_RGBSlider[i].UpdateColor(RGB);
-		SetFloat(RGBeditNumber[i],RGB[i],0.0,1.0,0.01,FORMAT_FLOAT);
+		UpdateNumber(m_RGBSlider + i, RGBeditNumber[i],RGB[i],numberType);
 	}
 	for(Int32 i=0;i<4;i++){
 		m_CMYKSlider[i].UpdateColor(CMYK);
-		SetFloat(CMYKeditNumber[i],CMYK[i]);
+		UpdateNumber(m_CMYKSlider + i, CMYKeditNumber[i],CMYK[i],numberType);
 	}
     for(Int32 i=0;i<3;i++){
         m_HSVSlider[i].UpdateColor(wheel);
-        SetFloat(HSVeditNumber[i], wheel[i],0.0,1.0,0.1,FORMAT_FLOAT);
+		UpdateNumber(m_HSVSlider + i, HSVeditNumber[i],wheel[i],numberType);
     }
     for(Int32 i=0;i<3;i++){
         m_LABSlider[i].UpdateColor(LAB);
