@@ -111,8 +111,8 @@ Color Color::Convert(COLOR_SOURCE target)
                 in[1] = tmp[1]*cos(tmp[0]*M_PI_2)*128.0;
                 in[2] = tmp[1]*sin(tmp[0]*M_PI_2)*128.0;
 #else
-				in[1] = tmp[1]*cos(tmp[0]*M_PI_2*4.0)*128.0;
-                in[2] = tmp[1]*sin(tmp[0]*M_PI_2*4.0)*128.0;
+				in[1] = tmp[1]*cos(tmp[0]*M_PI_2)*128.0;
+                in[2] = tmp[1]*sin(tmp[0]*M_PI_2)*128.0;
 #endif
             }
             break;
@@ -168,7 +168,7 @@ Color Color::Convert(COLOR_SOURCE target)
 #ifdef _WINDOWS
                     out[0] = ATan2(tmp[2], tmp[1])/M_PI_2;
 #else
-                    out[0] = ATan2(tmp[2], tmp[1])/M_PI_2/4.0;
+                    out[0] = ATan2(tmp[2], tmp[1])/M_PI_2;
 #endif
                     while(out[0] < 0.0){
                         out[0] += 1.0;

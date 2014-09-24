@@ -3,12 +3,17 @@
 #include "c4d_symbols.h"
 #include "colorpickerdialog.h"
 #include "utils.h"
+
 #ifdef _WINDOWS
 #include "Windows.h"
-static SliderSubDialog *gColorPickDialog = NULL;
 static HHOOK g_hook = 0;
 static bool g_hookActive = false;
+
+#else
+#include "osxcolorfromscreen.h"
 #endif
+
+static SliderSubDialog *gColorPickDialog = NULL;
 
 SliderSubDialog::SliderSubDialog()
 {
@@ -139,6 +144,11 @@ static LRESULT CALLBACK MouseHookCallback(
 	}
 	return CallNextHookEx(NULL,nCode,wParam,lParam);
 }
+#else
+static void getColorCallback(float r, float g, float b)
+{
+    gColorPickDialog->UpdateColor(Color(r,g,b));
+}
 #endif
 
 Bool SliderSubDialog::Command(Int32 id,const BaseContainer &msg)
@@ -215,11 +225,16 @@ Bool SliderSubDialog::Command(Int32 id,const BaseContainer &msg)
 		break;
 	case IDC_SCREEN_PICK_BUTTTON:
 		{
-			GePrint("Pick color!");
+            gColorPickDialog = this;
 #ifdef _WINDOWS
 			g_hookActive = true;
-			gColorPickDialog = this; 
 			g_hook = SetWindowsHookEx(WH_MOUSE_LL,MouseHookCallback,NULL,0);
+#else
+            char dylibPath[1024];
+            String dir = GeGetPluginPath().GetString();
+            dir += String("/osx/libColorPickerDynamic.dylib");
+            dir.GetCString(dylibPath,1024);
+            startColorPickFromScreen(dylibPath,&getColorCallback);
 #endif
 			break;
 		}

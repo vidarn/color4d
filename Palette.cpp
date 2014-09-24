@@ -117,11 +117,9 @@ void Palette::InitPalettes()
 		BrowseFiles *bf = BrowseFiles::Alloc();
 		bf->Init(dir,FALSE);
 		int i=0;
-		GePrint("Eeeeeh?\n");
 		while(bf && bf->GetNext()){
 			Filename fName = bf->GetFilename();
 			fName.SetDirectory(dir);
-			GePrint(fName.GetString());
 			if(Palette::LoadASEFile(fName.GetString(), stdPal)){
 				stdPal.ToContainer(palC);
 				bc.SetContainer(FIRST_PALETTE+i,palC);

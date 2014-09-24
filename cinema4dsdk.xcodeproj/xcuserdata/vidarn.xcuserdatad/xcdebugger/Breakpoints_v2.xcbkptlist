@@ -47,8 +47,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "288"
             endingLineNumber = "288"
-            landmarkName = "Color::SetWheelProfile(cmsHPROFILE profile, Bool updateTransform)"
-            landmarkType = "5">
+            landmarkName = "createAndFreeTransform(cmsHTRANSFORM &amp;transform, cmsHPROFILE prof, cmsUInt32Number InputFormat, cmsHPROFILE Output, cmsUInt32Number OutputFormat)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -63,8 +63,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "290"
             endingLineNumber = "290"
-            landmarkName = "Color::SetWheelProfile(cmsHPROFILE profile, Bool updateTransform)"
-            landmarkType = "5">
+            landmarkName = "createAndFreeTransform(cmsHTRANSFORM &amp;transform, cmsHPROFILE prof, cmsUInt32Number InputFormat, cmsHPROFILE Output, cmsUInt32Number OutputFormat)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -79,7 +79,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "301"
             endingLineNumber = "301"
-            landmarkName = "Color::SetRGBProfile(cmsHPROFILE profile, Bool updateTransform)"
+            landmarkName = "Color::SetWheelProfile(cmsHPROFILE profile, Bool updateTransform)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -94,7 +94,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "295"
-            endingLineNumber = "295">
+            endingLineNumber = "295"
+            landmarkName = "Color::SetWheelProfile(cmsHPROFILE profile, Bool updateTransform)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -109,7 +111,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "312"
             endingLineNumber = "312"
-            landmarkName = "Color::SetCMYKProfile(cmsHPROFILE profile, Bool updateTransform)"
+            landmarkName = "Color::SetRGBProfile(cmsHPROFILE profile, Bool updateTransform)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -124,9 +126,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "322"
-            endingLineNumber = "322"
-            landmarkName = "Color::SetCMYKProfile(cmsHPROFILE profile, Bool updateTransform)"
-            landmarkType = "5">
+            endingLineNumber = "322">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -140,7 +140,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "296"
-            endingLineNumber = "296">
+            endingLineNumber = "296"
+            landmarkName = "Color::SetWheelProfile(cmsHPROFILE profile, Bool updateTransform)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -293,8 +295,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "286"
             endingLineNumber = "286"
-            landmarkName = "Color::SetWheelProfile(cmsHPROFILE profile, Bool updateTransform)"
-            landmarkType = "5">
+            landmarkName = "createAndFreeTransform(cmsHTRANSFORM &amp;transform, cmsHPROFILE prof, cmsUInt32Number InputFormat, cmsHPROFILE Output, cmsUInt32Number OutputFormat)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -304,27 +306,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Palette.cpp"
-            timestampString = "431199243.49413"
+            timestampString = "433232377.339661"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "170"
-            endingLineNumber = "170"
-            landmarkName = "Palette::InsertPaletteColor(Int32 paletteID, Int32 colorID, const Color &amp;col)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Palette.cpp"
-            timestampString = "431199243.49413"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "154"
-            endingLineNumber = "154"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
             landmarkName = "Palette::SetPaletteColor(Int32 paletteID, Int32 colorID, const Color &amp;col)"
             landmarkType = "5">
          </BreakpointContent>
@@ -336,12 +322,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Palette.cpp"
-            timestampString = "431199243.49413"
+            timestampString = "433232377.339661"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "153"
-            endingLineNumber = "153"
-            landmarkName = "Palette::SetPaletteColor(Int32 paletteID, Int32 colorID, const Color &amp;col)"
+            startingLineNumber = "152"
+            endingLineNumber = "152"
+            landmarkName = "Palette::GetPalettes(GeDynamicArray&lt;Palette&gt; &amp;palettes)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Palette.cpp"
+            timestampString = "433232377.339661"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
+            landmarkName = "Palette::GetPalettes(GeDynamicArray&lt;Palette&gt; &amp;palettes)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -416,11 +418,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Palette.cpp"
-            timestampString = "431199243.49413"
+            timestampString = "433232377.339661"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "343"
-            endingLineNumber = "343"
+            startingLineNumber = "341"
+            endingLineNumber = "341"
             landmarkName = "Palette::LoadASEFile(String s, Palette &amp;pal)"
             landmarkType = "5">
          </BreakpointContent>
@@ -437,7 +439,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "358"
             endingLineNumber = "358"
-            landmarkName = "PaletteSubDialog::PaletteLayout()"
+            landmarkName = "PaletteSubDialog::LayoutPalette()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -448,12 +450,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Palette.cpp"
-            timestampString = "431199243.49413"
+            timestampString = "433232377.339661"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "284"
-            endingLineNumber = "284"
-            landmarkName = "Palette::UpdateColor(Int32 palette, Int32 color)"
+            startingLineNumber = "282"
+            endingLineNumber = "282"
+            landmarkName = "Palette::UpdatePalette(Int32 id)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -464,11 +466,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Palette.cpp"
-            timestampString = "431199243.49413"
+            timestampString = "433232377.339661"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "282"
-            endingLineNumber = "282">
+            startingLineNumber = "280"
+            endingLineNumber = "280"
+            landmarkName = "Palette::UpdatePalette(Int32 id)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -478,11 +482,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Palette.cpp"
-            timestampString = "431199243.49413"
+            timestampString = "433232377.339661"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "269"
-            endingLineNumber = "269">
+            startingLineNumber = "267"
+            endingLineNumber = "267"
+            landmarkName = "Palette::AddPalette(const Palette &amp;palette)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -496,39 +502,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "336"
-            endingLineNumber = "336"
-            landmarkName = "Color::SetDisplayProfile(cmsHPROFILE profile, Bool updateTransform)"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Color::SetDisplayProfile(void*, int)"
-                  moduleName = "cinema4dsdk.dylib"
-                  urlString = "file://localhost/Applications/MAXON/CINEMA%204D%20R15%20Student/plugins/colorpicker/Color.cpp"
-                  timestampString = "431197376.539268"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "337"
-                  endingLineNumber = "337"
-                  offsetFromSymbolStart = "283">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "_GLOBAL__I_a"
-                  moduleName = "cinema4dsdk.dylib"
-                  urlString = "file://localhost/Applications/MAXON/CINEMA%204D%20R15%20Student/plugins/colorpicker/Color.cpp"
-                  timestampString = "431197376.539497"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "337"
-                  endingLineNumber = "337"
-                  offsetFromSymbolStart = "4">
-               </Location>
-            </Locations>
+            endingLineNumber = "336">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
