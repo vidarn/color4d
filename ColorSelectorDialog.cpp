@@ -7,7 +7,7 @@ Bool ColorSelectorDialog::CreateLayout(void)
 {
     if (!GeDialog::CreateLayout()) return FALSE;
 
-    SetTitle("Color Wheel");
+    SetTitle("Color scheme designer");
     
     m_color = Vector(0.5f,0.261f,0.375f);
 

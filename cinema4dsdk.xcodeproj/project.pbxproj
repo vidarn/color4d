@@ -38,6 +38,8 @@
 		136DACBD19895D25002BDC1D /* palettesubdialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 136DACB819895D25002BDC1D /* palettesubdialog.h */; };
 		136DACBE19895D25002BDC1D /* SliderSubDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 136DACB919895D25002BDC1D /* SliderSubDialog.cpp */; };
 		136DACBF19895D25002BDC1D /* slidersubdialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 136DACBA19895D25002BDC1D /* slidersubdialog.h */; };
+		1392D2CF19CF5FFB0087284F /* OsxColorFromScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1392D2CD19CF5FFB0087284F /* OsxColorFromScreen.cpp */; };
+		1392D2D019CF5FFB0087284F /* osxcolorfromscreen.h in Headers */ = {isa = PBXBuildFile; fileRef = 1392D2CE19CF5FFB0087284F /* osxcolorfromscreen.h */; };
 		13C2F8CC19901C300065AE04 /* ase_loader.h in Headers */ = {isa = PBXBuildFile; fileRef = 13C2F8CB19901C300065AE04 /* ase_loader.h */; };
 		13C2F8CF199283E70065AE04 /* utf8.h in Headers */ = {isa = PBXBuildFile; fileRef = 13C2F8CE199283E70065AE04 /* utf8.h */; };
 		13C2F8D3199283F10065AE04 /* checked.h in Headers */ = {isa = PBXBuildFile; fileRef = 13C2F8D0199283F10065AE04 /* checked.h */; };
@@ -95,6 +97,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		130742F119CF680300AD0097 /* libColorPickerLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libColorPickerLib.a; path = "../../../../../Users/vidarn/Library/Developer/Xcode/DerivedData/ColorPickerLib-ekdbwdlpxwlgrrcmykcwabryomen/Build/Products/Debug/libColorPickerLib.a"; sourceTree = "<group>"; };
+		1307430B19CF6A1100AD0097 /* libColorPickerDynamic.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libColorPickerDynamic.dylib; path = "../../../../../Users/vidarn/Library/Developer/Xcode/DerivedData/ColorPickerDynamic-frcfxiutlcrjavbgtpzbrhdrjtft/Build/Products/Debug/libColorPickerDynamic.dylib"; sourceTree = "<group>"; };
 		131B917D1986B15900E28986 /* Color.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Color.cpp; path = ../Color.cpp; sourceTree = "<group>"; };
 		131B917E1986B15900E28986 /* color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = color.h; path = ../color.h; sourceTree = "<group>"; };
 		131B917F1986B15900E28986 /* ColorBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColorBox.cpp; path = ../ColorBox.cpp; sourceTree = "<group>"; };
@@ -127,6 +131,8 @@
 		136DACB919895D25002BDC1D /* SliderSubDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SliderSubDialog.cpp; sourceTree = SOURCE_ROOT; };
 		136DACBA19895D25002BDC1D /* slidersubdialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = slidersubdialog.h; sourceTree = SOURCE_ROOT; };
 		136DACC019895DE4002BDC1D /* colorscheme.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = colorscheme.h; sourceTree = "<group>"; };
+		1392D2CD19CF5FFB0087284F /* OsxColorFromScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OsxColorFromScreen.cpp; sourceTree = "<group>"; };
+		1392D2CE19CF5FFB0087284F /* osxcolorfromscreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = osxcolorfromscreen.h; sourceTree = "<group>"; };
 		13C2F8CB19901C300065AE04 /* ase_loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ase_loader.h; sourceTree = SOURCE_ROOT; };
 		13C2F8CE199283E70065AE04 /* utf8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utf8.h; sourceTree = SOURCE_ROOT; };
 		13C2F8D0199283F10065AE04 /* checked.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = checked.h; path = utf8/checked.h; sourceTree = SOURCE_ROOT; };
@@ -218,6 +224,8 @@
 				13C2F8CE199283E70065AE04 /* utf8.h */,
 				131B91AD1986B16A00E28986 /* Utils.cpp */,
 				131B91AE1986B16A00E28986 /* utils.h */,
+				1392D2CD19CF5FFB0087284F /* OsxColorFromScreen.cpp */,
+				1392D2CE19CF5FFB0087284F /* osxcolorfromscreen.h */,
 			);
 			path = source;
 			sourceTree = "<group>";
@@ -234,6 +242,8 @@
 		65E51686083D10D0005BFD9A = {
 			isa = PBXGroup;
 			children = (
+				1307430B19CF6A1100AD0097 /* libColorPickerDynamic.dylib */,
+				130742F119CF680300AD0097 /* libColorPickerLib.a */,
 				13E787F319A3308600F55002 /* libicucore.dylib */,
 				13C2F8D61992AD1E0065AE04 /* libiconv.dylib */,
 				136DACB419895C67002BDC1D /* LittleCMS.framework */,
@@ -275,6 +285,7 @@
 				13C2F8DF1996460E0065AE04 /* colorwheelsubdialog.h in Headers */,
 				136DACBD19895D25002BDC1D /* palettesubdialog.h in Headers */,
 				13E787F819A34F0400F55002 /* paletteSceneHook.h in Headers */,
+				1392D2D019CF5FFB0087284F /* osxcolorfromscreen.h in Headers */,
 				136DACBF19895D25002BDC1D /* slidersubdialog.h in Headers */,
 				13C2F8D4199283F10065AE04 /* core.h in Headers */,
 				131B91B01986B16A00E28986 /* spotcolor.h in Headers */,
@@ -401,6 +412,7 @@
 				65636C1E08E5922100FBAB34 /* main.cpp in Sources */,
 				131B91AF1986B16A00E28986 /* SpotColor.cpp in Sources */,
 				136DACBB19895D25002BDC1D /* ColorScheme.cpp in Sources */,
+				1392D2CF19CF5FFB0087284F /* OsxColorFromScreen.cpp in Sources */,
 				131B91971986B15A00E28986 /* ColorSlider.cpp in Sources */,
 				131B918C1986B15A00E28986 /* Color.cpp in Sources */,
 				131B91A31986B16200E28986 /* Palette.cpp in Sources */,
@@ -453,6 +465,11 @@
 					"$(C4D_ROOTDIR)/plugins/colorpicker/lib/lcms2-2.6/include",
 					/opt/local/include,
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/ColorPickerLib-ekdbwdlpxwlgrrcmykcwabryomen/Build/Products/Debug",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/ColorPickerDynamic-frcfxiutlcrjavbgtpzbrhdrjtft/Build/Products/Debug",
+				);
 				SKIP_INSTALL = NO;
 			};
 			name = Debug;
@@ -479,6 +496,11 @@
 					"$(C4D_ROOTDIR)/resource/modules/sculpt/res/description",
 					"$(C4D_ROOTDIR)/plugins/colorpicker/lib/lcms2-2.6/include",
 					/opt/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/ColorPickerLib-ekdbwdlpxwlgrrcmykcwabryomen/Build/Products/Debug",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/ColorPickerDynamic-frcfxiutlcrjavbgtpzbrhdrjtft/Build/Products/Debug",
 				);
 				SKIP_INSTALL = NO;
 			};

@@ -100,11 +100,11 @@ Bool PluginStart(void)
 	ColorScheme::Init();
 	PaletteColor::LoadIcons();
     Palette::InitPalettes();
-	Bool result = RegisterCommandPlugin(COLORSELECTOR_ID,String("Color wheel"),0,NULL,String(),NewObjClear(ColorSelectorCommand));
+	Bool result = RegisterCommandPlugin(COLORSELECTOR_ID,String("Color scheme designer"),0,NULL,String(),NewObjClear(ColorSelectorCommand));
 	result = result && RegisterCommandPlugin(PALETTE_ID, String("Palette 1"),0,NULL,String(),NewObjClear(PaletteCommand));
     result = result && RegisterCommandPlugin(PALETTE2_ID,String("Palette 2"),0,NULL,String(),NewObjClear(PaletteCommand2));
     result = result && RegisterCommandPlugin(PALETTE3_ID,String("Palette 3"),0,NULL,String(),NewObjClear(PaletteCommand3));
-    result = result && RegisterCommandPlugin(COLORPICKER_ENABLE_ID, String("Use Color Picker"), 0, NULL, String(), NewObjClear(EnableCommand));
+    result = result && RegisterCommandPlugin(COLORPICKER_ENABLE_ID, String("Enable Color4D color picker"), 0, NULL, String(), NewObjClear(EnableCommand));
     result = result && RegisterPaletteShader();
     result = result && Register_PaletteSceneHook();
 	return result;

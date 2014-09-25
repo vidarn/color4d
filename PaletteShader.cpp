@@ -55,5 +55,5 @@ Bool PaletteShaderData::Message(GeListNode* node, Int32 type, void* data)
 
 Bool RegisterPaletteShader(void)
 {
-	return RegisterShaderPlugin(PALETTE_SHADER_ID, String("Palette Shader"), 0, PaletteShaderData::Alloc, "Xpalette", 0);
+	return RegisterShaderPlugin(PALETTE_SHADER_ID, String("Color4D Palette Shader"), 0, PaletteShaderData::Alloc, "Xpalette", 0);
 }
