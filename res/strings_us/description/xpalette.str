@@ -1,0 +1,7 @@
+STRINGTABLE Xpalette
+{
+	Xpalette "Color4D Palette Shader";
+
+	PALETTESHADER_PALETTE_ID	"Palette ID";
+	PALETTESHADER_COLOR_ID		"Color ID";
+}
