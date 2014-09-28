@@ -1,5 +1,6 @@
 ## TODO ##
 * Pick colors from screen (Mac)
+* Remember number range when closing color picke
 * Create promo video
 * Write documentation
 * Create tutorial video?

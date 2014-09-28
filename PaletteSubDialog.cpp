@@ -17,7 +17,10 @@ m_spotColors(NULL), m_selectCallback(NULL),m_dragable(TRUE),m_showLabel(FALSE),m
 Bool PaletteSubDialog::CreateLayout(void)
 {
     if (!GeDialog::CreateLayout()) return FALSE;
-    
+	m_rowArea = NULL;
+    m_layoutArea = NULL;
+    m_labelCheckArea = NULL;
+    m_searchText != NULL;
     BaseContainer *bc = GetActiveDocument()->BaseList2D::GetDataInstance()->GetContainerInstance(PALETTE_SCENE_HOOK_ID)->GetContainerInstance(m_id);
     if(bc != nullptr){
         FromContainer(*bc);
