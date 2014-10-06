@@ -92,6 +92,13 @@
   <PropertyGroup>
     <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetName>Color4D</TargetName>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <TargetName>Color4D</TargetName>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(C4D_API_PATH)\modules\sculpt\res\description;C:\Program Files\MAXON\CINEMA 4D R15\plugins\colorpicker\libs\lcms2-2.6\include;C:\Program Files\MAXON\CINEMA 4D R15\plugins\colorpicker;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -104,6 +111,26 @@
     <Link>
       <AdditionalLibraryDirectories>C:\Program Files\MAXON\CINEMA 4D R15\plugins\colorpicker\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>lcms2_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files\MAXON\CINEMA 4D R15\plugins\colorpicker;C:\Program Files\MAXON\CINEMA 4D R15\plugins\colorpicker\libs\lcms2-2.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>C:\Program Files\MAXON\CINEMA 4D R15\plugins\colorpicker\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>lcms2_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(ProjectDir)Color4D.cdl64</OutputFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files\MAXON\CINEMA 4D R15\plugins\colorpicker;C:\Program Files\MAXON\CINEMA 4D R15\plugins\colorpicker\libs\lcms2-2.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>C:\Program Files\MAXON\CINEMA 4D R15\plugins\colorpicker\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>lcms2_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(ProjectDir)Color4D.cdl</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -123,6 +150,7 @@
     <ClInclude Include="colorselectordialog.h" />
     <ClInclude Include="colorslider.h" />
     <ClInclude Include="colorwheel.h" />
+    <ClInclude Include="logger.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="palette.h" />
     <ClInclude Include="palettecolor.h" />
@@ -148,6 +176,7 @@
     <ClCompile Include="ColorSelectorDialog.cpp" />
     <ClCompile Include="ColorSlider.cpp" />
     <ClCompile Include="ColorWheel.cpp" />
+    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Palette.cpp" />
     <ClCompile Include="PaletteColor.cpp" />
     <ClCompile Include="PaletteDialog.cpp" />

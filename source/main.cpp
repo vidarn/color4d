@@ -7,6 +7,7 @@
 #include "paletteSceneHook.h"
 #include "paletteshader.h"
 #include "main.h"
+#include "logger.h"
 
 void ErrorHandlerFunction(cmsContext ContextID, cmsUInt32Number ErrorCode, const char *Text){
     printf("Error %u %s\n", ErrorCode, Text);
@@ -90,16 +91,24 @@ Bool EnableCommand::Execute(BaseDocument *doc)
 
 Bool PluginStart(void)
 {
+	Logger::Init();
     cmsSetLogErrorHandler(&ErrorHandlerFunction);
+	Logger::AddLine("Loading ICC profiles");
 	Color::LoadICCProfiles();
+	Logger::AddLine("Setting default ICC profiles");
 	Color::SetWheelProfile(WHEEL_TYPE_HSV);
 	Color::SetRGBProfile(0);
 	Color::SetCMYKProfile(0);
 	Color::SetDisplayProfile(0);
+	Logger::AddLine("Creating Color Transforms");
 	Color::UpdateTransforms();
+	Logger::AddLine("Initializing Color Scheme");
 	ColorScheme::Init();
+	Logger::AddLine("Loading palette icons");
 	PaletteColor::LoadIcons();
+	Logger::AddLine("Loading default palettes");
     Palette::InitPalettes();
+	Logger::AddLine("Registering plugins");
 	Bool result = RegisterCommandPlugin(COLORSELECTOR_ID,String("Color scheme designer"),0,NULL,String(),NewObjClear(ColorSelectorCommand));
 	result = result && RegisterCommandPlugin(PALETTE_ID, String("Palette 1"),0,NULL,String(),NewObjClear(PaletteCommand));
     result = result && RegisterCommandPlugin(PALETTE2_ID,String("Palette 2"),0,NULL,String(),NewObjClear(PaletteCommand2));
@@ -107,6 +116,9 @@ Bool PluginStart(void)
     result = result && RegisterCommandPlugin(COLORPICKER_ENABLE_ID, String("Enable Color4D color picker"), 0, NULL, String(), NewObjClear(EnableCommand));
     result = result && RegisterPaletteShader();
     result = result && Register_PaletteSceneHook();
+	Logger::AddLine("Plugin initialized");
+
+	GePrint(String("Log file written to ") + String(Logger::m_filename));
 	return result;
 }
 
@@ -115,6 +127,7 @@ void PluginEnd(void)
 	PaletteColor::UnloadIcons();
 	ColorScheme::Free();
 	Color::Unload();
+	Logger::Destroy();
 }
 
 Bool PluginMessage(Int32 id, void *data)

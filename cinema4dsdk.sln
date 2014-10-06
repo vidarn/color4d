@@ -52,7 +52,7 @@ Global
 		{71DEDE59-3F1E-486B-A899-4283000F76B5}.Intel|x64.ActiveCfg = Release|Win32
 		{71DEDE59-3F1E-486B-A899-4283000F76B5}.Release|Win32.ActiveCfg = Release|Win32
 		{71DEDE59-3F1E-486B-A899-4283000F76B5}.Release|Win32.Build.0 = Release|Win32
-		{71DEDE59-3F1E-486B-A899-4283000F76B5}.Release|x64.ActiveCfg = Release|Win32
+		{71DEDE59-3F1E-486B-A899-4283000F76B5}.Release|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,6 @@
 #include "palettecolor.h"
 #include "c4d_general.h"
+#include "logger.h"
 
 BaseBitmap *PaletteColor::m_refreshIcon = 0;
 BaseBitmap *PaletteColor::m_leftArrowIcon = 0;
@@ -220,9 +221,13 @@ static void loadBitmap(BaseBitmap *&bmp, const char *filename){
 }
 
 void PaletteColor::LoadIcons(){
+	Logger::AddLine("Loading refresh.tif",1);
 	loadBitmap(m_refreshIcon,"refresh.tif");
+	Logger::AddLine("Loading leftArrow.tif",1);
 	loadBitmap(m_leftArrowIcon,"leftArrow.tif");
+	Logger::AddLine("Loading rightArrow.tif",1);
 	loadBitmap(m_rightArrowIcon,"rightArrow.tif");
+	Logger::AddLine("Loading cross.tif",1);
     loadBitmap(m_crossIcon, "cross.tif");
 }
 

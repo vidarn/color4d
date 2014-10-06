@@ -1,4 +1,5 @@
 #include "color.h"
+#include "logger.h"
 
 cmsHTRANSFORM Color::m_wheelToRGB     = 0;
 cmsHTRANSFORM Color::m_wheelToCMYK    = 0;
@@ -399,21 +400,28 @@ void Color::LoadICCProfiles()
 		delete m_iccSearchPaths;
 	}
     
-    const Int32 NUMSEARCHPATHS = 3;
+    const Int32 NUMSEARCHPATHS = 4;
     
 	m_iccSearchPaths = new String[NUMSEARCHPATHS];
-	m_iccSearchPaths[0] = "C:\\Windows\\System32\\Spool\\Drivers\\Color\\";
+	
+
+	Filename cmykDir = GeGetPluginPath();
+	cmykDir += Filename(String("cmyk"));
+
+	m_iccSearchPaths[0] = cmykDir.GetString();
     m_iccSearchPaths[1] = "/Library/ColorSync/Profiles/";
     m_iccSearchPaths[2] = "/Users/vidarn/Library/ColorSync";
+	m_iccSearchPaths[3] = "C:\\Windows\\System32\\Spool\\Drivers\\Color\\";
 
+	Logger::AddLine("Creating LAB profile",1);
 	m_LABProfile = cmsCreateLab4Profile(NULL);
 
+	Logger::AddLine("Creating default sRGB profile",1);
 	m_displayProfile = cmsCreate_sRGBProfile();
 	m_RGBProfiles.Insert(vnColorProfile("sRGB",m_displayProfile),0);
 
     for(Int32 i=0;i<NUMSEARCHPATHS;++i){
         BrowseFiles* bf = BrowseFiles::Alloc();
-
         Filename dir(m_iccSearchPaths[i]);
         bf->Init(dir,FALSE);
         int RGBPos  = m_RGBProfiles.GetCount();
@@ -429,6 +437,7 @@ void Color::LoadICCProfiles()
                 String str = fileName.GetString();
                 Char *buffer = new Char[str.GetCStringLen()+1];
                 str.GetCString(buffer,str.GetCStringLen()+1);
+				Logger::AddLine(buffer,1);
                 cmsHPROFILE profile = cmsOpenProfileFromFile(buffer, "r");
                 if(profile != NULL){
                     cmsColorSpaceSignature sig = cmsGetColorSpace(profile);
@@ -438,6 +447,7 @@ void Color::LoadICCProfiles()
                     String info(buffer2);
                     int pt = _cmsLCMScolorSpace(sig);
                     if(PT_RGB == pt){
+						Logger::AddLine("RGB profile",1);
                         m_RGBProfiles.Insert(vnColorProfile(info,profile),RGBPos);
                         RGBPos++;
                     }
@@ -450,14 +460,17 @@ void Color::LoadICCProfiles()
                                 spotPos++;
                             }
                             else{
+								Logger::AddLine("CMYK profile",1);
                                 m_CMYKProfiles.Insert(vnColorProfile(info,profile),CMYKPos);
                                 CMYKPos++;
                             }
+							cmsDeleteTransform(xform);
                         }
-                        cmsDeleteTransform(xform);
                     }
                     delete buffer2;
-                }
+                } else {
+					Logger::AddLine("Invalid",1);
+				}
                 delete buffer;
             }
         }

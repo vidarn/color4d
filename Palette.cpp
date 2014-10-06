@@ -3,6 +3,7 @@
 #include "ase_loader.h"
 #include "ase_writer.h"
 #include "utils.h"
+#include "logger.h"
 
 Palette::Palette():
 	m_name("Unnamed"),m_inScene(true)
@@ -126,6 +127,7 @@ void Palette::InitPalettes()
 			}
 		}
 		if(i==0){
+			Logger::AddLine("No palettes found, creating default palette",1);
 			stdPal = Palette(String("Default"),1);
 			stdPal.SetColor(0,Color(0.0f,0.f,0.f));
 			stdPal.ToContainer(palC);
@@ -321,6 +323,9 @@ Bool Palette::LoadASEFile(String s, Palette &pal)
 	char *str = NewMem(char,fnLength+1);
 	s.GetCString(str, fnLength+1, STRINGENCODING_UTF8);
 #endif
+
+	Logger::AddLine("Loading",1);
+	Logger::AddLine(str,1);
 
     ASE_ERRORTYPE error = ase_openAndReadAseFile(&aseFile, str);
     DeleteMem(str);
