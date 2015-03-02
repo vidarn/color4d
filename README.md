@@ -1,3 +1,8 @@
+## IMPORTANT ##
+
+FIX XCODE SETTINGS (http://www.plugincafe.com/forum/forum_posts.asp?TID=7226)
+VERIFY THAT USING THE PLUGIN ALONGSIDE MAZE TRACE WORKS!
+
 ## TODO ##
 * Pick colors from screen (Mac)
 * Remember number range when closing color picke
