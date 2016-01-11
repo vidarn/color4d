@@ -9,14 +9,16 @@ Main features include:
 
 ##[Download](https://github.com/vidarn/color4d/raw/master/bin/Color4d.zip)##
 
-##Help##
-
-  To get started, please visit http://vidarnel.com/color4d and take a look at the section labeled "Documentation"
-
 ##Contact##
 
   If you have any questions regarding the plugin, please contact [@vidarn](https://twitter.com/vidarn) on twitter.
 
+##Documentation##
+###Manual###
+For a comprehensive description of all the features of Color4D, please read the [Manual](http://www.vidarnel.com/color4d/manual)
+
+###Tutorial videos###
+Please visit [this vimeo channel](https://vimeo.com/channels/color4dtutorials) for video tutorials covering the basic features of Color4D.
 
 ##Installation instructions##
 
@@ -30,4 +32,3 @@ Main features include:
   /Applications/MAXON/CINEMA 4D R15/plugins/Color4D/Color4D.dylib on OS X.
 
   Finally, please restart Cinema4D to finish the installation of Color4D.
-
